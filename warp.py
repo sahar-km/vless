@@ -16,22 +16,22 @@ def arch_suffix():
 
 
 def export_bestIPS(path):
-    best_ips = []
+    Bestip = []
 
     with open(path, 'r') as csv_file:
         next(csv_file)
         c = 0
         for line in csv_file:
-            best_ips.append(line.split(',')[0])
+            Bestip.append(line.split(',')[0])
             c += 1
             if c == 2:
                 break
 
-    with open('best_IPS.txt', 'w') as f:
-        for ip in best_ips:
+    with open('Bestip.txt', 'w') as f:
+        for ip in Bestip:
             f.write(f"{ip}\n")
 
-    return best_ips
+    return Bestip
 
 
 def export_Hiddify(t_ips, f_ips):
@@ -75,7 +75,7 @@ def toSingBox(tag, clean_ip, detour):
 
 
 def export_SingBox(t_ips, arch):
-    with open('Sing-Box Template/template.json', 'r') as f:
+    with open('edge/template.json', 'r') as f:
         data = json.load(f)
 
     warp_go_url = f"https://gitlab.com/Misaka-blog/warp-script/-/raw/main/files/warp-go/warp-go-latest-linux-{arch}"
