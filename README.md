@@ -15,16 +15,19 @@ $$\color{silver} \Huge \text{\R $\sum{\vil_t = \mathbb{N108}\infty}$}$$
 >
 > is automatically updated every thirty minutes.
 
-## $\color{gold} \normalsize \text{Subscription URL link}$
+# Hiddify URL <img src="edge/hiddify.png" alt="Hiddify" width="40"/>
 ```
-https://raw.githubusercontent.com/NiREvil/vless/main/warp.json
+https://raw.githubusercontent.com/sahar-km/vless/main/warp.json
 ```
----
-<p align="center">$\color{silver} \large \text{OR SCAN THIS QR }$</p>
+# Sing-Box URL <img src="edge/singbox.svg" alt="Sing-Box" width="30"/>
+```
+https://raw.githubusercontent.com/sahar-km/vless/main/sing-box.json
+```
+# Scan Here 👇
 
-<p align="center">
-  <br><img src="./QR.gif" width="520px">
-</p>
+
+# QR URL <img src="edge/QR.png" alt="QR" width="520"/>
+
 
 ![rainbow](https://github.com/NiREvil/vless/assets/126243832/1aca7f5d-6495-44b7-aced-072bae52f256)
 
