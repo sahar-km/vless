@@ -65,7 +65,7 @@ def toSingBox(tag, clean_ip, detour):
             wg = data["outbounds"][0]
             wg['server'] = clean_ip.split(':')[0]
             wg['server_port'] = int(clean_ip.split(':')[1])
-            wg['mtu'] = 1300
+            wg['mtu'] = 1280
             wg['workers'] = 2
             wg['detour'] = detour
             wg['tag'] = tag
