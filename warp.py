@@ -80,10 +80,10 @@ def export_SingBox(t_ips):
     
     data['outbounds'][1]['outbounds'].extend(['Tehran', 'Berlin'])
     
-    tehran_wg = toSingBox('Tehran', t_ips[0], "direct")
-    data["outbounds"].insert(2, tehran_wg)
-    berlin_wg = toSingBox('Berlin', t_ips[1], "Tehran")
-    data["outbounds"].insert(3, berlin_wg)
+    main_wg = toSingBox('Tehran', t_ips[0], "direct")
+    data["outbounds"].insert(2, main_wg)
+    wow_wg = toSingBox('Berlin', t_ips[1], "Tehran")
+    data["outbounds"].insert(3, wow_wg)
 
 
     with open('sing-box.json', 'w') as f:
