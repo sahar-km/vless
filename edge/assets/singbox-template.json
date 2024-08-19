@@ -77,10 +77,10 @@
             "tag": "Proxy",
             "type": "selector",
             "outbounds": [
-                "WARP-MAIN",
-                "WARP-WOW"
+                "Tehran",
+                ""
             ],
-            "default": "WARP-WOW",
+            "default": "Berlin",
             "interrupt_exist_connections": false
         },
         {
