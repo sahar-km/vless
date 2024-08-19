@@ -75,15 +75,15 @@ def toSingBox(tag, clean_ip, detour):
 
 
 def export_SingBox(t_ips):
-    with open('edge/assets/singbox-template.json', 'r') as f:
+    with open('Sing-Box Template/template.json', 'r') as f:
         data = json.load(f)
     
-    data['outbounds'][1]['outbounds'].extend(['Tehran', 'Berlin'])
+    data['outbounds'][1]['outbounds'].extend(['WARP-MAIN', 'WARP-WIW'])
     
-    main_wg = toSingBox('Tehran', t_ips[0], "direct")
+    main_wg = toSingBox('WARP-MAIN', t_ips[0], "direct")
     data["outbounds"].insert(2, main_wg)
-    wow_wg = toSingBox('Berlin', t_ips[1], "Tehran")
-    data["outbounds"].insert(3, wow_wg)
+    wiw_wg = toSingBox('WARP-WIW', t_ips[1], "WARP-MAIN")
+    data["outbounds"].insert(3, wiw_wg)
 
 
     with open('sing-box.json', 'w') as f:
