@@ -30,18 +30,18 @@ def export_bestIPS(path):
     with open('Bestip.txt', 'w') as f:
         for ip in Bestip:
             f.write(f"{ip}\n")
-    os.remove("warp")
+
     return Bestip
 
 
 def export_Hiddify(t_ips, f_ips):
     creation_time = os.path.getctime(f_ips)
     formatted_time = datetime.datetime.fromtimestamp(creation_time).strftime("%Y-%m-%d %H:%M:%S")
-    config_prefix = f'warp://{t_ips[0]}?ifp=1-3&ifps=10-30&ifpd=10-30#Tehran&&detour=warp://{t_ips[1]}?ifp=1-2&ifps=10-20&ifpd=10-20#Berlin'
+    config_prefix = f'warp://{t_ips[0]}?ifp=1-2&ifps=20-60&ifpd=5-10#Warp-IR&&detour=warp://{t_ips[1]}?ifp=10-20&ifps=20-60&ifpd=5-10#Warp-ON-Warp'
 
     title = "//profile-title: base64:" + base64.b64encode('Women Life Freedom 🤍'.encode('utf-8')).decode(
         'utf-8') + "\n"
-    update_interval = "//profile-update-interval: 2\n"
+    update_interval = "//profile-update-interval: 1\n"
     sub_info = "//subscription-userinfo: upload=0; download=0; total=10737418240000000; expire=2546249531\n"
     profile_web = "//profile-web-page-url: https://github.com/NiREvil\n"
     last_modified = "//last update on: " + formatted_time + "\n"
@@ -52,38 +52,41 @@ def export_Hiddify(t_ips, f_ips):
 
 def toSingBox(tag, clean_ip, detour):
     print("Generating Warp Conf")
-    command = 'wget -N "https://gitlab.com/fscarmen/warp/-/raw/main/api.sh" && sudo bash api.sh -r'
-    prc = subprocess.run(command, capture_output=True, text=True, shell=True)
-    output = prc.stdout
+    config_url = "https://api.zeroteam.top/warp?format=warp-go"
+    conf_name = 'warp.conf'
+    subprocess.run(["wget", config_url, "-O", f"{conf_name}"])
+    cmd = ["./warp-go", f"--config={conf_name}", "--export-singbox=proxy.json"]
+    process = subprocess.run(cmd, capture_output=True, text=True)
+    output = process.stdout
 
-    if (prc.returncode == 0) and output:
-        data = json.loads(output)
-        wg = {
-            "tag": f"{tag}",
-            "type": "wireguard",
-            "server": f"{clean_ip.split(':')[0]}",
-            "server_port": int(clean_ip.split(':')[1]),
-            "local_address": [
-                "172.16.0.2/32",
-                "2606:4700:110:8735:bb29:91bc:1c82:aa73/128"
-            ],
-            "private_key": f"{data['private_key']}",
-            "peer_public_key": "bmXOC+F1FxEMF9dyiK2H5/1SUtzH0JuVo51h2wPfgyo=",
-            "mtu": 1300,
-            "reserved": data['config']['reserved'],
-            "detour": f"{detour}",
-            "workers": 2
-        }
-        os.remove("api.sh")
-        os.remove("warp-account.conf")
+    if (process.returncode == 0) and output:
+        with open('proxy.json', 'r') as f:
+            data = json.load(f)
+            wg = data["outbounds"][0]
+            wg['server'] = clean_ip.split(':')[0]
+            wg['server_port'] = int(clean_ip.split(':')[1])
+            wg['mtu'] = 1300
+            wg['workers'] = 2
+            wg['detour'] = detour
+            wg['tag'] = tag
         return wg
     else:
         return None
 
+
 def export_SingBox(t_ips):
     with open('edge/assets/singbox-template.json', 'r') as f:
         data = json.load(f)
-    
+
+    if 'outbounds' not in data:
+        data['outbounds'] = []
+
+    while len(data['outbounds']) < 2:
+        data['outbounds'].append({})
+
+    if 'outbounds' not in data['outbounds'][1]:
+        data['outbounds'][1]['outbounds'] = []
+
     data['outbounds'][1]['outbounds'].extend(['Tehran', 'Berlin'])
     
     tehran_wg = toSingBox('Tehran', t_ips[0], "direct")
@@ -91,9 +94,12 @@ def export_SingBox(t_ips):
     berlin_wg = toSingBox('Berlin', t_ips[1], "Tehran")
     data["outbounds"].insert(3, berlin_wg)
 
-
     with open('sing-box.json', 'w') as f:
         f.write(json.dumps(data, indent=4))
+
+    os.remove("warp.conf")
+    os.remove("proxy.json")
+    os.remove("warp-go")
 
 
 def main(script_dir):
@@ -113,9 +119,10 @@ def main(script_dir):
 
     result_path = os.path.join(script_dir, 'result.csv')
     top_ips = export_bestIPS(result_path)
-    export_Hiddify(top_ips, result_path)
-    export_SingBox(top_ips)
+    export_Hiddify(t_ips=top_ips, f_ips=result_path)
+    export_SingBox(t_ips=top_ips, arch=arch)
 
+    os.remove("warp")
     os.remove(result_path)
 
 
