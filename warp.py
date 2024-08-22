@@ -61,7 +61,7 @@ def arch_suffix():
 arch = arch_suffix()
 
 print("Fetch warp program...")
-url = f"https://gitlab.com/Misaka-blog/warp-script/-/raw/main/files/warp-yxip/warp-linux-{arch}"
+url = f"https://gitlab.com/nirevil/revil-warp/-/raw/main/files/warp-yxip/warp-linux-{arch}"
 
 subprocess.run(["wget", url, "-O", "warp"])
 os.chmod("warp", 0o755)
@@ -92,7 +92,7 @@ with open(result_path, 'r') as csv_file:
 formatted_time = datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S")
 
 def export_Hiddify(t_ips):
-    config_prefix = f'warp://{t_ips[0]}?ifp=10-20&ifps=20-60&ifpd=5-10#Warp-IR&&detour=warp://{t_ips[1]}?ifp=10-20&ifps=20-60&ifpd=5-10#Warp-ON-Warp'
+    config_prefix = f'warp://{t_ips[0]}?ifp=1-3&ifps=10-30&ifpd=10-30#TEHRAN&&detour=warp://{t_ips[1]}?ifp=1-2&ifps=10-30&ifpd=10-30#BERLIN'
     return config_prefix, formatted_time
 
 title = "//profile-title: base64:" + base64.b64encode('Women Life Freedom 🤍'.encode('utf-8')).decode('utf-8') + "\n"
@@ -113,7 +113,7 @@ os.remove("warp")
 
 def toSingBox(tag, clean_ip, detour):
     print("Generating Warp Conf")
-    command = 'wget -N "https://gitlab.com/fscarmen/warp/-/raw/main/api.sh" && sudo bash api.sh -r'
+    command = 'wget -N "https://gitlab.com/nirevil/fsc-warp/-/raw/main/api.sh" && sudo bash api.sh -r'
     prc = subprocess.run(command, capture_output=True, text=True, shell=True)
     output = prc.stdout
 
@@ -138,7 +138,7 @@ def toSingBox(tag, clean_ip, detour):
             }
             
             # Safely remove files if they exist
-            for file in ["api.sh", "warp-account.conf"]:
+            for file in ["api.sh"]:
                 if os.path.exists(file):
                     os.remove(file)
                     print(f"Removed {file}")
