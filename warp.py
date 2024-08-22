@@ -103,7 +103,7 @@ profile_web = "//profile-web-page-url: https://github.com/NiREvil\n"
 last_modified = "//last update on: " + formatted_time + "\n"
 
 with open('warp.json', 'w') as op:
-    op.write(title + update_interval + sub_info + profile_web + last_modified + config_prefix)"
+    op.write(title + update_interval + sub_info + profile_web + last_modified + config_prefix)
 
 
 os.remove(Bestip_path)
