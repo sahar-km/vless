@@ -22,14 +22,14 @@
         "servers": [
             {
                 "tag": "dns-remote",
-                "address": "tcp://185.228.168.9",
+                "address": "https://1.1.1.1/dns-query",
                 "address_resolver": "dns-direct",
                 "address_strategy": "prefer_ipv4",
                 "strategy": "prefer_ipv4"
             },
             {
                 "tag": "dns-direct",
-                "address": "tcp://185.228.168.9",
+                "address": "tcp://8.8.4.4",
                 "address_resolver": "dns-local",
                 "strategy": "prefer_ipv4",
                 "detour": "direct"
@@ -81,6 +81,16 @@
                 "BERLIN"
             ],
             "default": "BERLIN",
+            "interrupt_exist_connections": false
+        },
+        {
+            "tag": "Auto",
+            "type": "urltest",
+            "outbounds": [],
+            "url": "http://www.gstatic.com/generate_204",
+            "interval": "15m",
+            "tolerance": 50,
+            "idle_timeout": "30m",
             "interrupt_exist_connections": false
         },
         {
