@@ -162,7 +162,7 @@ def export_SingBox(t_ips):
     
     data['outbounds'][1]['outbounds'].extend(['TEHRAN', 'BERLIN'])
     
-     = toSingBox('TEHRAN', t_ips[0], "direct")
+    tehran_wg = toSingBox('TEHRAN', t_ips[0], "direct")
     if tehran_wg:
         data["outbounds"].insert(2, tehran_wg)
     else:
