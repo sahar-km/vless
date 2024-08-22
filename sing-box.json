@@ -29,7 +29,7 @@
             },
             {
                 "tag": "dns-direct",
-                "address": "tcp://185.228.168.9",
+                "address": "tcp://8.8.4.4",
                 "address_resolver": "dns-local",
                 "strategy": "prefer_ipv4",
                 "detour": "direct"
@@ -63,7 +63,7 @@
             "domain_strategy": "prefer_ipv4",
             "interface_name": "sing-tun",
             "inet4_address": "172.19.0.1/30",
-            "mtu": 1492,
+            "mtu": 1300,
             "auto_route": true,
             "strict_route": true,
             "stack": "gvisor",
@@ -77,63 +77,63 @@
             "tag": "Proxy",
             "type": "selector",
             "outbounds": [
-                "Tehran",
-                "Berlin"
+                "TEHRAN",
+                "BERLIN"
             ],
-            "default": "Berlin",
+            "default": "BERLIN",
             "interrupt_exist_connections": false
         },
         {
             "tag": "Auto",
             "type": "urltest",
             "outbounds": [
-                "WARP-MAIN",
-                "WARP-WIW"
+                "TEHRAN",
+                "BERLIN"
             ],
-            "url": "http://cp.cloudflare.com/",
-            "interval": "5m",
+            "url": "http://www.gstatic.com/generate_204",
+            "interval": "15m",
             "tolerance": 50,
             "idle_timeout": "30m",
             "interrupt_exist_connections": false
         },
         {
-            "tag": "WARP-MAIN",
+            "tag": "TEHRAN",
             "type": "wireguard",
-            "server": "188.114.98.188",
-            "server_port": 4177,
+            "server": "188.114.98.232",
+            "server_port": 1070,
             "local_address": [
                 "172.16.0.2/32",
                 "2606:4700:110:8735:bb29:91bc:1c82:aa73/128"
             ],
-            "private_key": "WLCn21W8TOb/+U1mKYeKUiEhoQqt6LCFRHyR5hiKiUQ=",
+            "private_key": "4BtPI1M9gykPvrBfAmErL1yom6dwDx7oPVW61ZckXUY=",
             "peer_public_key": "bmXOC+F1FxEMF9dyiK2H5/1SUtzH0JuVo51h2wPfgyo=",
             "mtu": 1300,
             "reserved": [
-                244,
-                114,
-                237
+                175,
+                24,
+                228
             ],
             "detour": "direct",
             "workers": 2
         },
         {
-            "tag": "WARP-WIW",
+            "tag": "BERLIN",
             "type": "wireguard",
-            "server": "188.114.97.72",
-            "server_port": 7156,
+            "server": "188.114.99.103",
+            "server_port": 4177,
             "local_address": [
                 "172.16.0.2/32",
                 "2606:4700:110:8735:bb29:91bc:1c82:aa73/128"
             ],
-            "private_key": "qFrsJpie3r5oFnB7YtO0AWDgFUQ6uosBFGwI9PFFSXA=",
+            "private_key": "aMh4tMruFvHDYrJesEDCpp4Oevyrl0H3u1aBw03iA1o=",
             "peer_public_key": "bmXOC+F1FxEMF9dyiK2H5/1SUtzH0JuVo51h2wPfgyo=",
             "mtu": 1300,
             "reserved": [
-                15,
-                110,
-                67
+                119,
+                219,
+                141
             ],
-            "detour": "WARP-MAIN",
+            "detour": "TEHRAN",
             "workers": 2
         },
         {
