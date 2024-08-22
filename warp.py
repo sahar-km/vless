@@ -88,11 +88,11 @@ with open(result_path, 'r') as csv_file:
             break
 
 
-def warp_ip():
-    creation_time = os.path.getctime(result_path)
+def export_Hiddify(t_ips, f_ips):
+    creation_time = os.path.getctime(f_ips)
     formatted_time = datetime.datetime.fromtimestamp(creation_time).strftime("%Y-%m-%d %H:%M:%S")
     for i, ip in enumerate(Bestip):
-        config_prefix = f'warp://{Bestip[0]}?ifp=10-20&ifps=20-60&ifpd=5-10#Warp-IR&&detour=warp://{Bestip[1]}?ifp=10-20&ifps=20-60&ifpd=5-10#Warp-ON-Warp'
+        config_prefix = f'warp://{t_ips[0]}?ifp=10-20&ifps=20-60&ifpd=5-10#Warp-IR&&detour=warp://{t_ips[1]}?ifp=10-20&ifps=20-60&ifpd=5-10#Warp-ON-Warp'
     return config_prefix, formatted_time
 
 
