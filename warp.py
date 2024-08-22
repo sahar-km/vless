@@ -162,15 +162,15 @@ def export_SingBox(t_ips):
     
     data['outbounds'][1]['outbounds'].extend(['TEHRAN', 'BERLIN'])
     
-    wg_tehran = toSingBox('TEHRAN', t_ips[0], "direct")
-    if wg_tehran:
-        data["outbounds"].insert(2, wg_tehran)
+     = toSingBox('TEHRAN', t_ips[0], "direct")
+    if tehran_wg:
+        data["outbounds"].insert(2, tehran_wg)
     else:
         print("Failed to generate TEHRAN configuration")
     
-    wg_berlin = toSingBox('BERLIN', t_ips[1], "TEHRAN")
-    if wg_berlin:
-        data["outbounds"].insert(3, wg_berlin)
+    berlin_wg = toSingBox('BERLIN', t_ips[1], "TEHRAN")
+    if berlin_wg:
+        data["outbounds"].insert(3, berlin_wg)
     else:
         print("Failed to generate BERLIN configuration")
 
