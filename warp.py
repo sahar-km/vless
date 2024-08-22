@@ -173,7 +173,18 @@ def main(script_dir):
         print("Warp executed successfully.")
 
     result_path = os.path.join(script_dir, 'result.csv')
-    top_ips = export_bestIPS(result_path)
+    
+    # Read the best IPs from the result file
+    top_ips = []
+    with open(result_path, 'r') as csv_file:
+        next(csv_file)  # Skip the header
+        c = 0
+        for line in csv_file:
+            top_ips.append(line.split(',')[0])
+            c += 1
+            if c == 2:
+                break
+
     export_Hiddify(top_ips)
     export_SingBox(top_ips)
 
