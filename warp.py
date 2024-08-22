@@ -162,15 +162,15 @@ def export_SingBox(t_ips):
     
     data['outbounds'][1]['outbounds'].extend(['TEHRAN', 'BERLIN'])
     
-    main_wg = toSingBox('TEHRAN', t_ips[0], "direct")
-    if main_wg:
-        data["outbounds"].insert(2, main_wg)
+    wg_tehran = toSingBox('TEHRAN', t_ips[0], "direct")
+    if wg_tehran:
+        data["outbounds"].insert(2, wg_tehran)
     else:
         print("Failed to generate TEHRAN configuration")
     
-    wow_wg = toSingBox('BERLIN', t_ips[1], "TEHRAN")
-    if wow_wg:
-        data["outbounds"].insert(3, wow_wg)
+    wg_berlin = toSingBox('BERLIN', t_ips[1], "TEHRAN")
+    if wg_berlin:
+        data["outbounds"].insert(3, wg_berlin)
     else:
         print("Failed to generate BERLIN configuration")
 
@@ -192,10 +192,9 @@ def main(script_dir):
 
         result_path = os.path.join(script_dir, 'result.csv')
         
-        # Read the best IPs from the result file
         top_ips = []
         with open(result_path, 'r') as csv_file:
-            next(csv_file)  # Skip the header
+            next(csv_file)
             for _ in range(2):
                 line = next(csv_file, None)
                 if line:
