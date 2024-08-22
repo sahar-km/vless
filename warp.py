@@ -4,6 +4,7 @@ import subprocess
 import os
 import datetime
 import base64
+import json
 
 warp_cidr = [
     '162.159.192.0/24',
@@ -88,13 +89,11 @@ with open(result_path, 'r') as csv_file:
             break
 
 
-def export_Hiddify(t_ips, f_ips):
-    creation_time = os.path.getctime(f_ips)
-    formatted_time = datetime.datetime.fromtimestamp(creation_time).strftime("%Y-%m-%d %H:%M:%S")
-    for i, ip in enumerate(Bestip):
-        config_prefix = f'warp://{t_ips[0]}?ifp=10-20&ifps=20-60&ifpd=5-10#Warp-IR&&detour=warp://{t_ips[1]}?ifp=10-20&ifps=20-60&ifpd=5-10#Warp-ON-Warp'
-    return config_prefix, formatted_time
+formatted_time = datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S")
 
+def export_Hiddify(t_ips):
+    config_prefix = f'warp://{t_ips[0]}?ifp=10-20&ifps=20-60&ifpd=5-10#Warp-IR&&detour=warp://{t_ips[1]}?ifp=10-20&ifps=20-60&ifpd=5-10#Warp-ON-Warp'
+    return config_prefix, formatted_time
 
 title = "//profile-title: base64:" + base64.b64encode('Women Life Freedom 🤍'.encode('utf-8')).decode('utf-8') + "\n"
 update_interval = "//profile-update-interval: 1\n"
@@ -102,6 +101,7 @@ sub_info = "//subscription-userinfo: upload=0; download=0; total=107374182400000
 profile_web = "//profile-web-page-url: https://github.com/NiREvil\n"
 last_modified = "//last update on: " + formatted_time + "\n"
 
+config_prefix, _ = export_Hiddify(Bestip)
 with open('warp.json', 'w') as op:
     op.write(title + update_interval + sub_info + profile_web + last_modified + config_prefix)
 
@@ -174,11 +174,10 @@ def main(script_dir):
 
     result_path = os.path.join(script_dir, 'result.csv')
     top_ips = export_bestIPS(result_path)
-    export_Hiddify(top_ips, result_path)
+    export_Hiddify(top_ips)
     export_SingBox(top_ips)
 
     os.remove(result_path)
-
 
 if __name__ == '__main__':
     script_directory = os.path.dirname(__file__)
