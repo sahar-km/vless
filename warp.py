@@ -92,7 +92,7 @@ def warp_ip():
     creation_time = os.path.getctime(result_path)
     formatted_time = datetime.datetime.fromtimestamp(creation_time).strftime("%Y-%m-%d %H:%M:%S")
     for i, ip in enumerate(Bestip):
-        config_prefix = f"warp://{Bestip[0]}?ifp=1-2&ifps=20-60&ifpd=5-10#Warp-IR&&detour=warp://{Bestip[1]}?ifp=10-20&ifps=20-60&ifpd=5-10#Warp-ON-Warp
+        config_prefix = f'warp://{Bestip[0]}?ifp=10-20&ifps=20-60&ifpd=5-10#Warp-IR&&detour=warp://{Bestip[1]}?ifp=10-20&ifps=20-60&ifpd=5-10#Warp-ON-Warp'
     return config_prefix, formatted_time
 
 
