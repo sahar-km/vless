@@ -158,37 +158,37 @@ def export_SingBox(t_ips):
 
 
 def main(script_dir):
-    arch = arch_suffix()
-    print("Fetch warp program...")
-    url = f"https://gitlab.com/Misaka-blog/warp-script/-/raw/main/files/warp-yxip/warp-linux-{arch}"
-    subprocess.run(["wget", url, "-O", "warp"])
-    os.chmod("warp", 0o755)
-    command = "./warp >/dev/null 2>&1"
-    print("Scanning ips...")
-    process = subprocess.Popen(command, shell=True)
-    process.wait()
-    if process.returncode != 0:
-        print("Error: Warp execution failed.")
-    else:
+    try:
+        arch = arch_suffix()
+        print("Fetch warp program...")
+        url = f"https://gitlab.com/Misaka-blog/warp-script/-/raw/main/files/warp-yxip/warp-linux-{arch}"
+        subprocess.run(["wget", url, "-O", "warp"], check=True)
+        os.chmod("warp", 0o755)
+        command = "./warp >/dev/null 2>&1"
+        print("Scanning ips...")
+        process = subprocess.run(command, shell=True, check=True)
         print("Warp executed successfully.")
 
-    result_path = os.path.join(script_dir, 'result.csv')
-    
-    # Read the best IPs from the result file
-    top_ips = []
-    with open(result_path, 'r') as csv_file:
-        next(csv_file)  # Skip the header
-        c = 0
-        for line in csv_file:
-            top_ips.append(line.split(',')[0])
-            c += 1
-            if c == 2:
-                break
+        result_path = os.path.join(script_dir, 'result.csv')
+        
+        # Read the best IPs from the result file
+        top_ips = []
+        with open(result_path, 'r') as csv_file:
+            next(csv_file)  # Skip the header
+            for _ in range(2):
+                line = next(csv_file, None)
+                if line:
+                    top_ips.append(line.split(',')[0])
 
-    export_Hiddify(top_ips)
-    export_SingBox(top_ips)
+        export_Hiddify(top_ips)
+        export_SingBox(top_ips)
 
-    os.remove(result_path)
+        if os.path.exists(result_path):
+            os.remove(result_path)
+        
+    except Exception as e:
+        print(f"An error occurred: {e}")
+        raise  # Re-raise the exception for GitHub Actions to catch
 
 if __name__ == '__main__':
     script_directory = os.path.dirname(__file__)
