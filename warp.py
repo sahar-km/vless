@@ -1,4 +1,46 @@
-import platform, subprocess, os, datetime, base64, json
+import ipaddress
+import platform
+import subprocess
+import os
+import datetime
+import base64
+
+warp_cidr = [
+    '162.159.192.0/24',
+    '162.159.193.0/24',
+    '162.159.195.0/24',
+    '162.159.204.0/24',
+    '188.114.96.0/24',
+    '188.114.97.0/24',
+    '188.114.98.0/24',
+    '188.114.99.0/24'
+]
+
+script_directory = os.path.dirname(__file__)
+Bestip_path = os.path.join(script_directory, 'Bestip.txt')
+result_path = os.path.join(script_directory, 'result.csv')
+
+
+def create_ips():
+    c = 0
+    top_ips = sum(len(list(ipaddress.IPv4Network(cidr))) for cidr in warp_cidr)
+
+    with open(Bestip_path, 'w') as file:
+        for cidr in warp_cidr:
+            ip_addresses = list(ipaddress.IPv4Network(cidr))
+            for addr in ip_addresses:
+                c += 1
+                file.write(str(addr))
+                if c != top_ips:
+                    file.write('\n')
+
+
+if os.path.exists(Bestip_path):
+    print("Bestip.txt exists.")
+else:
+    print('Creating Bestip.txt File.')
+    create_ips()
+    print('Bestip.txt File Created Successfully!')
 
 
 def arch_suffix():
@@ -15,83 +57,108 @@ def arch_suffix():
         raise ValueError("Unsupported CPU architecture")
 
 
-def export_bestIPS(path):
-    Bestip = []
+arch = arch_suffix()
 
-    with open(path, 'r') as csv_file:
-        next(csv_file)
-        c = 0
-        for line in csv_file:
-            Bestip.append(line.split(',')[0])
-            c += 1
-            if c == 2:
-                break
+print("Fetch warp program...")
+url = f"https://gitlab.com/Misaka-blog/warp-script/-/raw/main/files/warp-yxip/warp-linux-{arch}"
 
-    with open('Bestip.txt', 'w') as f:
-        for ip in Bestip:
-            f.write(f"{ip}\n")
+subprocess.run(["wget", url, "-O", "warp"])
+os.chmod("warp", 0o755)
+command = "./warp >/dev/null 2>&1"
+print("Scanning ips...")
+process = subprocess.Popen(command, shell=True)
+# Wait for the process to finish
+process.wait()
 
-    return Bestip
+# Check if there's any error
+if process.returncode != 0:
+    print("Error: Warp execution failed.")
+else:
+    print("Warp executed successfully.")
+
+Bestip = []
+
+with open(result_path, 'r') as csv_file:
+    next(csv_file)
+    c = 0
+    for line in csv_file:
+        Bestip.append(line.split(',')[0])
+        c += 1
+        if c == 2:
+            break
 
 
-def export_Hiddify(t_ips, f_ips):
-    creation_time = os.path.getctime(f_ips)
+def warp_ip():
+    creation_time = os.path.getctime(result_path)
     formatted_time = datetime.datetime.fromtimestamp(creation_time).strftime("%Y-%m-%d %H:%M:%S")
-    config_prefix = f'warp://{t_ips[0]}?ifp=1-2&ifps=20-60&ifpd=5-10#Warp-IR&&detour=warp://{t_ips[1]}?ifp=10-20&ifps=20-60&ifpd=5-10#Warp-ON-Warp'
+    for i, ip in enumerate(Bestip):
+        config_prefix = f"warp://{Bestip[0]}?ifp=1-2&ifps=20-60&ifpd=5-10#Warp-IR&&detour=warp://{Bestip[1]}?ifp=10-20&ifps=20-60&ifpd=5-10#Warp-ON-Warp
+    return config_prefix, formatted_time
 
-    title = "//profile-title: base64:" + base64.b64encode('Women Life Freedom 🤍'.encode('utf-8')).decode(
-        'utf-8') + "\n"
-    update_interval = "//profile-update-interval: 1\n"
-    sub_info = "//subscription-userinfo: upload=0; download=0; total=10737418240000000; expire=2546249531\n"
-    profile_web = "//profile-web-page-url: https://github.com/NiREvil\n"
-    last_modified = "//last update on: " + formatted_time + "\n"
 
-    with open('warp.json', 'w') as op:
-        op.write(title + update_interval + sub_info + profile_web + last_modified + config_prefix)
+title = "//profile-title: base64:" + base64.b64encode('Women Life Freedom 🤍'.encode('utf-8')).decode('utf-8') + "\n"
+update_interval = "//profile-update-interval: 1\n"
+sub_info = "//subscription-userinfo: upload=0; download=0; total=10737418240000000; expire=2546249531\n"
+profile_web = "//profile-web-page-url: https://github.com/NiREvil\n"
+last_modified = "//last update on: " + warp_ip()[1] + "\n"
+configs = warp_ip()[0]
+with open('Hiddify/sub', 'w') as op:
+    op.write(title + update_interval + sub_info + profile_web + last_modified + configs)
+
+with open('Bestip.txt', 'w') as f:
+    for ip in Bestip:
+        f.write(f"{ip}\n")
+
+
+os.remove(Bestip_path)
+os.remove(result_path)
+os.remove("warp")
 
 
 def toSingBox(tag, clean_ip, detour):
     print("Generating Warp Conf")
-    config_url = "https://api.zeroteam.top/warp?format=warp-go"
-    conf_name = 'warp.conf'
-    subprocess.run(["wget", config_url, "-O", f"{conf_name}"])
-    cmd = ["./warp-go", f"--config={conf_name}", "--export-singbox=proxy.json"]
-    process = subprocess.run(cmd, capture_output=True, text=True)
-    output = process.stdout
+    command = 'wget -N "https://gitlab.com/fscarmen/warp/-/raw/main/api.sh" && sudo bash api.sh -r'
+    prc = subprocess.run(command, capture_output=True, text=True, shell=True)
+    output = prc.stdout
 
-    if (process.returncode == 0) and output:
-        with open('proxy.json', 'r') as f:
-            data = json.load(f)
-            wg = data["outbounds"][0]
-            wg['server'] = clean_ip.split(':')[0]
-            wg['server_port'] = int(clean_ip.split(':')[1])
-            wg['mtu'] = 1300
-            wg['workers'] = 2
-            wg['detour'] = detour
-            wg['tag'] = tag
+    if (prc.returncode == 0) and output:
+        data = json.loads(output)
+        wg = {
+            "tag": f"{tag}",
+            "type": "wireguard",
+            "server": f"{clean_ip.split(':')[0]}",
+            "server_port": int(clean_ip.split(':')[1]),
+            "local_address": [
+                "172.16.0.2/32",
+                "2606:4700:110:8735:bb29:91bc:1c82:aa73/128"
+            ],
+            "private_key": f"{data['private_key']}",
+            "peer_public_key": "bmXOC+F1FxEMF9dyiK2H5/1SUtzH0JuVo51h2wPfgyo=",
+            "mtu": 1300,
+            "reserved": data['config']['reserved'],
+            "detour": f"{detour}",
+            "workers": 2
+        }
+        os.remove("api.sh")
+        os.remove("warp-account.conf")
         return wg
     else:
         return None
-
 
 def export_SingBox(t_ips):
     with open('edge/assets/singbox-template.json', 'r') as f:
         data = json.load(f)
     
-    data['outbounds'][1]['outbounds'].extend(['Tehran', 'Berlin'])
+    data['outbounds'][1]['outbounds'].extend(['WARP-MAIN', 'WARP-WIW'])
     
-    main_wg = toSingBox('Tehran', t_ips[0], "direct")
+    main_wg = toSingBox('WARP-MAIN', t_ips[0], "direct")
     data["outbounds"].insert(2, main_wg)
-    wow_wg = toSingBox('Berlin', t_ips[1], "Tehran")
+    wow_wg = toSingBox('WARP-WIW', t_ips[1], "WARP-MAIN")
     data["outbounds"].insert(3, wow_wg)
 
 
     with open('sing-box.json', 'w') as f:
         f.write(json.dumps(data, indent=4))
-
-    os.remove("warp.conf")
-    os.remove("proxy.json")
-    os.remove("warp-go")
 
 
 def main(script_dir):
@@ -111,10 +178,9 @@ def main(script_dir):
 
     result_path = os.path.join(script_dir, 'result.csv')
     top_ips = export_bestIPS(result_path)
-    export_Hiddify(t_ips=top_ips, f_ips=result_path)
-    export_SingBox(t_ips=top_ips, arch=arch)
+    export_Hiddify(top_ips, result_path)
+    export_SingBox(top_ips)
 
-    os.remove("warp")
     os.remove(result_path)
 
 
