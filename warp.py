@@ -100,10 +100,10 @@ title = "//profile-title: base64:" + base64.b64encode('Women Life Freedom 🤍'.
 update_interval = "//profile-update-interval: 1\n"
 sub_info = "//subscription-userinfo: upload=0; download=0; total=10737418240000000; expire=2546249531\n"
 profile_web = "//profile-web-page-url: https://github.com/NiREvil\n"
-    last_modified = "//last update on: " + formatted_time + "\n"
+last_modified = "//last update on: " + formatted_time + "\n"
 
-    with open('warp.json', 'w') as op:
-        op.write(title + update_interval + sub_info + profile_web + last_modified + config_prefix)
+with open('warp.json', 'w') as op:
+    op.write(title + update_interval + sub_info + profile_web + last_modified + config_prefix)"
 
 
 os.remove(Bestip_path)
