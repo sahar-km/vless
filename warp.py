@@ -160,19 +160,19 @@ def export_SingBox(t_ips):
     with open('edge/assets/singbox-template.json', 'r') as f:
         data = json.load(f)
     
-    data['outbounds'][1]['outbounds'].extend(['WARP-MAIN', 'WARP-WIW'])
+    data['outbounds'][1]['outbounds'].extend(['TEHRAN', 'BERLIN'])
     
-    main_wg = toSingBox('WARP-MAIN', t_ips[0], "direct")
+    main_wg = toSingBox('TEHRAN', t_ips[0], "direct")
     if main_wg:
         data["outbounds"].insert(2, main_wg)
     else:
-        print("Failed to generate WARP-MAIN configuration")
+        print("Failed to generate TEHRAN configuration")
     
-    wow_wg = toSingBox('WARP-WIW', t_ips[1], "WARP-MAIN")
+    wow_wg = toSingBox('BERLIN', t_ips[1], "TEHRAN")
     if wow_wg:
         data["outbounds"].insert(3, wow_wg)
     else:
-        print("Failed to generate WARP-WIW configuration")
+        print("Failed to generate BERLIN configuration")
 
     with open('sing-box.json', 'w') as f:
         json.dump(data, f, indent=4)
