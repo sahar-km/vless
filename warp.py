@@ -68,10 +68,9 @@ os.chmod("warp", 0o755)
 command = "./warp >/dev/null 2>&1"
 print("Scanning ips...")
 process = subprocess.Popen(command, shell=True)
-# Wait for the process to finish
+
 process.wait()
 
-# Check if there's any error
 if process.returncode != 0:
     print("Error: Warp execution failed.")
 else:
@@ -140,7 +139,7 @@ def toSingBox(tag, clean_ip, detour):
                 "workers": 2
             }
             
-            # Safely remove files if they exist
+
             for file in ["api.sh"]:
                 if os.path.exists(file):
                     os.remove(file)
