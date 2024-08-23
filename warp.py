@@ -108,7 +108,8 @@ with open('warp.json', 'w') as op:
 
 os.remove(Bestip_path)
 os.remove(result_path)
-os.remove(warp)
+os.remove("warp")
+return Bestip
 
 
 def toSingBox(tag, clean_ip, detour):
