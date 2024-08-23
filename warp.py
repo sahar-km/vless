@@ -88,6 +88,12 @@ with open(result_path, 'r') as csv_file:
         if c == 2:
             break
 
+with open('Bestip.txt', 'w') as f:
+        for ip in bestip:
+            f.write(f"{ip}\n")
+    os.remove("warp")
+    return bestip
+
 
 formatted_time = datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S")
 
@@ -108,9 +114,6 @@ with open('warp.json', 'w') as op:
 
 os.remove(Bestip_path)
 os.remove(result_path)
-os.remove("warp")
-return Bestip
-
 
 def toSingBox(tag, clean_ip, detour):
     print("Generating Warp Conf")
@@ -209,7 +212,7 @@ def main(script_dir):
         
     except Exception as e:
         print(f"An error occurred: {e}")
-        raise  # Re-raise the exception for GitHub Actions to catch
+        raise h
 
 if __name__ == '__main__':
     script_directory = os.path.dirname(__file__)
