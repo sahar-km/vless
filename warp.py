@@ -61,7 +61,7 @@ def arch_suffix():
 arch = arch_suffix()
 
 print("Fetch warp program...")
-url = f"https://gitlab.com/nirevil/revil-warp/-/raw/main/files/warp-yxip/warp-linux-{arch}"
+url = f"https://gitlab.com/Misaka-blog/warp-script/-/raw/main/files/warp-yxip/warp-linux-{arch}"
 
 subprocess.run(["wget", url, "-O", "warp"])
 os.chmod("warp", 0o755)
@@ -113,7 +113,7 @@ os.remove("warp")
 
 def toSingBox(tag, clean_ip, detour):
     print("Generating Warp Conf")
-    command = 'wget -N "https://gitlab.com/nirevil/fsc-warp/-/raw/main/api.sh" && sudo bash api.sh -r'
+    command = 'wget -N "https://gitlab.com/fscarmen/warp/-/raw/main/api.sh" && sudo bash api.sh -r'
     prc = subprocess.run(command, capture_output=True, text=True, shell=True)
     output = prc.stdout
 
