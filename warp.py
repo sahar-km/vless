@@ -89,7 +89,7 @@ with open(result_path, 'r') as csv_file:
             break
 
 with open('Bestip.txt', 'w') as f:
-        for ip in bestip:
+        for ip in Bestip:
             f.write(f"{ip}\n")
 
 
