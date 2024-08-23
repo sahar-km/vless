@@ -91,8 +91,6 @@ with open(result_path, 'r') as csv_file:
 with open('Bestip.txt', 'w') as f:
         for ip in bestip:
             f.write(f"{ip}\n")
-    os.remove("warp")
-    return bestip
 
 
 formatted_time = datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S")
@@ -114,6 +112,7 @@ with open('warp.json', 'w') as op:
 
 os.remove(Bestip_path)
 os.remove(result_path)
+os.remove("warp")
 
 def toSingBox(tag, clean_ip, detour):
     print("Generating Warp Conf")
