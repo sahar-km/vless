@@ -92,7 +92,7 @@ with open(result_path, 'r') as csv_file:
 formatted_time = datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S")
 
 def export_Hiddify(t_ips):
-    config_prefix = f'warp://{t_ips[0]}?ifp=1-3&ifps=10-30&ifpd=10-30#TEHRAN&&detour=warp://{t_ips[1]}?ifp=1-2&ifps=10-30&ifpd=10-30#BERLIN'
+    config_prefix = f'warp://{t_ips[0]}?ifp=10-20&ifps=40-100&ifpd=10-20#TEHRAN&&detour=warp://{t_ips[1]}?ifp=10-20&ifps=40-100&ifpd=10-20#BERLIN'
     return config_prefix, formatted_time
 
 title = "//profile-title: base64:" + base64.b64encode('Women Life Freedom 🤍'.encode('utf-8')).decode('utf-8') + "\n"
@@ -108,7 +108,7 @@ with open('warp.json', 'w') as op:
 
 os.remove(Bestip_path)
 os.remove(result_path)
-os.remove("warp")
+os.remove(warp)
 
 
 def toSingBox(tag, clean_ip, detour):
