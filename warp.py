@@ -210,7 +210,7 @@ def main(script_dir):
         
     except Exception as e:
         print(f"An error occurred: {e}")
-        raise h
+        raise
 
 if __name__ == '__main__':
     script_directory = os.path.dirname(__file__)
