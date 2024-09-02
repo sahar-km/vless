@@ -40,6 +40,10 @@
     ],
     "rules": [
       {
+        "domain": "x2cwnoihmdalwk39rjtc",
+        "server": "dns-direct"
+      },
+      {
         "domain": "cp.cloudflare.com",
         "server": "dns-remote",
         "rewrite_ttl": 3000
@@ -54,17 +58,15 @@
     ],
     "final": "dns-remote",
     "static_ips": {
+      "X2cWNoIHMdaLwk39rJtC": [
+        "2606:4700:d0:0:cbbe:548c:eeb7:ef4d",
+        "188.114.99.195"
+      ],
       "sky.rethinkdns.com": [
-        "188.114.96.0",
-        "188.114.97.0",
-        "2a06:98c1:3120::",
-        "2a06:98c1:3121::",
         "104.17.147.22",
         "104.17.148.22",
-        "188.114.97.8",
-        "188.114.96.8",
-        "2a06:98c1:3121::",
-        "2a06:98c1:3120::"
+        "188.114.96.6",
+        "188.114.97.6"
       ]
     },
     "independent_cache": true
@@ -125,19 +127,19 @@
       "tag": "TEHRAN",
       "local_address": [
         "172.16.0.2/24",
-        "2606:4700:110:89a8:fd64:26c3:e66c:aeb5/128"
+        "2606:4700:110:83b2:b326:e5eb:1ab7:b7c9/128"
       ],
-      "private_key": "QALMq3+ZfwxtIxXFVy3Drs0QeIbTnSoWOYxJM9ajemk=",
-      "server": "162.159.192.88",
-      "server_port": 1018,
+      "private_key": "+J9yf5oXewAoSSbMNXparscOeNzp+4jdXb53l07n8ng=",
+      "server": "162.159.192.1",
+      "server_port": 859,
       
       "peer_public_key": "bmXOC+F1FxEMF9dyiK2H5/1SUtzH0JuVo51h2wPfgyo=",
-      "reserved": [55,160,170],
-      "mtu": 1306,
-      "fake_packets_mode": "m4",
-      "fake_packets": "40-80",
-      "fake_packets_size": "40-100",
-      "fake_packets_delay": "4-8"
+      "reserved": "Kpo8",
+      "mtu": 1330,
+      "fake_packets": "1-3",
+      "fake_packets_size": "10-30",
+      "fake_packets_delay": "5-10",
+      "fake_packets_mode": "m4"
     },
     {
       "type": "wireguard",
@@ -147,12 +149,12 @@
         "172.16.0.2/24",
         "2606:4700:110:8c7e:84d3:cc39:2b67:d765/128"
       ],
-      "private_key": "YPhnBcnEhb2jghr943+/sVz76VwQUDCQgPWeX000dFc=",
+      "private_key": "0NWl5cX1OIchdLkKBGlfxTY50k3GY/4cDgos9+d5+0s=",
       "server": "[2606:4700:d1::27d0:ac63:30e2:5dfb]",
       "server_port": 864,
       "peer_public_key": "bmXOC+F1FxEMF9dyiK2H5/1SUtzH0JuVo51h2wPfgyo=",
-      "reserved": [192,186,142],
-      "mtu": 1280
+      "reserved": "ZK0t",
+      "mtu": 1180
     },
     {
       "type": "dns",
@@ -167,8 +169,8 @@
       "tag": "direct-fragment",
       "tls_fragment": {
         "enabled": true,
-        "size": "100-200",
-        "sleep": "10-15"
+        "size": "10-30",
+        "sleep": "1-2"
       }
     },
     {
@@ -285,8 +287,8 @@
       "path": "clash.db"
     },
     "clash_api": {
-      "external_controller": "127.0.0.1:6756",
-      "secret": "aXuYCfa3sxRbigex"
+      "external_controller": "127.0.0.1:16756",
+      "secret": "zTLAMrNLFNuXtGgQ"
     }
   }
 }
