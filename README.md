@@ -3,7 +3,7 @@ $$\color{silver} \Huge \text{\R $\sum{\vil_t = \mathbb{N108}\infty}$}$$
 
 ---
 
- 🇮🇷 تعدادی لینک اشتراک (ساب) برای v2rayNG, NikaNG, Hiddify, Nekobox, Amnezia, Clash-Meta, Sing-Box ...  
+؛🇮🇷 تعدادی لینک اشتراک (ساب) برای v2rayNG, NikaNG, Hiddify, Nekobox, Amnezia, Clash-Meta, Sing-Box ...  
  
 🇬🇧 Some subscription links are available for v2rayNG, nikaNG, Hiddify, Nekobox, Amnezia, Clash-Meta, Sing-Box, and other platforms...  
 
@@ -46,7 +46,7 @@ https://raw.githubusercontent.com/NiREvil/vless/main/sing-box.json
 
 ## Warp
 
-#### Warp Hiddify <img src="edge/assets/Hiddify-icon.png" alt="Hiddify" width="30"/>
+#### Warp Hiddify <img src="edge/assets/Hiddify-icon.png" alt="Hiddify" width="20"/>
 
 **Hysteria ON Singbox**
 https://raw.githubusercontent.com/NiREvil/vless/main/hiddify/H2%20SINGBOX%20HOSS
@@ -57,12 +57,10 @@ https://raw.githubusercontent.com/NiREvil/vless/main/hiddify/Proton%20ON%20WARP%
 **All Warp Windscribe Poroton Hysteria**
 https://raw.githubusercontent.com/NiREvil/vless/main/hiddify/All%20%20Warp%20Windscribe%20Poroton%20Hysteria
 
-**Azadi az inja migzare** [?](https://t.me/Azadi_az_inja_migzare)
-
+**Azadi az inja migzare** [?](https://t.me/Azadi_az_inja_migzare) 
 https://raw.githubusercontent.com/azadiazinjamigzare/Service/main/Sub
 
-
-**Meshkintaj** [?](https://t.me/FreeVpnHomes/432)
+**Meshkintaj** [?](https://t.me/FreeVpnHomes/432)    
 
 https://singbox-freevpnhomes-subscription.meshkintaj.homes
 
@@ -100,6 +98,31 @@ https://raw.githubusercontent.com/NiREvil/vless/main/sub/warp%2B-ios
 #### Warp NekoBox
 
 https://raw.githubusercontent.com/NiREvil/vless/main/sub/wireguardn
+
+---
+#### NikaNG
+> [About NikaNG](https://github.com/mahsanet/NikaNG/releases)
+
+```CSS
+wireguard://iD%2Bq509RZd4safVaFaNhAuJKQ7CJW4BPNATKtVCPtHg%3D@188.114.99.200:894?wnoise=quic&address=172.16.0.2/32,2606%3A4700%3A110%3A846c%3Ae510%3Abfa1%3Aea9f%3A5247%2F128&keepalive=10&wpayloadsize=1-8&publickey=bmXOC%2BF1FxEMF9dyiK2H5%2F1SUtzH0JuVo51h2wPfgyo%3D&wnoisedelay=1-3&wnoisecount=15&mtu=1330&reserved=75%2C201%2C169#Tel= @arshiacomplus
+```
+
+```CSS
+wireguard://4Go9no90%2B3CbgGC1rWtWh2WGyijT7lCljozxkwjV4Es%3D@162.159.195.147:1002?wnoise=quic&address=172.16.0.2/32,2606%3A4700%3A110%3A846c%3Ae510%3Abfa1%3Aea9f%3A5247%2F128&keepalive=10&wpayloadsize=1-8&publickey=bmXOC%2BF1FxEMF9dyiK2H5%2F1SUtzH0JuVo51h2wPfgyo%3D&wnoisedelay=1-3&wnoisecount=15&mtu=1330&reserved=196%2C61%2C178#Tel= @arshiacomplus
+```
+
+```CSS
+wireguard://QJ%2FrIJA7Ev%2Ba%2FY%2FFs7Q%2F2o0EwHYCr18qZ7hs5CVSAU0%3D@188.114.99.166:7559?wnoise=quic&address=172.16.0.2/32,2606%3A4700%3A110%3A846c%3Ae510%3Abfa1%3Aea9f%3A5247%2F128&keepalive=10&wpayloadsize=1-8&publickey=bmXOC%2BF1FxEMF9dyiK2H5%2F1SUtzH0JuVo51h2wPfgyo%3D&wnoisedelay=1-3&wnoisecount=15&mtu=1330&reserved=78%2C255%2C253#Tel= @arshiacomplus
+```
+
+```CSS
+wireguard://KMpBLD66%2BU79CyZtJP5Wc7QSQW7XNhxlFkPueJkno28%3D@162.159.195.235:928?wnoise=quic&address=172.16.0.2/32,2606%3A4700%3A110%3A846c%3Ae510%3Abfa1%3Aea9f%3A5247%2F128&keepalive=10&wpayloadsize=1-8&publickey=bmXOC%2BF1FxEMF9dyiK2H5%2F1SUtzH0JuVo51h2wPfgyo%3D&wnoisedelay=1-3&wnoisecount=15&mtu=1330&reserved=72%2C104%2C152#Tel= @arshiacomplus
+```
+
+```CSS
+wireguard://INCx5JtdAjGFcGGSyDIICPeq6kssBRumKYeRsjOreWg%3D@188.114.98.9:908?wnoise=quic&address=172.16.0.2/32,2606%3A4700%3A110%3A846c%3Ae510%3Abfa1%3Aea9f%3A5247%2F128&keepalive=10&wpayloadsize=1-8&publickey=bmXOC%2BF1FxEMF9dyiK2H5%2F1SUtzH0JuVo51h2wPfgyo%3D&wnoisedelay=1-3&wnoisecount=15&mtu=1330&reserved=38%2C82%2C15#Tel= @arshiacomplus
+```
+
 
 ---
 #### Warp v2rayNG
