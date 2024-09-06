@@ -22,14 +22,14 @@
         "servers": [
             {
                 "tag": "dns-remote",
-                "address": "https://1.1.1.1/dns-query",
+                "address": "https://208.67.220.220/dns-query",
                 "address_resolver": "dns-direct",
                 "address_strategy": "prefer_ipv4",
                 "strategy": "prefer_ipv4"
             },
             {
                 "tag": "dns-direct",
-                "address": "tcp://8.8.4.4",
+                "address": "208.67.220.220",
                 "address_resolver": "dns-local",
                 "strategy": "prefer_ipv4",
                 "detour": "direct"
