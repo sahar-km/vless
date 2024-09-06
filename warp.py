@@ -217,10 +217,6 @@ def main(script_dir):
 
         if os.path.exists(result_path):
             os.remove(result_path)
-        
-    except Exception as e:
-        print(f"An error occurred: {e}")
-        raise
 
 if __name__ == '__main__':
     script_directory = os.path.dirname(__file__)
