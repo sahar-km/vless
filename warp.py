@@ -187,12 +187,22 @@ def main(script_dir):
         url = f"https://gitlab.com/Misaka-blog/warp-script/-/raw/main/files/warp-yxip/warp-linux-{arch}"
         subprocess.run(["wget", url, "-O", "warp"], check=True)
         os.chmod("warp", 0o755)
-        command = "./warp >/dev/null 2>&1"
         print("Scanning ips...")
-        process = subprocess.run(command, shell=True, check=True)
+        subprocess.run(["./warp"], check=True, stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL)
         print("Warp executed successfully.")
 
-        result_path = os.path.join(script_dir, 'result.csv')
+        result_path = os.path.join(script_dir, "result.csv")
+
+        # ... rest of the function ...
+
+    except subprocess.CalledProcessError as e:
+        print(f"Error executing command: {e}")
+    except Exception as e:
+        print(f"An unexpected error occurred: {e}")
+    finally:
+        # Clean up the downloaded warp file
+        if os.path.exists("warp"):
+            os.remove("warp")
         
         top_ips = []
         with open(result_path, 'r') as csv_file:
