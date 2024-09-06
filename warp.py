@@ -95,10 +95,10 @@ with open('Bestip.txt', 'w') as f:
 formatted_time = datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S")
 
 def export_Hiddify(t_ips):
-    config_prefix = f'warp://{t_ips[0]}?ifp=10-20&ifps=20-60&ifpd=5-10#TEHRAN&&detour=warp://{t_ips[1]}?ifp=10-20&ifps=20-60&ifpd=5-10#BERLIN'
+    config_prefix = f'warp://{t_ips[0]}?ifp=1-3&ifpm=m4#TEHRAN&&detour=warp://{t_ips[1]}?ifp=1-2&ifpm=m5#BERLIN'
     return config_prefix, formatted_time
 
-title = "//profile-title: base64:" + base64.b64encode('SAHAr-sing'.encode('utf-8')).decode('utf-8') + "\n"
+title = "//profile-title: base64:" + base64.b64encode('Women Life Freedom 🤍'.encode('utf-8')).decode('utf-8') + "\n"
 update_interval = "//profile-update-interval: 1\n"
 sub_info = "//subscription-userinfo: upload=0; download=0; total=10737418240000000; expire=2546249531\n"
 profile_web = "//profile-web-page-url: https://github.com/NiREvil\n"
@@ -193,14 +193,12 @@ def main(script_dir):
 
         result_path = os.path.join(script_dir, "result.csv")
 
-        # ... rest of the function ...
-
     except subprocess.CalledProcessError as e:
         print(f"Error executing command: {e}")
     except Exception as e:
         print(f"An unexpected error occurred: {e}")
     finally:
-        # Clean up the downloaded warp file
+
         if os.path.exists("warp"):
             os.remove("warp")
         
