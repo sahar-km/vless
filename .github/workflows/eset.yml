@@ -1,4 +1,4 @@
-name: Generator
+name: ESET Key Generator
 
 on:
   workflow_dispatch:
@@ -32,7 +32,7 @@ on:
         - --key
         - --small-business-key
         - --vpn-codes
-        default: --key
+        default: --vpn-codes
       os:
         description: 'Operating System of runner'
         required: true
@@ -41,7 +41,7 @@ on:
         - macOS
         - Linux
         - Windows
-        default: macOS
+        default: Linux
       branch:
         description: "Repository branch (don't touch it if you don't know what it is!!!)"
         required: false
@@ -50,12 +50,18 @@ on:
         - main
         - test
         default: main
+  schedule:
+    - cron: '0 */4 * * *'
+
 jobs:
   Linux:
     runs-on: ubuntu-latest
     steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
       - name: Generate key
-        if: github.event.inputs.os == 'Linux'
+        if: github.event.inputs.os == 'Linux' || github.event_name == 'schedule'
         run: |
           ACCOUNT=${{ github.event.inputs.account }}
           KEY=${{ github.event.inputs.key }}
@@ -72,92 +78,71 @@ jobs:
           python3 -m venv venv
           source venv/bin/activate
           pip install -r requirements.txt
-          
-          
+
+          # Get current date and time
+          CURRENT_TIME=$(date -u +"%Y-%m-%d %H:%M UTC")
+          CURRENT_HOUR=$(date -u +"%H")
+
+          # Check if this is the first run after midnight (00:00 UTC)
+          if [ "$CURRENT_HOUR" -ge 0 ] && [ "$CURRENT_HOUR" -lt 4 ]; then
+            echo "First run after midnight, resetting Eset-Keys.md"
+            rm -f ../Eset-Keys.md
+          fi
+
+          # Temporary file to store new content
+          TEMP_FILE=$(mktemp)
+
+          # Generate keys and accounts
           if [[ ${ACCOUNT} -ne 0 && ${KEY} -ne 0 ]]; then
             python3 main.py --auto-detect-browser --account --email-api ${MAIL} --skip-update-check --no-logo --disable-progress-bar --disable-logging --repeat ${ACCOUNT}
             python3 main.py --auto-detect-browser ${KEY_TYPE} --email-api ${MAIL} --skip-update-check --no-logo --disable-progress-bar --disable-logging --repeat ${KEY}
-            echo "Account:" >> $GITHUB_STEP_SUMMARY
-            cat ./*ACCOUNTS.txt >> $GITHUB_STEP_SUMMARY
-            echo -e "\nKey:" >> $GITHUB_STEP_SUMMARY
-            cat ./*KEYS.txt >> $GITHUB_STEP_SUMMARY
+            echo "# Run" >> $TEMP_FILE
+            echo "## Generated at: $CURRENT_TIME - valid until 12 hours" >> $TEMP_FILE
+            echo "" >> $TEMP_FILE
+            echo "### ESET VPN Codes:" >> $TEMP_FILE
+            cat ./*KEYS.txt | nl -w2 -s". " >> $TEMP_FILE
+            echo "" >> $TEMP_FILE
+            echo "Account Email: $(head -n 1 ./*ACCOUNTS.txt | cut -d' ' -f1)" >> $TEMP_FILE
+            echo "Account Password: $(head -n 1 ./*ACCOUNTS.txt | cut -d' ' -f2)" >> $TEMP_FILE
+            echo "" >> $TEMP_FILE
+            echo "Licence Name: ESET VPN" >> $TEMP_FILE
+            echo "Licence Key: $(head -n 1 ./*KEYS.txt)" >> $TEMP_FILE
+            echo "Licence Out Date: $(date -u -d "+12 hours" +"%Y-%m-%d %H:%M UTC")" >> $TEMP_FILE
+            echo "" >> $TEMP_FILE
           elif [[ ${ACCOUNT} -ne 0 ]]; then
             python3 main.py --auto-detect-browser --account --email-api ${MAIL} --skip-update-check --no-logo --disable-progress-bar --disable-logging --repeat ${ACCOUNT}
-            echo -e "\nAccount:" >> $GITHUB_STEP_SUMMARY
-            cat ./*ACCOUNTS.txt >> $GITHUB_STEP_SUMMARY
+            echo "# Run" >> $TEMP_FILE
+            echo "## Generated at: $CURRENT_TIME" >> $TEMP_FILE
+            echo "" >> $TEMP_FILE
+            echo "Account Email: $(head -n 1 ./*ACCOUNTS.txt | cut -d' ' -f1)" >> $TEMP_FILE
+            echo "Account Password: $(head -n 1 ./*ACCOUNTS.txt | cut -d' ' -f2)" >> $TEMP_FILE
+            echo "" >> $TEMP_FILE
           elif [[ ${KEY} -ne 0 ]]; then
             python3 main.py --auto-detect-browser ${KEY_TYPE} --email-api ${MAIL} --skip-update-check --no-logo --disable-progress-bar --disable-logging --repeat ${KEY}
-            echo -e "\nKey:" >> $GITHUB_STEP_SUMMARY
-            cat ./*KEYS.txt >> $GITHUB_STEP_SUMMARY
+            echo "# Run" >> $TEMP_FILE
+            echo "## Generated at: $CURRENT_TIME - valid until 12 hours" >> $TEMP_FILE
+            echo "" >> $TEMP_FILE
+            echo "### ESET VPN Codes:" >> $TEMP_FILE
+            cat ./*KEYS.txt | nl -w2 -s". " >> $TEMP_FILE
+            echo "" >> $TEMP_FILE
+            echo "Licence Name: ESET VPN" >> $TEMP_FILE
+            echo "Licence Key: $(head -n 1 ./*KEYS.txt)" >> $TEMP_FILE
+            echo "Licence Out Date: $(date -u -d "+12 hours" +"%Y-%m-%d %H:%M UTC")" >> $TEMP_FILE
+            echo "" >> $TEMP_FILE
           fi
-  macOS:
-    runs-on: macos-latest
-    steps:
-      - name: Generate key
-        if: github.event.inputs.os == 'macOS'
-        run: |
-          ACCOUNT=${{ github.event.inputs.account }}
-          KEY=${{ github.event.inputs.key }}
-          MAIL=${{ github.event.inputs.mail }}
-          KEY_TYPE=${{ github.event.inputs.key_type }}
 
-          git clone https://github.com/Diana-Cl/Key-Gen.git
-          cd Key-Gen
-          
-          # Setup env
-          brew install python
-          python3 -m venv venv
-          source venv/bin/activate
-          pip install -r requirements.txt
-
-          if [[ ${ACCOUNT} -ne 0 && ${KEY} -ne 0 ]]; then
-            python3 main.py --auto-detect-browser --account --email-api ${MAIL} --skip-update-check --no-logo --disable-progress-bar --disable-logging --repeat ${ACCOUNT}
-            python3 main.py --auto-detect-browser ${KEY_TYPE} --email-api ${MAIL} --skip-update-check --no-logo --disable-progress-bar --disable-logging --repeat ${KEY}
-            echo "Account:" >> $GITHUB_STEP_SUMMARY
-            cat ./*ACCOUNTS.txt >> $GITHUB_STEP_SUMMARY
-            echo -e "\nKey:" >> $GITHUB_STEP_SUMMARY
-            cat ./*KEYS.txt >> $GITHUB_STEP_SUMMARY
-          elif [[ ${ACCOUNT} -ne 0 ]]; then
-            python3 main.py --auto-detect-browser --account --email-api ${MAIL} --skip-update-check --no-logo --disable-progress-bar --disable-logging --repeat ${ACCOUNT}
-            echo -e "\nAccount:" >> $GITHUB_STEP_SUMMARY
-            cat ./*ACCOUNTS.txt >> $GITHUB_STEP_SUMMARY
-          elif [[ ${KEY} -ne 0 ]]; then
-            python3 main.py --auto-detect-browser ${KEY_TYPE} --email-api ${MAIL} --skip-update-check --no-logo --disable-progress-bar --disable-logging --repeat ${KEY}
-            echo -e "\nKey:" >> $GITHUB_STEP_SUMMARY
-            cat ./*KEYS.txt >> $GITHUB_STEP_SUMMARY
+          # Append previous content if exists
+          if [ -f ../Eset-Keys.md ]; then
+            cat ../Eset-Keys.md >> $TEMP_FILE
           fi
-  Windows:
-    runs-on: windows-latest
-    steps:
-      - name: Generate key
-        if: github.event.inputs.os == 'Windows'
+
+          # Move temp file to final location
+          mv $TEMP_FILE ../Eset-Keys.md
+
+      - name: Commit and push changes
         run: |
-          $ACCOUNT="${{ github.event.inputs.account }}"
-          $KEY="${{ github.event.inputs.key }}"
-          $MAIL="${{ github.event.inputs.mail }}"
-          $KEY_TYPE="${{ github.event.inputs.key_type }}"
-
-          git clone https://github.com/Diana-Cl/Key-Gen.git
-          cd Key-Gen
-
-          # Setup dependencies
-          pip install -r requirements.txt
-
-          if ($ACCOUNT -ne 0 -and $KEY -ne 0) {
-              python3 main.py --auto-detect-browser --account --email-api $MAIL --skip-update-check --no-logo --disable-progress-bar --disable-logging --repeat $ACCOUNT
-              python3 main.py --auto-detect-browser $KEY_TYPE --email-api $MAIL --skip-update-check --no-logo --disable-progress-bar --disable-logging --repeat $KEY
-              echo "Account:" | Out-File -FilePath $env:GITHUB_STEP_SUMMARY -Append
-              Get-Content -Path ./*ACCOUNTS.txt | Out-File -FilePath $env:GITHUB_STEP_SUMMARY -Append
-              echo "`nKey:" | Out-File -FilePath $env:GITHUB_STEP_SUMMARY -Append
-              Get-Content -Path ./*KEYS.txt | Out-File -FilePath $env:GITHUB_STEP_SUMMARY -Append
-          }
-          elseif ($ACCOUNT -ne 0) {
-              python3 main.py --auto-detect-browser --account --email-api $MAIL --skip-update-check --no-logo --disable-progress-bar --disable-logging --repeat $ACCOUNT
-              echo "`nAccount:" | Out-File -FilePath $env:GITHUB_STEP_SUMMARY -Append
-              Get-Content -Path ./*ACCOUNTS.txt | Out-File -FilePath $env:GITHUB_STEP_SUMMARY -Append
-          }
-          elseif ($KEY -ne 0) {
-              python3 main.py --auto-detect-browser $KEY_TYPE --email-api $MAIL --skip-update-check --no-logo --disable-progress-bar --disable-logging --repeat $KEY
-              echo "`nKey:" | Out-File -FilePath $env:GITHUB_STEP_SUMMARY -Append
-              Get-Content -Path ./*KEYS.txt | Out-File -FilePath $env:GITHUB_STEP_SUMMARY -Append
-          }
+          git config --global user.name "github-actions[bot]"
+          git config --global user.email "github-actions[bot]@users.noreply.github.com"
+          git add Eset-Keys.md
+          git commit -m "Update Eset-Keys.md with new keys"
+          git push
