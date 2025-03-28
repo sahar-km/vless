@@ -51,7 +51,7 @@ on:
         - test
         default: main
   schedule:
-    - cron: '0 */4 * * *'
+    - cron: '0 */4 * * *'  # Runs every 4 hours
 
 jobs:
   Linux:
@@ -63,8 +63,8 @@ jobs:
       - name: Generate key
         if: github.event.inputs.os == 'Linux' || github.event_name == 'schedule'
         run: |
-          ACCOUNT=${{ github.event.inputs.account }}
-          KEY=${{ github.event.inputs.key }}
+          ACCOUNT=${{ github.event.inputs.account || 1 }}  # Default to 1 if not provided
+          KEY=${{ github.event.inputs.key || 1 }}         # Default to 1 if not provided
           MAIL=${{ github.event.inputs.mail }}
           KEY_TYPE=${{ github.event.inputs.key_type }}
           BRANCH=${{ github.event.inputs.branch }}
@@ -129,6 +129,12 @@ jobs:
             echo "Licence Key: $(head -n 1 ./*KEYS.txt)" >> $TEMP_FILE
             echo "Licence Out Date: $(date -u -d "+12 hours" +"%Y-%m-%d %H:%M UTC")" >> $TEMP_FILE
             echo "" >> $TEMP_FILE
+          fi
+
+          if [ -s ./*KEYS.txt ]; then
+            echo "Licence Key: $(head -n 1 ./*KEYS.txt)" >> ../Eset-Keys.md
+          else
+            echo "Licence Key: No keys generated" >> ../Eset-Keys.md
           fi
 
           # Append previous content if exists
