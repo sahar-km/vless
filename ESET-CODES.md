@@ -1,3 +1,32 @@
+Generated on: Sat Mar 29 13:49:34 UTC 2025 UTC
+Triggered by: workflow_dispatch
+
+## VPN Codes
+
+```
+R6VFRK7198
+9KPTSEQ52L
+H2ZULGZS0N
+ES2NZTQF5R
+APP5DCJQG9
+6UIS5RIHQ1
+WG01ER6QHV
+7T7EUAMSKM
+QHITVXHP2V
+1J7UQ87PT1
+```
+
+## ESET Security License
+- **Name:** ESET Small Business Security
+- **License Key:** `A7W6-XEHX-V3GE-MG9A-NEJJ`
+- **Expiry Date:** 28.04.2025
+
+## ESET Account
+- **Email:** jaiyce.dawan@thefluent.org
+- **Password:** `7_LZ4W8X"q!/]yKPO~`
+
+---
+
 Generated on: Sat Mar 29 12:55:37 UTC 2025 UTC
 Triggered by: workflow_dispatch
 
