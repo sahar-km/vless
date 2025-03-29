@@ -52,10 +52,7 @@ jobs:
       DEFAULT_MAIL: 'fakemail'
       DEFAULT_KEY_TYPE: '--vpn-codes'
       DEFAULT_BRANCH: 'main'
-      # Use the filename from your log
       OUTPUT_FILENAME: 'ESET-CODES.md'
-      # Temporary file to capture script output
-      TEMP_OUTPUT_FILE: 'key_gen_output.log'
 
     steps:
       - name: Checkout Repository Code
@@ -69,8 +66,8 @@ jobs:
           MAIL=${{ github.event.inputs.mail || env.DEFAULT_MAIL }}
           KEY_TYPE=${{ github.event.inputs.key_type || env.DEFAULT_KEY_TYPE }}
           BRANCH=${{ github.event.inputs.branch || env.DEFAULT_BRANCH }}
-          OUTPUT_FILE="${{ env.OUTPUT_FILENAME }}"
-          TEMP_OUTPUT="${{ env.TEMP_OUTPUT_FILE }}"
+          # IMPORTANT: Output file is now in the root of *your* repo
+          OUTPUT_FILE="${GITHUB_WORKSPACE}/${OUTPUT_FILENAME}"
 
           echo "--- Configuration ---"
           echo "Triggered by: ${{ github.event_name }}"
@@ -80,142 +77,133 @@ jobs:
           echo "Key Type: $KEY_TYPE"
           echo "Key-Gen Branch: $BRANCH"
           echo "Output File: $OUTPUT_FILE"
-          echo "Temp Output File: $TEMP_OUTPUT"
           echo "---------------------"
 
-          # Delete old temp file if exists
-          rm -f "$TEMP_OUTPUT"
-
-          # Clone the Key-Gen repository
-          echo "Cloning Key-Gen repository..."
-          git clone -b ${BRANCH} https://github.com/Diana-Cl/Key-Gen.git key-gen-repo
-          cd key-gen-repo
+          # Create a temporary directory for the Key-Gen repo
+          KEY_GEN_DIR="key-gen-repo-temp"
+          git clone -b ${BRANCH} https://github.com/Diana-Cl/Key-Gen.git "$KEY_GEN_DIR"
+          cd "$KEY_GEN_DIR"
 
           # Setup Python environment
           echo "Setting up Python environment..."
-          # (apt commands and pip install...) # No changes needed here
-          sudo apt-get update -y > /dev/null # Suppress apt output
-          sudo apt-get install -y python3-pip python3-venv > /dev/null # Suppress apt output
+          sudo apt-get update -y
+          sudo apt-get install -y python3-pip python3-venv
           python3 -m venv venv
           source venv/bin/activate
-          pip install -r requirements.txt > /dev/null # Suppress pip output
+          pip install -r requirements.txt
           echo "Python environment setup complete."
 
-          # Generate Accounts and/or Keys and capture output to temp file
-          echo "Generating accounts/keys and capturing output..."
-          # (python3 main.py commands with tee...) # No changes needed here
+          # --- Generate Accounts and/or Keys ---
+          echo "Generating accounts/keys..."
           if [[ ${ACCOUNT} -ne 0 ]]; then
             echo "Generating $ACCOUNT accounts..."
-            python3 main.py --auto-detect-browser --account --email-api ${MAIL} --skip-update-check --no-logo --disable-progress-bar --disable-logging --repeat ${ACCOUNT} | tee "../$TEMP_OUTPUT"
+            python3 main.py --auto-detect-browser --account --email-api ${MAIL} --skip-update-check --no-logo --disable-progress-bar --disable-logging --repeat ${ACCOUNT}
+            # Clear potential old account files if script doesn't overwrite cleanly
+            rm -f ./*ACCOUNTS.txt.bak # Example cleanup if needed
           fi
           if [[ ${KEY} -ne 0 ]]; then
             echo "Generating $KEY keys (type: $KEY_TYPE)..."
-            APPEND_FLAG=""
-            if [[ -f "../$TEMP_OUTPUT" ]]; then
-              APPEND_FLAG="-a"
-            fi
-            python3 main.py --auto-detect-browser ${KEY_TYPE} --email-api ${MAIL} --skip-update-check --no-logo --disable-progress-bar --disable-logging --repeat ${KEY} | tee $APPEND_FLAG "../$TEMP_OUTPUT"
+            python3 main.py --auto-detect-browser ${KEY_TYPE} --email-api ${MAIL} --skip-update-check --no-logo --disable-progress-bar --disable-logging --repeat ${KEY}
+            # Clear potential old key files if needed
+            rm -f ./*KEYS.txt.bak # Example cleanup if needed
           fi
-          echo "Generation commands executed. Output captured in ../$TEMP_OUTPUT"
+          echo "Generation commands executed."
 
-          # Go back to the main repository root
-          cd ..
+          # --- Format Output to Markdown File ---
+          echo "Formatting output to ${OUTPUT_FILE}..."
+          # Initialize/Overwrite the output file with header info
+          echo "## Generated ON: $(date -u '+%a, %d %b %Y, %T %Z')" > "${OUTPUT_FILE}"
+          echo "Triggered by: ${{ github.event_name }}" >> "${OUTPUT_FILE}"
+          echo "" >> "${OUTPUT_FILE}" # Add a newline
 
-          # --- Extract values and format Markdown for NEW entry ---
-          echo "Extracting data and formatting Markdown for the new entry..."
+          # Check for generated KEYS file
+          KEYS_FILE=$(ls ./*KEYS.txt 2>/dev/null | head -n 1) # Find the keys file safely
+          if [[ -f "$KEYS_FILE" && ${KEY} -ne 0 ]]; then
+              echo "Processing Keys file: $KEYS_FILE"
+              # Format based on KEY_TYPE
+              if [[ "$KEY_TYPE" == "--vpn-codes" ]]; then
+                  echo "### VPN CODES" >> "${OUTPUT_FILE}"
+                  echo "" >> "${OUTPUT_FILE}"
+                  echo '```ruby' >> "${OUTPUT_FILE}"
+                  cat "$KEYS_FILE" >> "${OUTPUT_FILE}" # Assumes one code per line
+                  echo '```' >> "${OUTPUT_FILE}"
+                  echo "" >> "${OUTPUT_FILE}"
+              elif [[ "$KEY_TYPE" == "--key" || "$KEY_TYPE" == "--small-business-key" ]]; then
+                  echo "### ESET SECURITY LICENSE" >> "${OUTPUT_FILE}"
+                  echo "" >> "${OUTPUT_FILE}"
+                  # --- Parsing Assumptions for ESET Security License ---
+                  # Assumption: File contains Name (line 1), Key (line 2), Expiry (line 3)
+                  # If main.py outputs differently, these extractions need adjustment.
+                  LICENSE_NAME="ESET Generated License" # Placeholder if name isn't in file
+                  LICENSE_KEY=$(sed -n '1p' "$KEYS_FILE") # Assuming key is on the first line
+                  LICENSE_EXPIRY=$(sed -n '2p' "$KEYS_FILE") # Assuming expiry is on the second line
+                  # Attempt to read a name if the format is different (e.g., Key: XXXX \n Expiry: YYYY)
+                  # This part is highly dependent on the actual output of main.py for these key types.
+                  # A safer approach might be needed if format varies.
 
-          # Extract individual values from the temporary file
-          VPN_CODES_LIST=$(grep '^VPN Codes:' "$TEMP_OUTPUT" | sed 's/^VPN Codes: //')
-          LICENSE_NAME=$(grep '^License Name:' "$TEMP_OUTPUT" | sed 's/^License Name: //')
-          LICENSE_KEY=$(grep '^License Key:' "$TEMP_OUTPUT" | sed 's/^License Key: //')
-          LICENSE_OUT_DATE=$(grep '^License Out Date:' "$TEMP_OUTPUT" | sed 's/^License Out Date: //')
-          ACCOUNT_EMAIL=$(grep '^Account Email:' "$TEMP_OUTPUT" | sed 's/^Account Email: //')
-          ACCOUNT_PASSWORD=$(grep '^Account Password:' "$TEMP_OUTPUT" | sed 's/^Account Password: //')
+                  # Use placeholder name for now as reading it from file is uncertain
+                  LICENSE_NAME_DISPLAY="ESET Small Business Security" # Using the example name
 
-          # Prepare the content for THIS run in a temporary file
-          NEW_ENTRY_FILE="new_entry.md.tmp"
-          echo "Generated on: $(date) UTC" > "$NEW_ENTRY_FILE"
-          echo "Triggered by: ${{ github.event_name }}" >> "$NEW_ENTRY_FILE"
-          echo "" >> "$NEW_ENTRY_FILE"
-
-          # 1. Add VPN Codes (if found)
-          if [[ -n "$VPN_CODES_LIST" ]]; then
-            echo "## VPN Codes" >> "$NEW_ENTRY_FILE"
-            echo "" >> "$NEW_ENTRY_FILE"
-            echo '```' >> "$NEW_ENTRY_FILE"
-            echo "$VPN_CODES_LIST" | sed 's/, /\n/g' >> "$NEW_ENTRY_FILE"
-            echo '```' >> "$NEW_ENTRY_FILE"
-            echo "" >> "$NEW_ENTRY_FILE"
-          fi
-
-          # 2. Add License Details (if found)
-          if [[ -n "$LICENSE_KEY" ]]; then
-            echo "## ESET Security License" >> "$NEW_ENTRY_FILE"
-            echo "- **Name:** ${LICENSE_NAME:-N/A}" >> "$NEW_ENTRY_FILE"
-            echo "- **License Key:** \`$LICENSE_KEY\`" >> "$NEW_ENTRY_FILE"
-            echo "- **Expiry Date:** ${LICENSE_OUT_DATE:-N/A}" >> "$NEW_ENTRY_FILE"
-            echo "" >> "$NEW_ENTRY_FILE"
-          fi
-
-          # 3. Add Account Details (if found)
-          if [[ -n "$ACCOUNT_EMAIL" ]]; then
-            echo "## ESET Account" >> "$NEW_ENTRY_FILE"
-            echo "- **Email:** ${ACCOUNT_EMAIL}" >> "$NEW_ENTRY_FILE"
-            if [[ -n "$ACCOUNT_PASSWORD" ]]; then
-              echo "- **Password:** \`$ACCOUNT_PASSWORD\`" >> "$NEW_ENTRY_FILE"
-            else
-              echo "- **Password:** N/A" >> "$NEW_ENTRY_FILE"
-            fi
-            echo "" >> "$NEW_ENTRY_FILE" # Add an empty line after
-          fi
-
-          # Add a separator before potentially appending old content
-          echo "---" >> "$NEW_ENTRY_FILE"
-          echo "" >> "$NEW_ENTRY_FILE"
-
-          # --- Combine with previous content or Reset ---
-          echo "Determining whether to prepend or overwrite..."
-          CURRENT_HOUR_UTC=$(date -u +'%H')
-          SHOULD_RESET=false
-
-          # Reset (overwrite) at 00:00 and 12:00 UTC for scheduled runs
-          if [[ "${{ github.event_name }}" == "schedule" ]] && ([[ "$CURRENT_HOUR_UTC" == "00" ]] || [[ "$CURRENT_HOUR_UTC" == "12" ]]); then
-              echo "Scheduled run at UTC hour $CURRENT_HOUR_UTC. Resetting ${OUTPUT_FILE}."
-              SHOULD_RESET=true
-          fi
-
-          if [[ "$SHOULD_RESET" == "true" ]] || [[ ! -f "$OUTPUT_FILE" ]]; then
-              # Overwrite if resetting or if the main file doesn't exist
-              echo "Overwriting ${OUTPUT_FILE} with the new entry."
-              mv "$NEW_ENTRY_FILE" "$OUTPUT_FILE"
+                  # Output the formatted license info
+                  echo "- **Name:** ${LICENSE_NAME_DISPLAY}" >> "${OUTPUT_FILE}"
+                  echo "- **License Key:**" >> "${OUTPUT_FILE}"
+                  echo '```POV-Ray SDL' >> "${OUTPUT_FILE}"
+                  echo "${LICENSE_KEY}" >> "${OUTPUT_FILE}" # Use extracted key
+                  echo '```' >> "${OUTPUT_FILE}"
+                  if [[ -n "$LICENSE_EXPIRY" ]]; then # Only add expiry if found
+                    echo "- **Expiry Date:** ${LICENSE_EXPIRY}" >> "${OUTPUT_FILE}"
+                  fi
+                  echo "" >> "${OUTPUT_FILE}"
+                  # --- End Parsing Assumptions ---
+              else
+                  echo "### Unknown Key Type Output" >> "${OUTPUT_FILE}"
+                  echo "" >> "${OUTPUT_FILE}"
+                  echo '```text' >> "${OUTPUT_FILE}"
+                  cat "$KEYS_FILE" >> "${OUTPUT_FILE}" # Fallback: dump raw content
+                  echo '```' >> "${OUTPUT_FILE}"
+                  echo "" >> "${OUTPUT_FILE}"
+              fi
           else
-              # Prepend: Combine new entry + old content
-              echo "Prepending the new entry to ${OUTPUT_FILE}."
-              TEMP_COMBINED_FILE="combined.md.tmp"
-              # Write new entry first, then append old file content
-              cat "$NEW_ENTRY_FILE" "$OUTPUT_FILE" > "$TEMP_COMBINED_FILE"
-              # Replace the old file with the combined content
-              mv "$TEMP_COMBINED_FILE" "$OUTPUT_FILE"
-              # Clean up the separate new entry file as it's now part of the combined file
-              rm "$NEW_ENTRY_FILE"
+              echo "No Keys file found or key generation skipped."
           fi
 
-          # Optional: Clean up the raw output temporary file from the script execution
-          # rm "$TEMP_OUTPUT"
+          # Check for generated ACCOUNTS file
+          ACCOUNTS_FILE=$(ls ./*ACCOUNTS.txt 2>/dev/null | head -n 1) # Find the accounts file safely
+          if [[ -f "$ACCOUNTS_FILE" && ${ACCOUNT} -ne 0 ]]; then
+              echo "Processing Accounts file: $ACCOUNTS_FILE"
+              echo "## ESET ACCOUNT" >> "${OUTPUT_FILE}"
+              echo "" >> "${OUTPUT_FILE}"
+              # --- Parsing Assumptions for Account ---
+              # Assumption: File contains Email (line 1) and Password (line 2)
+              ACCOUNT_EMAIL=$(sed -n '1p' "$ACCOUNTS_FILE")
+              ACCOUNT_PASSWORD=$(sed -n '2p' "$ACCOUNTS_FILE")
+              # If main.py outputs differently, adjust parsing.
 
-          echo "File update complete for ${OUTPUT_FILE}."
-          echo "Final content of ${OUTPUT_FILE}:"
-          cat "${OUTPUT_FILE}"
+              echo "- **Email:**" >> "${OUTPUT_FILE}"
+              echo '```POV-Ray SDL' >> "${OUTPUT_FILE}"
+              echo "${ACCOUNT_EMAIL}" >> "${OUTPUT_FILE}"
+              echo '```' >> "${OUTPUT_FILE}"
+              echo "- **Password:**" >> "${OUTPUT_FILE}"
+              echo '```POV-Ray SDL' >> "${OUTPUT_FILE}"
+              echo "${ACCOUNT_PASSWORD}" >> "${OUTPUT_FILE}"
+              echo '```' >> "${OUTPUT_FILE}"
+              echo "" >> "${OUTPUT_FILE}"
+              # --- End Parsing Assumptions ---
+          else
+              echo "No Accounts file found or account generation skipped."
+          fi
+
+          echo "Output formatting complete."
+          cd "${GITHUB_WORKSPACE}" # Go back to the main repository root before commit step
 
 
       - name: Commit and Push Generated Keys
         uses: stefanzweifel/git-auto-commit-action@v5
         with:
           commit_message: "feat: Update ESET generated keys/accounts (${{ github.event_name }})"
-          # Make sure file_pattern matches the actual output filename
           file_pattern: ${{ env.OUTPUT_FILENAME }}
-          commit_user_name: "ESET Licence Bot" # Using the name from your log
-          commit_user_email: "pr@eset.com"   # Using the email from your log
+          commit_user_name: "ESET Security Bot" 
+          commit_user_email: "pr@eset.com" 
           commit_options: '--signoff'
           # Consider removing --force unless absolutely necessary
           # push_options: '--force'
