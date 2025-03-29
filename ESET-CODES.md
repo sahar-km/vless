@@ -1,9 +1,9 @@
-Generated on: Sat Mar 29 13:49:34 UTC 2025 UTC
+## Generated on: Sat, 29 Mar 2025, 13:49:34 UTC
 Triggered by: workflow_dispatch
 
-## VPN Codes
+### VPN Codes, They expire in 12 hours later.
 
-```
+```ruby
 R6VFRK7198
 9KPTSEQ52L
 H2ZULGZS0N
@@ -16,16 +16,25 @@ QHITVXHP2V
 1J7UQ87PT1
 ```
 
-## ESET Security License
+### ESET Security License
 
 - **Name:** ESET Small Business Security
-- **License Key:** `A7W6-XEHX-V3GE-MG9A-NEJJ`
+- **License Key:**
+```POV-Ray SDL
+A7W6-XEHX-V3GE-MG9A-NEJJ
+```
 - **Expiry Date:** 28.04.2025
 
 ## ESET Account
+- **Email:**
+```POV-Ray SDL
+jaiyce.dawan@thefluent.org
+```
 
-- **Email:** jaiyce.dawan@thefluent.org
-- **Password:** `7_LZ4W8X"q!/]yKPO~`
+- **Password:**
+```POV-Ray SDL
+7_LZ4W8X"q!/]yKPO~
+```
 
 ---
 
