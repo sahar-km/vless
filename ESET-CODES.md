@@ -1,4 +1,4 @@
-## Generated ON: Wed, 02 Apr 2025, 12:33:47 UTC
+## Generated ON: Wed, 02 Apr 2025, 16:21:36 UTC
 Triggered by: schedule
 
 ### VPN CODES
@@ -6,14 +6,14 @@ Triggered by: schedule
 ```ruby
 
 -------------------------------------------------
-Account Email: nekko.everett@thefluent.org
-Account Password: }yKhbZ=^QMaN_o/l4Z\KI
+Account Email: lazarus.evren@thefluent.org
+Account Password: g:[1q6Z}oQoq/
 
 License Name: ESET Small Business Security
-License Key: 92CW-XVBW-VM6R-J4H3-M9BA
+License Key: P8CC-XG9C-3BJ4-A2N9-777W
 License Out Date: 02.05.2025
 
-VPN Codes: UDNAF4SVOJ, WAAYOY7ZP6, 0TQZR4CIY9, B1ZRPZWUF8, TDYTB0U0YK, PFWIVFT0RM, JCU7DYHGTD, O0B7KYERW4, BFV9900IXS, WM1MYWVWIV
+VPN Codes: H4IJDQDT5A, MKVMSRZDP5, G7E4Q29N07, KTWME4292M, LS22W7VY8C, K3DS2N3PIE, 8XD3PEC1RN, Z8PNPYPC4A, VHFWWYBKKM, 6VJX08HEW4
 -------------------------------------------------
 ```
 
