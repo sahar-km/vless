@@ -1,0 +1,3345 @@
+سلام ببین این لاگ کلادفلر pages چی میگه: 
+
+```
+{  
+  "wallTime": 15,  
+  "cpuTime": 8,  
+  "truncated": false,  
+  "executionModel": "stateless",  
+  "outcome": "exception",  
+  "scriptVersion": {  
+    "id": "a893bebb-dfa6-4eb2-a985-019025be5993"  
+  },  
+  "scriptName": "pages-worker--4869632-production",  
+  "diagnosticsChannelEvents": [],  
+  "exceptions": [  
+    {  
+      "stack": "    at functionsWorker-0.5126211370787426.js:5937:5\n    at Array.map (<anonymous>)\n    at getSingBoxConfig (functionsWorker-0.5126211370787426.js:5936:32)\n    at async onRequest (functionsWorker-0.5126211370787426.js:6174:29)\n    at async Object.next (functionsWorker-0.5126211370787426.js:6826:26)\n    at async PerformanceCounting (functionsWorker-0.5126211370787426.js:6225:20)\n    at async Object.next (functionsWorker-0.5126211370787426.js:6826:26)\n    at async RequestInfo (functionsWorker-0.5126211370787426.js:6221:10)\n    at async next (functionsWorker-0.5126211370787426.js:6826:26)\n    at async Object.fetch (functionsWorker-0.5126211370787426.js:6840:14)",  
+      "name": "ReferenceError",  
+      "message": "Dumper is not defined",  
+      "timestamp": 1743941278503  
+    }  
+  ],  
+  "logs": [  
+    {  
+      "message": [  
+        "[Main] Processing request..."  
+      ],  
+      "level": "info",  
+      "timestamp": 1743941278499  
+    },  
+    {  
+      "message": [  
+        "[Main] Request type: /sub/sing-box"  
+      ],  
+      "level": "info",  
+      "timestamp": 1743941278499  
+    },  
+    {  
+      "message": [  
+        "[Fetch Sub Data] Job started"  
+      ],  
+      "level": "info",  
+      "timestamp": 1743941278499  
+    },  
+    {  
+      "message": [  
+        "[Fetch Sub Data] isShowHost: false"  
+      ],  
+      "level": "info",  
+      "timestamp": 1743941278499  
+    },  
+    {  
+      "message": [  
+        "[Fetch Sub Data] Fetching 1/1"  
+      ],  
+      "level": "info",  
+      "timestamp": 1743941278499  
+    },  
+    {  
+      "message": [  
+        "[Fetch Sub Data] Job done, wasting 0ms."  
+      ],  
+      "level": "info",  
+      "timestamp": 1743941278499  
+    },  
+    {  
+      "message": [  
+        "[Remote Config Reader] Inputed remote config type: ini"  
+      ],  
+      "level": "info",  
+      "timestamp": 1743941278499  
+    },  
+    {  
+      "message": [  
+        "[Remote Config Reader] Job started"  
+      ],  
+      "level": "info",  
+      "timestamp": 1743941278499  
+    },  
+    {  
+      "message": [  
+        "[ini Reader] Processing remote config: https://raw.githubusercontent.com/sahar-km/EdgeSub/refs/heads/main/public/minimal_sing_rules.ini"  
+      ],  
+      "level": "info",  
+      "timestamp": 1743941278499  
+    },  
+    {  
+      "message": [  
+        "[Remote Config Reader] Job done, wasting 0ms"  
+      ],  
+      "level": "info",  
+      "timestamp": 1743941278499  
+    },  
+    {  
+      "message": [  
+        "[ini Reader] Raw INI content:",  
+        ";https://raw.githubusercontent.com/sahar-km/EdgeSub/refs/heads/main/public/minimal_sing_rules.ini\n\n[custom]\nruleset=CN-Directed,[]GEOIP,CN\nruleset=CN-Directed,[]GEOSITE,CN\nruleset=Proxies,[]DOMAIN-SUFFIX,googleapis.cn\nruleset=Proxies,[]MATCH\n\ncustom_proxy_group=Proxies`select`[]DIRECT`[]REJECT`.*\ncustom_proxy_group=CN-Directed`select`[]DIRECT`[]REJECT`[]Proxies\n"  
+      ],  
+      "level": "info",  
+      "timestamp": 1743941278503  
+    },  
+    {  
+      "message": [  
+        "[ini Reader] Found 2 custom_proxy_group lines:",  
+        [  
+          "Proxies`select`[]DIRECT`[]REJECT`.*",  
+          "CN-Directed`select`[]DIRECT`[]REJECT`[]Proxies"  
+        ]  
+      ],  
+      "level": "info",  
+      "timestamp": 1743941278503  
+    },  
+    {  
+      "message": [  
+        "[ini Reader] Processing 2 custom proxy groups."  
+      ],  
+      "level": "info",  
+      "timestamp": 1743941278503  
+    },  
+    {  
+      "message": [  
+        "[ini Reader] Parsed group \"Proxies\": Type=select, RegExps=[\".*\"], Selectors=[\"[]DIRECT\",\"[]REJECT\"]"  
+      ],  
+      "level": "info",  
+      "timestamp": 1743941278503  
+    },  
+    {  
+      "message": [  
+        "[ini Reader] Parsed group \"CN-Directed\": Type=select, RegExps=[], Selectors=[\"[]DIRECT\",\"[]REJECT\",\"[]Proxies\"]"  
+      ],  
+      "level": "info",  
+      "timestamp": 1743941278503  
+    },  
+    {  
+      "message": [  
+        "[ini Reader] Finished processing. Returning 2 proxy groups."  
+      ],  
+      "level": "info",  
+      "timestamp": 1743941278503  
+    }  
+  ],  
+  "eventTimestamp": 1743941278498,  
+  "event": {  
+    "request": {  
+      "url": "https://145c3682.revil-sub.pages.dev/sub/sing-box?url=vless%3A%2F%REDACTED%40dar2.victoriacross.workers.dev%3A443%3Fpath%3D%252Fapi%252Fv1%26eh%3DSec-WebSocket-Protocol%26ed%3D2560%26encryption%3Dnone%26host%3Ddar2.victoriacross.workers.dev%26type%3Dws%26security%3Dtls%26sni%3Ddar2.victoriacross.workers.dev%26fp%3Dfirefox%26alpn%3Dh3%23dar2.victoriacross.workers.dev&remote_config=__DEFAULT&udp=true&ss_uot=false&show_host=false&forced_ws0rtt=false",  
+      "method": "GET",  
+      "headers": {  
+      },
+```
+
+
+پروژه مربوط به به مدل کانفیگ v2ray به لینک ساب فرمت سینگ‌باکس هستش. 
+الان بقیه قسمتهای پروژه رو برات میفرستم
+فقط یه نکته رو دقت کن که میخوام از minimal_remote_rules.ini حتی الامکان استفاده نکنیم و میخوام یکی دوتا گروه ساده مثل select و urltest توی خود basicSingBoxConfig داشته باشیم دیگه remote نیاز نباشه فراخوانی بشه. مرسی
+
+کد پروژه :
+
+```
+================================================
+FILE: astro.config.mjs
+================================================
+import { defineConfig } from "astro/config";
+import fs from "node:fs";
+import sitemap from "@astrojs/sitemap";
+import compress from "astro-compress";
+import icon from "astro-icon";
+const {
+    homepage: domain
+} = JSON.parse(fs.readFileSync("./package.json"));
+
+
+export default defineConfig({
+    site: domain,
+    prefetch: true,
+    integrations: [
+        sitemap({
+            filter: page => (
+                page !== `${domain}/404.html` && 
+                page !== `${domain}/404/` && 
+                page !== `${domain}/404`
+            )
+        }),
+        compress({
+            HTML: {
+                collapseWhitespace: true,
+                conservativeCollapse: true
+            }
+        }),
+        icon()
+    ],
+    vite: {
+        css: {
+            preprocessorOptions: {
+                scss: {
+                    api: "modern-compiler"
+                }
+            }
+        },
+        // esbuild: {
+        //     drop: ["console", "debugger"],
+        // },
+    },
+});
+
+
+================================================
+FILE: package.json
+================================================
+{
+  "name": "edge-sub",
+  "type": "module",
+  "version": "1.0.0",
+  "license": "AGPL-3",
+  "author": "kobe-koto",
+  "homepage": "https://github.com/kobe-koto/EdgeSub",
+  "scripts": {
+    "dev": "wrangler pages dev ./",
+    "dev:frontend": "astro dev",
+    "build:frontend": "astro build"
+  },
+  "dependencies": {
+    "@astrojs/sitemap": "3.2.1",
+    "@iconify-json/iconoir": "^1.2.7",
+    "astro": "5.4.1",
+    "astro-compress": "^2.3.6",
+    "astro-icon": "^1.1.5",
+    "astro-seo": "^0.8.4",
+    "generate-password": "^1.7.1",
+    "ini": "^5.0.0",
+    "js-sha256": "^0.11.0",
+    "js-yaml": "^4.1.0",
+    "sass": "^1.85.1"
+  },
+  "devDependencies": {
+    "@types/js-yaml": "^4.0.9"
+  },
+  "trustedDependencies": [
+    "@parcel/watcher"
+  ]
+}
+
+
+================================================
+FILE: tsconfig.json
+================================================
+{
+  "extends": "astro/tsconfigs/base",
+  "compilerOptions": {
+    "baseUrl": ".",
+    "paths": {
+      "@components/*": ["src/components/*"],
+      "@contents/*": ["src/content/*"],
+      "@layouts/*": ["src/layouts/*"],
+      "@scripts/*": ["src/scripts/*"],
+      "@styles/*": ["src/styles/*"],
+      "@config/*": ["src/config/*"]
+    }
+  }
+}
+
+
+
+================================================
+FILE: wrangler.toml
+================================================
+name = "edge-sub"
+compatibility_date = "2023-10-10"
+
+main = "workers-site/index.js"
+site.bucket = "./"
+
+kv_namespaces = [
+    { binding = "EdgeSubDB", id = "1761dfb08e78486aaae6ebf0fce7065f" },
+]
+
+================================================
+FILE: functions/_middleware.js
+================================================
+async function RequestInfo (context) {
+    const Path = (new URL(context.request.url)).pathname;
+    console.info("[Main] Processing request...")
+    console.info(`[Main] Request type: ${Path}`)
+
+    return await context.next();
+}
+
+async function PerformanceCounting (context) {
+    const __startTime = performance.now();
+
+    const response = await context.next();
+    
+    console.info(`[PerformanceCounting] we've done this glory, totally wasting ${performance.now() - __startTime}ms.`)
+
+    return response;
+}
+
+export const onRequest = [RequestInfo, PerformanceCounting];
+
+
+================================================
+FILE: functions/internal/configs.ts
+================================================
+export const DefaultRequestHeaders = {
+    "Accept": "*/*",
+    "User-Agent": "EdgeSub-git/0.0.0",
+}
+
+
+================================================
+FILE: functions/internal/getParsedSubData.ts
+================================================
+import type { ClashMetaConfig } from "./types/ClashMetaConfig";
+
+import { DefaultRequestHeaders } from "./configs";
+
+import { ShareLinkParser } from "./Parsers/share-link";
+import { ClashMetaParser } from "./Parsers/clash-meta";
+import { SingBoxParser } from "./Parsers/sing-box";
+
+import Yaml from "js-yaml";
+import { TrulyAssign } from "./utils/TrulyAssign";
+
+type SubURL = string; // start with `short:`, `http(s)://`, or sth like `[proxy protocol]://`
+type SubURLs = string; // contains SubURL a lot
+type SubURLArr = SubURL[]; // usually it is some SubURLs squeeze into a Array.
+
+/**
+ * 
+ * @returns {Array}
+ */
+export default async function getParsedSubData (
+    SubURLs: SubURLs, 
+    EdgeSubDB, 
+    isShowHost = false as boolean,
+    CustomHTTPHeaders = {} as Headers
+) {
+    let __startTime = performance.now();
+    console.info("[Fetch Sub Data] Job started")
+    console.info(`[Fetch Sub Data] isShowHost: ${isShowHost.toString()}`)
+
+    const RequestHeaders = TrulyAssign(DefaultRequestHeaders, CustomHTTPHeaders);
+
+    let SubURLArr = SubURLs.replaceAll("\r", "\n").split("\n").filter((i) => !!i).map(i => encodeURIComponent(i.trim())).map(i => decodeURIComponent(i)) as SubURLArr;
+    let ParsedData = [];
+    for (let i in SubURLArr) {
+        console.info(`[Fetch Sub Data] Fetching ${parseInt(i) + 1}/${SubURLArr.length}`)
+        ParsedData = [...ParsedData, ...(await ParseSubData(SubURLArr[i], EdgeSubDB, RequestHeaders))]
+    }
+
+    if (isShowHost === true) {
+        ParsedData = ParsedData.map(i => {
+            i.__Remark = `${i.__Remark} - ${i.Hostname}:${i.Port}`
+            return i;
+        })
+    }
+
+    console.info(`[Fetch Sub Data] Job done, wasting ${performance.now() - __startTime}ms.`)
+    return ParsedData;
+}
+async function ParseSubData (SubURL: SubURL, EdgeSubDB, RequestHeaders) {
+    // handle `short` here
+    if (SubURL.match(/^short:/i)) {
+        let ShortData: SubURLs = await EdgeSubDB.get(SubURL).then(res => JSON.parse(res).subdata);
+        console.info(`[Fetch Sub Data] starting sub task for ${SubURL}`)
+        let ParsedShortData = await getParsedSubData(ShortData, EdgeSubDB, RequestHeaders);
+        console.info(`[Fetch Sub Data] sub task for ${SubURL} done`)
+        return ParsedShortData;
+    }
+
+    let SubData;
+    // handle bundle share link (not starts with `http(s|)://` )
+    if (!SubURL.match(/^http(s|):\/\//i)) {
+        SubData = {
+            type: "share-link",
+            data: SubURL
+        }
+    } else {
+        SubData = await fetch(SubURL, { headers: RequestHeaders })
+            .then(async res => await res.text())
+            .then(res => {
+                // try decode as yaml, for clash-meta config
+                try {
+                    let YamlData = Yaml.load(res) as ClashMetaConfig;
+                    if (YamlData.proxies) {
+                        return {
+                            type: "clash-meta",
+                            data: YamlData
+                        }
+                    }
+                } catch (e) {
+                    console.warn(`[Fetch Sub Data] Err when try parse as yaml: ${e}, skipping...`)
+                 }
+                 // try decode as json, for sing-box config
+                 try {
+                     let SingBoxConfig = JSON.parse(res);
+                     if (SingBoxConfig.outbounds) {
+                         return {
+                             type: "sing-box",
+                             data: SingBoxConfig
+                         }
+                     }
+                 } catch (e) {
+                     console.warn(`[Fetch Sub Data] Err when try parse as JSON (sing-box): ${e}, skipping...`)
+                }
+
+                // try decode as base64 endoded share-links
+                try {
+                    let decodedData = atob(res.trim());
+                    if (!decodedData.match(/\:\/\//gi)) {
+                        throw "seems like base64 decoded data malformed"
+                    }
+                    return {
+                        type: "share-link",
+                        data: decodedData
+                    }
+                } catch (e) {
+                    console.warn(`[Fetch Sub Data] try parse as base64: ${e}, skipping...`)
+                }
+
+                // final return as share-link
+                return {
+                    type: "share-link",
+                    data: res
+                }
+            })
+    }
+
+    let ParsedSubData = [];
+    if (SubData.type === "share-link") {
+        let links = SubData.data.replaceAll("\r", "\n").split("\n").filter(loc => !!loc);
+        let Parser = new ShareLinkParser();
+        for (let i of links) {
+            let protocol = i.split(":")[0];
+            try {
+                if (Parser.__validate(i)) {
+                    ParsedSubData.push(Parser[protocol](i))
+                }
+            } catch (e) {
+                console.warn(`[Fetch Sub Data] this share-url doesn't seem right, ignoring... ('${i}')`)
+                console.warn(e)
+            }
+        }
+    } else if (SubData.type === "clash-meta") {
+        let { proxies } = SubData.data;
+        let Parser = new ClashMetaParser();
+        for (let i of proxies) {
+            if (Parser.__validate(i)) {
+                ParsedSubData.push(Parser[i.type](i))
+            }
+        }
+    } else if (SubData.type === "sing-box") {
+         let { outbounds } = SubData.data;
+         let Parser = new SingBoxParser();
+         for (let i of outbounds) {
+             if (Parser.__validate(i)) {
+                 ParsedSubData.push(Parser[i.type](i))
+             }
+         }
+    }
+    
+    return ParsedSubData;
+}
+
+================================================
+FILE: functions/internal/Converter/getClashMetaConfig.js
+================================================
+import { TrulyAssign } from "../utils/TrulyAssign";
+import ClashMetaDumper from "../Dumpers/clash-meta.js";
+import { fetchCached } from "../RemoteConfigReader/utils/fetchCached.js";
+import { RemoteConfigReader } from "../RemoteConfigReader/main.js";
+
+const BasicClashConfig = {
+    "port": 7890,
+    "socks-port": 7891,
+    "mixed-port": 7892,
+    "ipv6": true,
+    "allow-lan": true,
+    "mode": "rule",
+    "log-level": "info",
+    "disable-keep-alive": false,
+    "keep-alive-idle": 30,
+    "keep-alive-interval": 30,
+    "unified-delay": false,
+    "external-controller": "127.0.0.1:9090",
+    "external-ui-url": "https://github.com/MetaCubeX/metacubexd/archive/refs/heads/gh-pages.zip",
+    "external-ui": "ui",
+    "external-controller-cors": {
+        "allow-origins": ["*"],
+        "allow-private-network": true
+    },
+    "profile": {
+        "store-selected": true,
+        "store-fake-ip": true
+    },
+    "dns": {
+        "enable": true,
+        "listen": "0.0.0.0:1053",
+        "ipv6": false,
+        "respect-rules": true,
+        "use-system-hosts": false,
+        "nameserver": ["https://8.8.8.8/dns-query"],
+        "proxy-server-nameserver": ["8.8.8.8"],
+        "nameserver-policy": {
+            "raw.githubusercontent.com": "8.8.8.8",
+            "time.apple.com": "8.8.8.8",
+            "www.gstatic.com": "system",
+            "rule-set": ["8.8.8.8"]
+        }
+    },
+    "tun": {
+        "enable": true,
+        "stack": "mixed",
+        "auto-route": true,
+        "strict-route": true,
+        "auto-detect-interface": true,
+        "dns-hijack": ["any:53"],
+        "mtu": 9000
+    },
+    "sniffer": {
+        "enable": true,
+        "force-dns-mapping": true,
+        "parse-pure-ip": true,
+        "override-destination": false,
+        "sniff": {
+            "HTTP": {
+                "ports": [80, 8080, 8880, 2052, 2082, 2086, 2095]
+            },
+            "TLS": {
+                "ports": [443, 8443, 2053, 2083, 2087, 2096]
+            }
+        }
+    },
+    "proxies": [],
+    "proxy-groups": [
+        {
+            "name": "⚪ REvil",
+            "type": "select",
+            "proxies": []
+        },
+        {
+            "name": "⚫ AUTO",
+            "type": "url-test",
+            "url": "https://www.gstatic.com/generate_204",
+            "interval": 300,
+            "tolerance": 50,
+            "proxies": []
+         }
+    ],
+    "rule-providers": {
+        "ir": {
+            "type": "http",
+            "format": "text",
+            "behavior": "domain",
+            "url": "https://raw.githubusercontent.com/Chocolate4U/Iran-clash-rules/release/ir.txt",
+            "path": "./ruleset/ir.txt",
+            "interval": 86400
+        },
+        "ir-cidr": {
+            "type": "http",
+            "format": "text",
+            "behavior": "ipcidr",
+            "url": "https://raw.githubusercontent.com/Chocolate4U/Iran-clash-rules/release/ircidr.txt",
+            "path": "./ruleset/ir-cidr.txt",
+            "interval": 86400
+        },
+        "malware": {
+            "type": "http",
+            "format": "text",
+            "behavior": "domain",
+            "url": "https://raw.githubusercontent.com/Chocolate4U/Iran-clash-rules/release/malware.txt",
+            "path": "./ruleset/malware.txt",
+            "interval": 86400
+        },
+        "phishing": {
+            "type": "http",
+            "format": "text",
+            "behavior": "domain",
+            "url": "https://raw.githubusercontent.com/Chocolate4U/Iran-clash-rules/release/phishing.txt",
+            "path": "./ruleset/phishing.txt",
+            "interval": 86400
+        },
+        "cryptominers": {
+            "type": "http",
+            "format": "text",
+            "behavior": "domain",
+            "url": "https://raw.githubusercontent.com/Chocolate4U/Iran-clash-rules/release/cryptominers.txt",
+            "path": "./ruleset/cryptominers.txt",
+            "interval": 86400
+        },
+        "ads": {
+            "type": "http",
+            "format": "text",
+            "behavior": "domain",
+            "url": "https://raw.githubusercontent.com/Chocolate4U/Iran-clash-rules/release/ads.txt",
+            "path": "./ruleset/ads.txt",
+            "interval": 86400
+        }
+    },
+    "rules": [],
+    "ntp": {
+        "enable": true,
+        "server": "time.apple.com",
+        "port": 123,
+        "interval": 30
+    }
+};
+
+const BasicConfig = {
+    isUDP: false,
+    isSSUoT: false,
+    isInsecure: true,
+    RemoteConfig: "https://raw.githubusercontent.com/sahar-km/EdgeSub/refs/heads/main/public/minimal_remote_rules.ini",
+    isForcedRefresh: false
+};
+
+export async function getClashMetaConfig(
+    Proxies,
+    EdgeSubDB,
+    PassedConfig = {},
+) {
+    const Config = TrulyAssign(BasicConfig, PassedConfig);
+
+    let RemoteProxyGroups = [];
+    try {
+        const RemoteReaderResult = await (new RemoteConfigReader(Config.RemoteConfig)).Process(EdgeSubDB, Config.isForcedRefresh);
+        RemoteProxyGroups = Array.isArray(RemoteReaderResult?.ProxyGroup) ? RemoteReaderResult.ProxyGroup : [];
+        if (RemoteProxyGroups.length > 0) {
+            console.info("[getClashMetaConfig] Successfully processed proxy groups from remote config.");
+        } else {
+            console.info("[getClashMetaConfig] No proxy groups found or processed from remote config.");
+        }
+    } catch (e) {
+        console.error("[getClashMetaConfig] Error processing remote config for proxy groups:", e);
+        RemoteProxyGroups = [];
+    }
+
+    let ClashConfig = JSON.parse(JSON.stringify(BasicClashConfig));
+    let Dumper = new ClashMetaDumper(Config.isUDP, Config.isSSUoT, Config.isInsecure);
+
+    Proxies = Proxies.map(i => {
+        if (Dumper.__validate(i)) {
+            if (typeof i.Hostname === 'string') {
+                i.Hostname = i.Hostname.replace(/(^|$)/g, "");
+            }
+            return i;
+        }
+    }).filter(i => !!i);
+    ClashConfig.proxies = Proxies.map(i => Dumper[i.__Type](i));
+    console.info("[getClashMetaConfig] Available proxies:", Proxies.map(p => p.__Remark));
+
+    const existingGroupNames = new Set(ClashConfig["proxy-groups"].map(group => group.name));
+
+    for (let i of RemoteProxyGroups) {
+        let MatchedProxies = [];
+        if (Array.isArray(i.RegExps)) {
+            for (let t of i.RegExps) {
+                try {
+                    if (t && typeof t === 'string') {
+                        try {
+                            const regex = new RegExp(t);
+                            MatchedProxies = [...MatchedProxies, ...Proxies.filter(loc => loc?.__Remark?.match(regex))];
+                        } catch (reError) {
+                            console.warn(`[getClashMetaConfig] Invalid RegExp pattern "${t}" in group "${i?.name}". Skipping. Error: ${reError?.message}`);
+                        }
+                    }
+                } catch (e) {
+                    console.warn(`[getClashMetaConfig] Error filtering proxies with regex "${t}" in group "${i?.name}". Skipping. Error: ${e?.message}`);
+                }
+            }
+        }
+        console.info(`[getClashMetaConfig] Matched proxies for group "${i?.name}" with regex "${i.RegExps}":`, MatchedProxies.map(p => p.__Remark));
+
+        const uniqueProxyNames = new Set(MatchedProxies.map(p => p.__Remark));
+        const uniqueMatchedProxies = Proxies.filter(p => uniqueProxyNames.has(p.__Remark));
+        console.info(`[getClashMetaConfig] Unique matched proxies for group "${i?.name}":`, uniqueMatchedProxies.map(p => p.__Remark));
+
+        let GroupProxies = [];
+        const testConfigTypes = ["url-test", "fallback", "load-balance"];
+
+        if (testConfigTypes.includes(i.type)) {
+            GroupProxies.push(...uniqueMatchedProxies.map(t => t.__Remark));
+        }
+
+        if (Array.isArray(i.GroupSelectors)) {
+            GroupProxies.push(...i.GroupSelectors.map(t => {
+                if (typeof t === 'string') {
+                    return t.replace(/\[|\]/g, "").trim();
+                }
+                return '';
+            }).filter(Boolean));
+        }
+
+        if (!testConfigTypes.includes(i.type)) {
+            GroupProxies.push(...uniqueMatchedProxies.map(t => t.__Remark));
+        }
+
+        console.info(`[getClashMetaConfig] Group "${i?.name}" proxies before fallback:`, GroupProxies);
+
+        if (GroupProxies.length === 0) {
+            console.warn(`[getClashMetaConfig] Proxy group "${i?.name}" has no proxies or selectors. Adding fallback: DIRECT.`);
+            GroupProxies.push("DIRECT");
+        }
+
+        let ProxyGroup = {
+            name: i.name || `UnnamedGroup_${ClashConfig["proxy-groups"].length}`,
+            type: i.type,
+            proxies: GroupProxies
+        };
+
+        if (i.TestConfig && typeof i.TestConfig === 'object' && testConfigTypes.includes(i.type)) {
+            if (i.TestConfig.TestURL) ProxyGroup.url = i.TestConfig.TestURL;
+            if (i.TestConfig.Interval !== undefined) ProxyGroup.interval = i.TestConfig.Interval;
+            if (i.type === "url-test" && i.TestConfig.Tolerance !== undefined) {
+                ProxyGroup.tolerance = i.TestConfig.Tolerance;
+            }
+        }
+
+        console.info(`[getClashMetaConfig] Final group "${i?.name}":`, ProxyGroup);
+
+        if (existingGroupNames.has(ProxyGroup.name)) {
+            console.warn(`[getClashMetaConfig] Duplicate group name "${ProxyGroup.name}" found. Replacing existing group.`);
+            const index = ClashConfig["proxy-groups"].findIndex(group => group.name === ProxyGroup.name);
+            if (index !== -1) {
+                ClashConfig["proxy-groups"][index] = ProxyGroup;
+            }
+        } else {
+            ClashConfig["proxy-groups"].push(ProxyGroup);
+            existingGroupNames.add(ProxyGroup.name);
+        }
+    }
+
+    ClashConfig.rules = [];
+    try {
+        console.info(`[getClashMetaConfig] Fetching rules config from: ${Config.RemoteConfig}`);
+        const rawINI = await fetchCached(Config.RemoteConfig, "RemoteConfig", EdgeSubDB, Config.isForcedRefresh);
+
+        if (!rawINI || typeof rawINI !== 'string') {
+            throw new Error("Failed to fetch remote rules config or it was empty/invalid.");
+        }
+
+        const lines = rawINI.split('\n');
+        let finalRuleFound = false;
+
+        for (const line of lines) {
+            const trimmedLine = line.trim();
+            if (trimmedLine.startsWith(';') || trimmedLine === '') continue;
+
+            if (trimmedLine.toLowerCase().startsWith("ruleset=")) {
+                const ruleDef = trimmedLine.substring("ruleset=".length);
+                const ruleParts = ruleDef.split(',');
+                
+                if (ruleParts.length >= 2) {
+                    const ruleSetName = ruleParts[0].trim();
+                    let ruleTarget = ruleParts[1].trim();
+                    
+                    if (ruleSetName.toUpperCase() === "MATCH") {
+                        ClashConfig.rules.push(`MATCH,${ruleTarget}`);
+                        finalRuleFound = true;
+                        continue;
+                    }
+            
+                    if (!ClashConfig["rule-providers"] || !ClashConfig["rule-providers"][ruleSetName]) {
+                        console.warn(`[getClashMetaConfig] Rule provider "${ruleSetName}" not defined. Skipping.`);
+                        continue;
+                    }
+                    
+                    let clashRule = `RULE-SET,${ruleSetName},${ruleTarget}`;
+                    ClashConfig.rules.push(clashRule);
+                } else {
+                    console.warn(`[getClashMetaConfig] Skipping malformed ruleset line: ${trimmedLine}`);
+                }
+            } 
+            else if (trimmedLine.includes(',')) {
+                const ruleParts = trimmedLine.split(',');
+                if (ruleParts.length >= 2) {
+                    const ruleType = ruleParts[0].trim().toUpperCase();
+                    const ruleTarget = ruleParts[1].trim();
+                    const options = ruleParts.slice(2).map(opt => opt.trim());
+
+                    if (ruleType === "MATCH" || ruleType === "FINAL") {
+                        const clashRule = `MATCH,${ruleTarget}`;
+                        ClashConfig.rules.push(clashRule);
+                        finalRuleFound = true;
+                    } else if (["DOMAIN-SUFFIX", "DOMAIN-KEYWORD", "DOMAIN", "IP-CIDR", "GEOIP", "SRC-IP-CIDR", "SRC-PORT", "DST-PORT", "PROCESS-NAME", "PROCESS-PATH"].includes(ruleType)) {
+                        if (options[0]) {
+                            let clashRule = `${ruleType},${ruleTarget},${options[0]}`;
+                            if (options.length > 1 && options[1] === 'no-resolve') {
+                                clashRule += ',no-resolve';
+                            }
+                            ClashConfig.rules.push(clashRule);
+                        } else {
+                            console.warn(`[getClashMetaConfig] Skipping rule line with missing target policy: ${trimmedLine}`);
+                        }
+                    } else {
+                        console.warn(`[getClashMetaConfig] Skipping unrecognized rule line: ${trimmedLine}`);
+                    }
+                }
+            }
+        }
+
+        if (!finalRuleFound) {
+            console.warn("[getClashMetaConfig] No MATCH/FINAL rule found in remote config. Adding fallback: MATCH,DIRECT");
+            ClashConfig.rules.push("MATCH,DIRECT");
+        }
+        console.info(`[getClashMetaConfig] Successfully processed ${ClashConfig.rules.length} rules.`);
+
+    } catch (error) {
+        console.error(`[getClashMetaConfig] Failed to process rules from ${Config.RemoteConfig}:`, error);
+        console.warn("[getClashMetaConfig] Adding minimal fallback rule due to error.");
+        if (!Array.isArray(ClashConfig.rules) || ClashConfig.rules.length === 0) {
+            ClashConfig.rules = ["MATCH,DIRECT"];
+        } else if (!ClashConfig.rules.some(rule => rule.startsWith("MATCH,"))) {
+            ClashConfig.rules.push("MATCH,DIRECT");
+        }
+    }
+
+    console.info("[getClashMetaConfig] Config generation completed.");
+    return ClashConfig;
+}
+
+================================================
+FILE: functions/internal/Converter/getSingBoxConfig.js
+================================================
+import { TrulyAssign } from "../utils/TrulyAssign";
+import SingBoxDumper from "../Dumpers/sing-box.js";
+
+
+const BasicSingBoxConfig = {
+    log: {
+        level: "error",
+        timestamp: true
+    },
+    dns: {
+        servers: [
+            {
+                type: "tcp",
+                tag: "proxy-dns",
+                detour: "proxy",
+                domain_resolver: "local-dns",
+                server: "185.228.168.9"
+            },
+            {
+                type: "tcp",
+                tag: "local-dns",
+                detour: "direct",
+                server: "8.8.4.4"
+            },
+            {
+                type: "local",
+                tag: "direct-dns",
+                detour: "direct"
+            }
+        ],
+        rules: [
+            {
+                rule_set: "geosite-ir",
+                server: "direct-dns"
+            },
+            {
+                clash_mode: "Direct",
+                server: "direct-dns"
+            },
+            {
+                source_ip_cidr: ["172.19.0.1/30", "fdfe:dcba:9876::1/126"],
+                server: "proxy-dns"
+            },
+            {
+                clash_mode: "Global",
+                server: "proxy-dns"
+            }
+        ],
+        final: "proxy-dns",
+        strategy: "prefer_ipv4",
+        independent_cache: true
+    },
+    endpoints: [],
+    inbounds: [
+        {
+            type: "tun",
+            tag: "tun-in",
+            mtu: 9000,
+            address: ["172.19.0.1/30", "fdfe:dcba:9876::1/126"],
+            auto_route: true,
+            strict_route: true,
+            endpoint_independent_nat: true,
+            stack: "mixed",
+            platform: {
+                http_proxy: {
+                    enabled: true,
+                    server: "127.0.0.1",
+                    server_port: 2080
+                }
+            }
+        },
+        {
+            type: "mixed",
+            tag: "mixed-in",
+            listen: "127.0.0.1",
+            listen_port: 2080
+        }
+    ],
+    outbounds: [
+        {
+            type: "selector",
+            tag: "proxy",
+            outbounds: ["auto", "direct"],
+            default: "auto",
+            interrupt_exist_connections: true
+        },
+        {
+            type: "urltest",
+            tag: "auto",
+            outbounds: [],
+            url: "http://www.gstatic.com/generate_204",
+            tolerance: 50
+        },
+        {
+            type: "direct",
+            tag: "direct",
+            domain_strategy: "prefer_ipv4"
+        },
+        {
+            type: "selector",
+            tag: "Proxies",
+            outbounds: ["DIRECT", "REJECT"]
+        },
+        {
+            type: "selector",
+            tag: "CN-Directed",
+            outbounds: ["DIRECT", "REJECT", "Proxies"]
+        }
+    ],
+    route: {
+        rules: [
+            {
+                action: "sniff",
+                timeout: "1s"
+            },
+            {
+                protocol: "dns",
+                action: "hijack-dns"
+            },
+            {
+                clash_mode: "Direct",
+                outbound: "direct"
+            },
+            {
+                clash_mode: "Global",
+                outbound: "proxy"
+            },
+            {
+                rule_set: ["geoip-private", "geosite-private", "geosite-ir", "geoip-ir"],
+                outbound: "direct"
+            },
+            {
+                rule_set: "geosite-ads",
+                outbound: "block"
+            },
+            {
+                rule_set: "CN-Directed",
+                outbound: "CN-Directed"
+            },
+            {
+                rule_set: "Proxies",
+                outbound: "Proxies"
+            }
+        ],
+        rule_set: [
+            {
+                type: "remote",
+                tag: "geosite-ads",
+                format: "binary",
+                url: "https://testingcf.jsdelivr.net/gh/MetaCubeX/meta-rules-dat@sing/geo/geosite/category-ads-all.srs",
+                download_detour: "direct"
+            },
+            {
+                type: "remote",
+                tag: "geosite-private",
+                format: "binary",
+                url: "https://testingcf.jsdelivr.net/gh/MetaCubeX/meta-rules-dat@sing/geo/geosite/private.srs",
+                download_detour: "direct"
+            },
+            {
+                type: "remote",
+                tag: "geosite-ir",
+                format: "binary",
+                url: "https://testingcf.jsdelivr.net/gh/MetaCubeX/meta-rules-dat@sing/geo/geosite/category-ir.srs",
+                download_detour: "direct"
+            },
+            {
+                type: "remote",
+                tag: "geoip-private",
+                format: "binary",
+                url: "https://testingcf.jsdelivr.net/gh/MetaCubeX/meta-rules-dat@sing/geo/geoip/private.srs",
+                download_detour: "direct"
+            },
+            {
+                type: "remote",
+                tag: "geoip-ir",
+                format: "binary",
+                url: "https://testingcf.jsdelivr.net/gh/MetaCubeX/meta-rules-dat@sing/geo/geoip/ir.srs",
+                download_detour: "direct"
+            },
+            {
+                type: "domain",
+                tag: "CN-Directed",
+                domain: ["geosite:cn", "geoip:cn"]
+            },
+            {
+                type: "domain",
+                tag: "Proxies",
+                domain: ["googleapis.cn"]
+            }
+        ],
+        final: "proxy",
+        override_android_vpn: true,
+        auto_detect_interface: true,
+        default_domain_resolver: "direct-dns"
+    },
+    experimental: {
+        cache_file: {
+            enabled: true
+        }
+    }
+};
+
+const BasicConfig = {
+    isUDP: true,
+    isSSUoT: true,
+    isInsecure: true,
+    RemoteConfig: "https://raw.githubusercontent.com/sahar-km/EdgeSub/refs/heads/main/public/minimal_remote_rules.ini",
+    isForcedRefresh: false
+};
+
+import { RemoteConfigReader } from "../RemoteConfigReader/main.js";
+
+export async function getSingBoxConfig(
+    Proxies,
+    EdgeSubDB,
+    PassedConfig = {}
+) {
+    const Config = TrulyAssign(BasicConfig, PassedConfig);
+
+    let SingBoxConfig = JSON.parse(JSON.stringify(BasicSingBoxConfig));
+
+    // Append rule sets
+    let RemoteConfig = await (new RemoteConfigReader(Config.RemoteConfig)).Process(EdgeSubDB, Config.isForcedRefresh);
+
+    // Update route rules
+    SingBoxConfig.route.rules = RemoteConfig.RuleSet.map(ruleGroup => {
+        const rule = {};
+        rule.outbound = ruleGroup.Outbound;
+        rule.Rules.forEach(ruleLine => {
+            const parts = ruleLine.split(",");
+            const key = parts[0].toLowerCase().replace(/-/g, "_");
+            if (key === "final" || key === "match") {
+                SingBoxConfig.route.final = ruleGroup.Outbound;
+            } else {
+                if (!rule[key]) rule[key] = [];
+                rule[key].push(parts[1]);
+            }
+        });
+        return rule;
+    });
+
+    // Append proxy groups
+    for (const group of RemoteConfig.ProxyGroup) {
+        const matchedProxies = Proxies.filter(proxy => 
+            group.RegExps.some(reg => proxy.__Remark.match(new RegExp(reg)))
+        );
+
+        const proxiesList = [
+            ...group.GroupSelectors.map(t => t.replace(/^\[\]/, "")),
+            ...matchedProxies.map(p => p.__Remark)
+        ];
+
+        const proxyGroup = {
+            tag: group.name,
+            type: group.type === "select" ? "selector" : group.type,
+            outbounds: proxiesList
+        };
+
+        if (["url-test", "load-balance", "fallback"].includes(group.type)) {
+            proxyGroup.type = "urltest";
+            proxyGroup.url = group.TestConfig.TestURL;
+            proxyGroup.interval = `${group.TestConfig.Interval}s`;
+            proxyGroup.tolerance = group.TestConfig.Tolerance;
+        }
+
+        SingBoxConfig.outbounds.push(proxyGroup);
+    }
+
+    // Append proxies
+    const validProxies = Proxies
+        .map(proxy => {
+            if (Dumper.__validate(proxy)) {
+                return Dumper[proxy.__Type](proxy);
+            }
+            return null;
+        })
+        .filter(proxy => proxy);
+
+    SingBoxConfig.outbounds = [
+        ...SingBoxConfig.outbounds,
+        ...validProxies
+    ];
+
+    return SingBoxConfig;
+}
+
+================================================
+FILE: functions/internal/Converter/clash-template.json
+================================================
+{
+    "mixed-port": 7890,
+    "ipv6": true,
+    "allow-lan": false,
+    "mode": "rule",
+    "log-level": "warning",
+    "disable-keep-alive": false,
+    "keep-alive-idle": 30,
+    "keep-alive-interval": 30,
+    "unified-delay": false,
+    "geo-auto-update": true,
+    "geo-update-interval": 168,
+    "external-controller": "127.0.0.1:9090",
+    "external-ui-url": "https://github.com/MetaCubeX/metacubexd/archive/refs/heads/gh-pages.zip",
+    "external-ui": "ui",
+    "external-controller-cors": {
+        "allow-origins": [
+            "*"
+        ],
+        "allow-private-network": true
+    },
+    "profile": {
+        "store-selected": true,
+        "store-fake-ip": true
+    },
+    "dns": {
+        "enable": true,
+        "listen": "0.0.0.0:1053",
+        "ipv6": false,
+        "respect-rules": true,
+        "use-system-hosts": false,
+        "nameserver": [
+            "https://8.8.8.8/dns-query#🔴 Selector"
+        ],
+        "proxy-server-nameserver": [
+            "8.8.8.8#DIRECT"
+        ],
+        "nameserver-policy": {
+            "raw.githubusercontent.com": "8.8.8.8#DIRECT",
+            "time.apple.com": "8.8.8.8#DIRECT",
+            "www.gstatic.com": "system",
+            "rule-set:ir": [
+                "8.8.8.8#DIRECT"
+            ]
+        }
+    },
+    "tun": {
+        "enable": true,
+        "stack": "mixed",
+        "auto-route": true,
+        "strict-route": true,
+        "auto-detect-interface": true,
+        "dns-hijack": [
+            "any:53"
+        ],
+        "mtu": 9000
+    },
+    "sniffer": {
+        "enable": true,
+        "force-dns-mapping": true,
+        "parse-pure-ip": true,
+        "override-destination": false,
+        "sniff": {
+            "HTTP": {
+                "ports": [
+                    80,
+                    8080,
+                    8880,
+                    2052,
+                    2082,
+                    2086,
+                    2095
+                ]
+            },
+            "TLS": {
+                "ports": [
+                    443,
+                    8443,
+                    2053,
+                    2083,
+                    2087,
+                    2096
+                ]
+            }
+        }
+    },
+    "proxies": [
+        {
+            "name": "🟡 1 - 443",
+            "type": "vless",
+            "server": "harika.pages.dev",
+            "port": 443,
+            "uuid": "10e894da-61b1-4998-ac2b-e9ccb6af9d30",
+            "packet-encoding": "",
+            "tls": true,
+            "network": "ws",
+            "udp": true,
+            "ws-opts": {
+                "path": "/api",
+                "headers": {
+                    "host": "harika.pages.dev"
+                },
+                "max-early-data": 2560,
+                "early-data-header-name": "Sec-WebSocket-Protocol"
+            },
+            "servername": "HarIKa.PAgEs.Dev",
+            "alpn": [
+                "h2",
+                "http/1.1"
+            ],
+            "client-fingerprint": "random",
+            "skip-cert-verify": true
+        },
+        {
+            "name": "🟡 2 - 443",
+            "type": "vless",
+            "server": "www.speedtest.net",
+            "port": 443,
+            "uuid": "10e894da-61b1-4998-ac2b-e9ccb6af9d30",
+            "packet-encoding": "",
+            "tls": true,
+            "network": "ws",
+            "udp": true,
+            "ws-opts": {
+                "path": "/api",
+                "headers": {
+                    "host": "harika.pages.dev"
+                },
+                "max-early-data": 2560,
+                "early-data-header-name": "Sec-WebSocket-Protocol"
+            },
+            "servername": "haRikA.PAGeS.dEv",
+            "alpn": [
+                "h2",
+                "http/1.1"
+            ],
+            "client-fingerprint": "random",
+            "skip-cert-verify": true
+        },
+    ],
+    "proxy-groups": [
+        {
+            "name": "🔴 Selector",
+            "type": "select",
+            "proxies": [
+                "🟡 Best Ping",
+                "🟡 1 - 443",
+                "🟡 2 - 443"
+            ]
+        },
+        {
+            "name": "🟡 Best Ping",
+            "type": "url-test",
+            "url": "https://www.gstatic.com/generate_204",
+            "interval": 30,
+            "tolerance": 50,
+            "proxies": [
+                "🟡 1 - 443",
+                "🟡 2 - 443"
+            ]
+        }
+    ],
+    "rule-providers": {
+        "ir": {
+            "type": "http",
+            "format": "text",
+            "behavior": "domain",
+            "url": "https://raw.githubusercontent.com/Chocolate4U/Iran-clash-rules/release/ir.txt",
+            "path": "./ruleset/ir.txt",
+            "interval": 86400
+        },
+        "ir-cidr": {
+            "type": "http",
+            "format": "text",
+            "behavior": "ipcidr",
+            "url": "https://raw.githubusercontent.com/Chocolate4U/Iran-clash-rules/release/ircidr.txt",
+            "path": "./ruleset/ir-cidr.txt",
+            "interval": 86400
+        },
+        "malware": {
+            "type": "http",
+            "format": "text",
+            "behavior": "domain",
+            "url": "https://raw.githubusercontent.com/Chocolate4U/Iran-clash-rules/release/malware.txt",
+            "path": "./ruleset/malware.txt",
+            "interval": 86400
+        },
+        "phishing": {
+            "type": "http",
+            "format": "text",
+            "behavior": "domain",
+            "url": "https://raw.githubusercontent.com/Chocolate4U/Iran-clash-rules/release/phishing.txt",
+            "path": "./ruleset/phishing.txt",
+            "interval": 86400
+        },
+        "cryptominers": {
+            "type": "http",
+            "format": "text",
+            "behavior": "domain",
+            "url": "https://raw.githubusercontent.com/Chocolate4U/Iran-clash-rules/release/cryptominers.txt",
+            "path": "./ruleset/cryptominers.txt",
+            "interval": 86400
+        },
+        "ads": {
+            "type": "http",
+            "format": "text",
+            "behavior": "domain",
+            "url": "https://raw.githubusercontent.com/Chocolate4U/Iran-clash-rules/release/ads.txt",
+            "path": "./ruleset/ads.txt",
+            "interval": 86400
+        }
+    },
+    "rules": [
+        "AND,((NETWORK,udp),(DST-PORT,443)),REJECT",
+        "OR,((IP-CIDR,10.10.34.34/32),(IP-CIDR,10.10.34.35/32),(IP-CIDR,10.10.34.36/32)),REJECT",
+        "RULE-SET,malware,REJECT",
+        "RULE-SET,phishing,REJECT",
+        "RULE-SET,cryptominers,REJECT",
+        "RULE-SET,ads,REJECT",
+        "RULE-SET,ir,DIRECT",
+        "RULE-SET,ir-cidr,DIRECT",
+        "MATCH,🔴 Selector"
+    ],
+    "ntp": {
+        "enable": true,
+        "server": "time.apple.com",
+        "port": 123,
+        "interval": 30
+    }
+}
+
+================================================
+FILE: functions/internal/Dumpers/clash-meta.ts
+================================================
+import type { RealityConfig, TransportGRPC, TransportH2, TransportHTTP, TransportWS } from "../types/ClashMetaConfig";
+
+export default class Dumper {
+    config = {
+        UDP: true,
+        SSUoT: true,
+        SkipCertVerify: true,
+        ClientFingerprint: "chrome"
+    }
+    constructor (
+        UDP = true,
+        SSUoT = true,
+        SkipCertVerify = true,
+        ClientFingerprint = "chrome"
+    ) {
+        this.config.UDP = UDP;
+        this.config.SSUoT = SSUoT;
+        this.config.SkipCertVerify = SkipCertVerify;
+        this.config.ClientFingerprint = ClientFingerprint;
+
+        return this;
+    }
+
+    // __appendCommonField () {}
+
+    __validate (ProxyObject) {
+        if (!(ProxyObject.__Type in this)) {
+            console.warn(`[Dumper: Clash Meta] [WARN] ${ProxyObject.__Type} is not supported to dump, ignoring...`)
+            return false;
+        }
+        return true;
+    }
+
+    http (HTTP) {
+        return {
+            name: HTTP.__Remark,
+            type: HTTP.__Type,
+            server: HTTP.Hostname,
+            port: HTTP.Port,
+            username: HTTP.Auth.username,
+            password: HTTP.Auth.password,
+            "skip-cert-verify": this.config.SkipCertVerify
+        }
+    }
+    socks5 (SOCKS5) {
+        return {
+            name: SOCKS5.__Remark,
+            type: SOCKS5.__Type,
+            server: SOCKS5.Hostname,
+            port: SOCKS5.Port,
+            username: SOCKS5.Auth.username,
+            password: SOCKS5.Auth.password,
+            "skip-cert-verify": this.config.SkipCertVerify,
+            udp: this.config.UDP
+        }
+    }
+
+    hysteria (hyObject) {
+        return {
+            name: hyObject.__Remark,
+            type: hyObject.__Type,
+            server: hyObject.Hostname,
+            port: hyObject.Port,
+            ports: hyObject.Query.mport,
+            "auth_str": hyObject.Query.auth,
+            "auth-str": hyObject.Query.auth,
+            alpn: hyObject.Query.alpn ? [ hyObject.Query.alpn ] : undefined,
+            up: hyObject.Query.upmbps,
+            down: hyObject.Query.downmbps,
+            sni: hyObject.Query.peer,
+            "skip-cert-verify": this.config.SkipCertVerify,
+            protocol: this.config.UDP ? "UDP" : "wechat-video",
+        }
+    }
+    hysteria2 (hy2Object) {
+        return {
+            name: hy2Object.__Remark,
+            type: hy2Object.__Type,
+            server: hy2Object.Hostname,
+            port: hy2Object.Port,
+            ports: hy2Object.Query.mport,
+            password: hy2Object.Auth,
+            sni: hy2Object.Query.sni,
+            obfs: hy2Object.Query.obfs,
+            "obfs-password": hy2Object.Query["obfs-password"],
+            "client-fingerprint": this.config.ClientFingerprint,
+            "skip-cert-verify": this.config.SkipCertVerify,
+            udp: this.config.UDP,
+        }
+    }
+    hy2 = this.hysteria2;
+
+    tuic (TUIC) {
+        return {
+            name: TUIC.__Remark,
+            type: TUIC.__Type,
+            server: TUIC.Hostname,
+            port: TUIC.Port,
+            uuid: TUIC.Auth.uuid,
+            password: TUIC.Auth.password,
+            alpn: TUIC.Query.alpn ? [ TUIC.Query.alpn ] : undefined,
+            "disable-sni": !!parseInt(TUIC.Query.disable_sni),
+            "udp-relay-mode": TUIC.Query.udp_relay_mode,
+            "congestion-controller": TUIC.Query.congestion_control,
+            "skip-cert-verify": this.config.SkipCertVerify,
+            sni: TUIC.Query.sni,
+            // max-udp-relay-packet-size: 1500,
+            // fast-open: true,
+            // max-open-streams: 20,
+        }
+    }
+
+    vless (VLESS) {
+        return {
+            name: VLESS.__Remark,
+            type: VLESS.__Type,
+            server: VLESS.Hostname,
+            port: VLESS.Port,
+            uuid: VLESS.Auth,
+            flow: VLESS.Query.flow,
+            "packet-encoding": VLESS.Query.packetEncoding,
+            tls: !!VLESS.Query.sni,
+            servername: VLESS.Query.sni,
+            alpn: VLESS.Query.alpn ? [ VLESS.Query.alpn ] : undefined,
+            "client-fingerprint": VLESS.Query.fp,
+            network: VLESS.Query.type,
+
+            "reality-opts": __genRealityConfig(VLESS),
+
+            // transport layer config
+            "ws-opts": __genTransportWS(VLESS),
+            "grpc-opts": __genTransportGRPC(VLESS),
+            "h2-opts": __genTransportH2(VLESS),
+            "http-opts": __genTransportHTTP(VLESS),
+
+            udp: this.config.UDP,
+            "skip-cert-verify": this.config.SkipCertVerify,
+        }
+    }
+    vmess (VMESS) {
+        return {
+            name: VMESS.__Remark,
+            type: VMESS.__Type,
+            server: VMESS.Hostname,
+            port: VMESS.Port,    
+            uuid: VMESS.Auth,
+            alterId: VMESS.Query.aid,
+            cipher: VMESS.Query.scy ? VMESS.Query.scy : "auto",
+            network: VMESS.Query.net,
+
+            protocol: VMESS.Query.type,
+            
+            "client-fingerprint": VMESS.Query.fp,
+
+            alpn: ["h2", "http/1.1"],
+
+            // tls
+            tls: VMESS.Query.tls === "tls",
+            servername: VMESS.Query.sni,
+            // "reality-opts": {
+            //     "public-key": "xxxx",
+            //     "short-id": "xxxx",
+            // },
+
+            // transport layer config
+            "ws-opts": __genTransportWS(VMESS),
+            "grpc-opts": __genTransportGRPC(VMESS),
+            "h2-opts": __genTransportH2(VMESS),
+            "http-opts": __genTransportHTTP(VMESS),
+
+            "skip-cert-verify": this.config.SkipCertVerify,
+            udp: this.config.UDP,
+
+            // packet-encoding
+            // global-padding
+            // authenticated-length
+        }
+    }
+    vmess__shadowsocks_type (VMESS) {
+        return {
+            name: VMESS.__Remark,
+            type: "vmess",
+            server: VMESS.Hostname,
+            port: VMESS.Port,    
+            uuid: VMESS.Auth,
+            alterId: parseInt(VMESS.Query.alterId),
+            cipher: "auto",
+            network: VMESS.Query.obfs,
+            
+
+            // tls
+            tls: VMESS.Query.tls === "1",
+            servername: VMESS.Query.peer,
+
+            // transport layer config
+            "ws-opts": __genTransportWS(VMESS),
+            "grpc-opts": __genTransportGRPC(VMESS),
+            "http-opts": __genTransportHTTP(VMESS),
+            "h2-opts": __genTransportH2(VMESS),
+
+            "skip-cert-verify": this.config.SkipCertVerify,
+            udp: this.config.UDP,
+
+            // packet-encoding
+            // global-padding
+            // authenticated-length
+        }
+    }
+
+    ss (SS) {
+        return {
+            name: SS.__Remark,
+            type: "ss",
+            server: SS.Hostname,
+            port: SS.Port,
+            cipher: SS.Auth.cipher,
+            password: SS.Auth.password,
+  
+            "udp-over-tcp": this.config.SSUoT,
+            "udp-over-tcp-version": this.config.SSUoT ? 2 : undefined,
+            // udp: true,
+        }
+    }
+    trojan (TROJAN) {
+        return {
+            name: TROJAN.__Remark,
+            type: "trojan",
+            server: TROJAN.Hostname,
+            port: TROJAN.Port,
+            password: TROJAN.Auth,
+
+            network: TROJAN.Query.type ? TROJAN.Query.type : "tcp",
+            sni: TROJAN.Query.sni,
+            alpn: ["h2", "http/1.1"],
+
+            "reality-opts": __genRealityConfig(TROJAN),
+            
+            // transport layer config
+            "ws-opts": __genTransportWS(TROJAN),
+            "grpc-opts": __genTransportGRPC(TROJAN),
+            "http-opts": __genTransportHTTP(TROJAN),
+
+            "client-fingerprint": TROJAN.Query.fp,
+
+            udp: this.config.UDP,
+            "skip-cert-verify": this.config.SkipCertVerify,
+        }
+    }
+}
+
+
+function __genRealityConfig (Obj) : RealityConfig | undefined {
+    return Obj.Query.security === "reality" ? {
+        "public-key": Obj.Query.pbk ? Obj.Query.pbk : undefined,
+        "short-id": Obj.Query.sid ? Obj.Query.sid : undefined
+    } : undefined
+}
+
+
+function __genTransportWS (Obj) : TransportWS | undefined {
+    const PassedTransportType = Obj.Query.obfs || Obj.Query.net || Obj.Query.type;
+
+    if (PassedTransportType !== "ws") {
+        return undefined;
+    }
+
+    const host = Obj.Query.host || Obj.Query.obfsParam;
+    const PathObj = new URL(`path:${Obj.Query.path}`)
+    const ParsedMaxEarlyData = parseInt(Obj.Query.ed || PathObj.searchParams.get("ed"));
+    
+    const MaxEarlyData = isNaN(ParsedMaxEarlyData) ? undefined : ParsedMaxEarlyData;
+    const EarlyDataHeaderName = Obj.Query.eh || (MaxEarlyData ? "Sec-WebSocket-Protocol" : undefined)
+
+    return {
+        path: PathObj.pathname,
+        headers: host ? { host } : undefined,
+        "max-early-data": MaxEarlyData,
+        "early-data-header-name": EarlyDataHeaderName,
+        //"v2ray-http-upgrade"?: unknown,
+        //"v2ray-http-upgrade-fast-open"?: unknown,
+    }
+}
+function __genTransportGRPC (Obj) : TransportGRPC | undefined {
+    const PassedTransportType = Obj.Query.obfs || Obj.Query.net || Obj.Query.type;
+    return PassedTransportType === "grpc" ? {
+        "grpc-service-name": Obj.Query.serviceName || Obj.Query.path
+    } : undefined;
+}
+
+function __genTransportHTTP (Obj) : TransportHTTP | undefined {
+    const PassedTransportType = Obj.Query.obfs || Obj.Query.net || Obj.Query.type;
+    const host = Obj.Query.host || Obj.Query.obfsParam;
+    return PassedTransportType === "http" ? {
+        method: Obj.Query.method,
+        path: Obj.Query.path ? [ Obj.Query.path ] : undefined,
+        headers: host ? { host } : undefined,
+    } : undefined;
+}
+function __genTransportH2 (Obj) : TransportH2 | undefined {
+    const PassedTransportType = Obj.Query.obfs || Obj.Query.net || Obj.Query.type;
+    return PassedTransportType === "h2" ? {
+        method: Obj.Query.method,
+        path: Obj.Query.path,
+    } : undefined;
+}
+
+================================================
+FILE: functions/internal/Dumpers/share-link.js
+================================================
+export class ShareLinkDumper {
+    constructor () {
+        return true;
+    }
+
+    __validate (ProxyObject) {
+        if (!(ProxyObject.__Type in this)) {
+            console.warn(`[Dumper: Share Link] [WARN] ${ProxyObject.__Type} is not supported to dump, ignoring...`)
+            return false
+        }
+        return true;
+    }
+
+    http (HTTP) {
+        return `http://${HTTP.Auth.username}:${HTTP.Auth.password}@${HTTP.Hostname}:${HTTP.Port}/#${encodeURIComponent(HTTP.__Remark)}`;
+    }
+    socks5 (SOCKS5) {
+        return `socks5://${SOCKS5.Auth.username}:${SOCKS5.Auth.password}@${SOCKS5.Hostname}:${SOCKS5.Port}/#${encodeURIComponent(SOCKS5.__Remark)}`;
+    }
+
+    hysteria (Obj) {
+        return `hysteria://${Obj.Hostname}:${Obj.Port}/${URLQueryWrapper(Obj.Query)}#${encodeURIComponent(Obj.__Remark)}`
+    }
+    hysteria2 (Obj) {
+        return `hysteria2://${Obj.Auth}@${Obj.Hostname}:${Obj.Port}/?${URLQueryWrapper(Obj.Query)}#${encodeURIComponent(Obj.__Remark)}`
+    }
+    hy2 = this.hysteria2;
+
+    tuic (Obj) {
+        return `tuic://${Obj.Auth.uuid}:${Obj.Auth.password}@${Obj.Hostname}:${Obj.Port}/?${URLQueryWrapper(Obj.Query)}#${encodeURIComponent(Obj.__Remark)}`
+    }
+
+    vless (Obj) {
+        return `vless://${Obj.Auth}@${Obj.Hostname}:${Obj.Port}/?${URLQueryWrapper(Obj.Query)}#${encodeURIComponent(Obj.__Remark)}`
+    }
+    vmess (Obj) {
+        let VMESSObj = {
+            ps: unescape(encodeURIComponent(Obj.__Remark)) ,
+            add: Obj.Hostname,
+            port: Obj.Port,
+            id: Obj.Auth,
+            ...Obj.Query,
+        }
+
+        return `vmess://${btoa(JSON.stringify(VMESSObj))}`
+    }
+    vmess__shadowsocks_type (Obj) {
+        let VMESSObj = {
+            ps: unescape(encodeURIComponent(Obj.__Remark)) ,
+            add: Obj.Hostname,
+            port: Obj.Port,
+            id: Obj.Auth,
+            //...Obj.Query,
+            aid: Obj.Query.alterId,
+            scy: "auto",
+            net: Obj.Query.obfs,
+            tls: Obj.Query.tls === "1" ? "tls" : undefined,
+            sni: Obj.Query.peer,
+            host: Obj.Query.obfsParam,
+            path: Obj.Query.path
+        }
+        return `vmess://${btoa(JSON.stringify(VMESSObj))}`
+    }
+
+    ss (Obj) {
+        return `ss://${encodeURIComponent(btoa(`${Obj.Auth.cipher}:${Obj.Auth.password}`))}@${Obj.Hostname}:${Obj.Port}/#${encodeURIComponent(Obj.__Remark)}`
+    }
+    trojan (Obj) {
+        return `trojan://${Obj.Auth}@${Obj.Hostname}:${Obj.Port}/?${URLQueryWrapper(Obj.Query)}#${encodeURIComponent(Obj.__Remark)}`
+    }
+}
+
+function URLQueryWrapper (Obj) {
+    let Childs = [];
+    for (let i in Obj) {
+        let value = Obj[i];
+        if (value) {
+            Childs.push(`${i}=${encodeURIComponent(Obj[i])}`)
+        }
+    }
+    return Childs.join("&");
+}
+
+================================================
+FILE: functions/internal/Dumpers/sing-box.js
+================================================
+export default class Dumper {
+    config = {}
+    constructor (
+        UDP = true,
+        SSUoT = false,
+        SkipCertVerify = true
+    ) {
+        this.config.UDP = UDP;
+        this.config.SSUoT = SSUoT;
+        this.config.SkipCertVerify = SkipCertVerify;
+
+        return true;
+    }
+
+    // __appendCommonField () {}
+
+    __validate (ProxyObject) {
+        if (!(ProxyObject.__Type in this)) {
+            console.warn(`[Dumper: Sing Box] [WARN] ${ProxyObject.__Type} is not supported to dump, ignoring...`)
+            return false;
+        }
+        if (ProxyObject.__Type === "vmess__shadowsocks_type" && ProxyObject.Query.obfs === "none") {
+            console.warn(`[Dumper: Sing Box] [WARN] ${ProxyObject.__Type} TCP-Transport is not supported by sing-box, ignoring...`)
+            return false;
+        }
+        return true;
+    }
+
+    http (HTTP) {
+        return {
+            tag: HTTP.__Remark,
+            type: "http",
+          
+            server: HTTP.Hostname,
+            server_port: HTTP.Port,
+            username: HTTP.Auth.username,
+            password: HTTP.Auth.password,
+            path: "/",
+            headers: {},
+            tls: {
+                insecure: this.config.SkipCertVerify
+            },
+        }
+    }
+    socks5 (SOCKS5) {
+        return {
+            tag: SOCKS5.__Remark,
+            type: "socks",
+            server: SOCKS5.Hostname,
+            server_port: SOCKS5.Port,
+            version: "5",
+            username: SOCKS5.Auth.username,
+            password: SOCKS5.Auth.password,
+            //udp_over_tcp: this.config.UDP ? "udp" : "tcp"
+        }
+    }
+
+    hysteria (hyObject) {
+        return {
+            type: "hysteria",
+            tag: hyObject.__Remark,
+          
+            server: hyObject.Hostname,
+            server_port: hyObject.Port,
+
+            server_ports: hyObject.Query.mport ? hyObject.Query.mport.replace(/\-/g, ":").split(",") : undefined,
+            up_mbps: parseInt(hyObject.Query.upmbps) || 250,
+            down_mbps: parseInt(hyObject.Query.downmbps) || 500,
+            obfs: hyObject.Query.obfsParam,
+            auth_str: hyObject.Query.auth,
+            
+            tls: {
+                enabled: true,
+                server_name: hyObject.Query.peer,
+                insecure: this.config.SkipCertVerify
+            },
+        }
+    }
+    hysteria2 (hy2Object) {
+        return {
+            type: "hysteria2",
+            tag: hy2Object.__Remark,
+          
+            server: hy2Object.Hostname,
+            server_port: hy2Object.Port,
+
+            server_ports: hy2Object.Query.mport ? hy2Object.Query.mport.replace(/\-/g, ":").split(",") : undefined,
+            up_mbps: parseInt(hy2Object.Query.upmbps) || 250,
+            down_mbps: parseInt(hy2Object.Query.downmbps) || 500,
+            obfs: (hy2Object.Query.obfs && hy2Object.Query["obfs-password"] ) ? {
+                type: hy2Object.Query.obfs,
+                password: hy2Object.Query["obfs-password"],
+            } : undefined,
+            password: hy2Object.Auth,
+            
+            tls: {
+                enabled: true,
+                server_name: hy2Object.Query.sni,
+                insecure: this.config.SkipCertVerify,
+                alpn: [
+                  "h3"
+                ]
+            },
+        }
+    }
+    hy2 = this.hysteria2;
+
+    tuic (TUIC) {
+        return {
+            type: "tuic",
+            tag: TUIC.__Remark,
+          
+            server: TUIC.Hostname,
+            server_port: TUIC.Port,
+            uuid: TUIC.Auth.uuid,
+            password: TUIC.Auth.password,
+
+            udp_relay_mode: TUIC.Query.udp_relay_mode,
+
+            congestion_control: TUIC.Query.congestion_control,
+
+            heartbeat: "10s",
+            tls: {
+                enabled: true,
+                disable_sni: !!parseInt(TUIC.Query.disable_sni),
+                alpn: TUIC.Query.alpn ? [ TUIC.Query.alpn ] : undefined,
+                insecure: this.config.SkipCertVerify,
+                server_name: TUIC.Query.sni,
+            }
+        }
+    }
+
+    vless (VLESS) {
+        return {
+            type: "vless",
+            tag: VLESS.__Remark,
+          
+            server: VLESS.Hostname,
+            server_port: VLESS.Port,
+            uuid: VLESS.Auth,
+            flow: VLESS.Query.flow,
+            packet_encoding: VLESS.Query.packetEncoding,
+            tls: !!VLESS.Query.sni ? {
+                enabled: true,
+                server_name: VLESS.Query.sni,
+                insecure: this.config.SkipCertVerify,
+                alpn: VLESS.Query.alpn ? [ VLESS.Query.alpn ] : undefined,
+
+                utls: {
+                    enabled: !!VLESS.Query.fp,
+                    fingerprint: VLESS.Query.fp
+                },
+                reality: __genRealityConfig(VLESS),
+            } : undefined,
+            //"multiplex: {},
+            transport: __genTransportConfig(VLESS)
+
+        }
+    }
+    vmess__shadowsocks_type (VMess) {
+
+        let URITransportType = URIObject.Query.obfs;
+        const PathObject = new URL(`path:${URIObject.Query.path}`);
+
+        return {
+            type: "vmess",
+            tag: VMess.__Remark,
+            server: VMess.Hostname,
+            server_port: VMess.Port,
+            uuid: VMess.Auth,
+            security: "auto",
+            alter_id: parseInt(VMess.Query.alterId),
+
+            tls: VMess.Query.sni === "1" ? {
+                enabled: true,
+                server_name: VMess.Query.peer,
+                insecure: this.config.SkipCertVerify,
+            } : undefined,
+            //"multiplex: {},
+            transport: {
+                type: URITransportType,
+
+                // http
+                headers: { 
+                    Host: 
+                        (URITransportType !== "quic" && URITransportType !== "grpc")
+                        ? URIObject.Query.obfsParam
+                        : undefined,
+                },
+                path: URITransportType !== "grpc" ? PathObject.path : undefined,
+
+                // max early data
+                early_data_header_name: PathObject.searchParams.has("ed") ? "Sec-WebSocket-Protocol" : undefined,
+                max_early_data: PathObject.searchParams.has("ed") ? parseInt(PathObject.searchParams.get("ed")) : undefined,
+
+                // grpc
+                service_name: URITransportType === "grpc" ? ( URIObject.Query.path ) : undefined,
+            }
+        }
+    }
+    vmess (VMESS) {
+        return {
+            type: "vmess",
+            tag: VMESS.__Remark,
+          
+            server: VMESS.Hostname,
+            server_port: VMESS.Port,
+            uuid: VMESS.Auth,
+            security: VMESS.Query.scy ? VMESS.Query.scy : "auto",
+            alter_id: VMESS.Query.aid,
+            // global_padding: false, //??
+            // authenticated_length: true, //??
+            tls: (VMESS.Query.tls === "tls") ? {
+                enabled: true,
+                server_name: VMESS.Query.sni,
+                insecure: this.config.SkipCertVerify,
+                alpn: ["h2", "http/1.1"],
+                utls: {
+                    enabled: !!VMESS.Query.fp,
+                    fingerprint: VMESS.Query.fp
+                },
+                reality: __genRealityConfig(VMESS),
+            } : undefined,
+            transport: __genTransportConfig(VMESS)
+        }
+    }
+
+    ss (SS) {
+        return {
+            type: "shadowsocks",
+            tag: SS.__Remark,
+          
+            server: SS.Hostname,
+            server_port: SS.Port,
+            method: SS.Auth.cipher,
+            password: SS.Auth.password,
+            udp_over_tcp: this.config.SSUoT ? {
+                enabled: true,
+                version: 2
+            } : false,
+        }
+    }
+    trojan (TROJAN) {
+        return {
+
+            type: "trojan",
+            tag: TROJAN.__Remark,
+          
+            server: TROJAN.Hostname,
+            server_port: TROJAN.Port,
+            password: TROJAN.Auth,
+            network: TROJAN.Query.type ? TROJAN.Query.type : "tcp",
+            tls: !!TROJAN.Query.sni ? {
+                enabled: true,
+                server_name: TROJAN.Query.sni,
+                alpn: ["h2", "http/1.1"],
+                insecure: this.config.SkipCertVerify,
+                utls: {
+                    enabled: !!TROJAN.Query.fp,
+                    fingerprint: TROJAN.Query.fp
+                },
+                reality: __genRealityConfig(TROJAN),
+            } : undefined,
+            transport: __genTransportConfig(TROJAN)
+
+        }
+    }
+}
+function __genRealityConfig (URIObject) {
+    return (URIObject.Query.security === "reality") ? {
+        enabled: true,
+        public_key: URIObject.Query.pbk || undefined,
+        short_id: URIObject.Query.sid || undefined
+    } : undefined;
+}
+function __genTransportConfig (URIObject) {
+    const URITransportType = URIObject.Query.net || URIObject.Query.type;
+
+    const PathObject = new URL(`path:${URIObject.Query.path}`);
+    return (
+        URITransportType === "http" ||
+        URITransportType === "ws" ||
+        URITransportType === "grpc" ||
+        URITransportType === "quic" ||
+        URITransportType === "httpupgrade"
+    ) ? {
+        type: URITransportType,
+
+        // http
+        headers: { 
+            Host: 
+                (URITransportType !== "quic")
+                 ? URIObject.Query.host
+                 : undefined,
+        },
+        path: PathObject.pathname || "",
+        method: URIObject.Query.method,
+
+        // max early data
+        early_data_header_name: PathObject.searchParams.has("ed") ? "Sec-WebSocket-Protocol" : undefined,
+        max_early_data: PathObject.searchParams.has("ed") ? parseInt(PathObject.searchParams.get("ed")) : undefined,
+
+        // grpc
+        service_name: URITransportType === "grpc" ? ( URIObject.Query.serviceName || URIObject.Query.path ) : undefined,
+    } : undefined;
+}
+
+================================================
+FILE: functions/internal/Parsers/clash-meta.js
+================================================
+export class ClashMetaParser {
+    constructor () {}
+
+    __validate (ProxyObject) {
+        if (!(ProxyObject.type in this)) {
+            console.warn(`[Parser: Clash Meta] [WARN] ${ProxyObject.__Type} is not supported to parse, ignoring...`)
+            return false;
+        }
+        return true;
+    }
+
+    http (Obj) {
+        return {
+            __Type: "http",
+            __Remark: Obj.name,
+            Hostname: Obj.server,
+            Port: Obj.port,
+            Auth: {
+                username: Obj.username,
+                password: Obj.password
+            }
+        }
+    }
+    socks5 (Obj) {
+        return {
+            __Type: "socks5",
+            __Remark: Obj.name,
+            Hostname: Obj.server,
+            Port: Obj.port,
+            Auth: {
+                username: Obj.username,
+                password: Obj.password
+            }
+        }
+    }
+    
+    hysteria (Obj) {
+        return {
+            __Type: "hysteria",
+            __Remark: Obj.name,
+            Hostname: Obj.server,
+            Port: Obj.port,
+            Query: {
+                auth: (Obj["auth_str"] || Obj["auth-str"]),
+                alpn: Obj.alpn ? Obj.alpn.join(",") : undefined,
+                upmbps: Obj.up,
+                downmbps: Obj.down,
+                peer: Obj.sni,
+                mport: Obj.ports,
+            }
+        }
+    }
+    hysteria2 (Obj) {
+        return {
+            __Type: "hysteria2",
+            __Remark: Obj.name,
+            Hostname: Obj.server,
+            Port: Obj.port,
+            Auth: Obj.auth || Obj.password,
+            Query: {
+                objs: Obj.obfs,
+                "obfs-password": Obj["obfs-password"],
+                insecure: Obj["skip-cert-verify"] ? 1 : 0,
+                mport: Obj.ports,
+            }
+        }
+    }
+    hy2 = this.hysteria2;
+
+    tuic (Obj) {
+        return {
+            __Type: "tuic",
+            __Remark: Obj.name,
+            Hostname: Obj.server,
+            Port: Obj.port,
+            Auth: { uuid: Obj.uuid, password: Obj.password },
+            Query: {
+                alpn: Obj.alpn ? Obj.alpn.join(",") : undefined,
+                disable_sni: Obj["disable-sni"],
+                udp_relay_mode: Obj["udp-relay-mode"],
+                congestion_control: Obj["congestion-controller"],
+                sni: Obj.sni,
+            }
+        }
+    }
+
+
+    vless (Obj) {
+        return {
+            __Type: "vless",
+            __Remark: Obj.name,
+            Hostname: Obj.server,
+            Port: Obj.port,
+            Auth: Obj.uuid,
+            Query: {
+                flow: Obj.flow,
+                packetEncoding: Obj["packet-encoding"],
+                sni: Obj.servername,
+                alpn: Obj.alpn ? Obj.alpn.join(",") : undefined,
+                fp: Obj["client-fingerprint"],
+                type: Obj.network,
+
+
+                // reality
+                security: !!Obj["reality-opts"] ? "reality": undefined,
+                pbk: (Obj["reality-opts"] || {})["public-key"],
+                sid: (Obj["reality-opts"] || {})["short-id"],
+
+                
+                // transport layer config
+                
+                // - ws
+                ed: Obj["max-early-data"],
+                eh: Obj["early-data-header-name"],
+
+                // - grpc
+                serviceName: Obj["grpc-service-name"],
+
+                // - http
+                method: Obj.method,
+
+                // - http & ws & h2
+                path: Obj["ws-path"] || Obj.path,
+                host: Obj.host || (Obj["ws-headers"] || Obj.headers || {}).Host,
+            }
+        }
+    }
+    vmess (Obj) {
+        return {
+            __Type: "vmess",
+            __Remark: Obj.name,
+            Hostname: Obj.server,
+            Port: Obj.port,
+            Auth: Obj.uuid,
+            Query: {
+                aid: Obj.alterId,
+                cipher: Obj.cipher,
+                net: Obj.network,
+                type: Obj.protocol,
+                fp: Obj["client-fingerprint"],
+                alpn: Obj.alpn ? Obj.alpn.join(",") : undefined,
+                tls: Obj.tls ? "tls" : undefined,
+                sni: Obj.servername,
+
+                // transport layer config
+                // - http & ws & h2 
+                host: (Obj["ws-headers"] || Obj.headers || {}).Host,
+                // - http & ws & h2 & grpc
+                path: 
+                    Obj["ws-path"] || 
+                    ( Obj["ws-opts"] || Obj["h2-opts"] || {} ).path || 
+                    ( (Obj["http-opts"] || {}).path || [] )[0] || 
+                    Obj["grpc-service-name"] ||
+                    undefined,
+
+            }
+        }
+    }
+
+    ss (Obj) {
+        return {
+            __Type: "ss",
+            __Remark: Obj.name,
+            Hostname: Obj.server,
+            Port: Obj.port,
+            Auth: { cipher: Obj.cipher, password: Obj.password },
+        }
+    }
+
+    trojan (Obj) {
+        return {
+            __Type: "trojan",
+            __Remark: Obj.name,
+            Hostname: Obj.server,
+            Port: Obj.port,
+            Auth: Obj.password,
+            Query: {
+                type: Obj.network,
+                sni: Obj.sni,
+
+                // reality
+                security: !!Obj["reality-opts"] ? "reality" : undefined,
+                pbk: Obj["public-key"],
+                sid: Obj["short-id"],
+
+
+                // transport layer config
+                
+                // - ws
+                ed: Obj["max-early-data"],
+                eh: Obj["early-data-header-name"],
+
+                // - grpc
+                serviceName: Obj["grpc-service-name"],
+
+                // - http
+                method: Obj.method,
+
+                // - http & ws
+                path: Obj["ws-path"] || Obj.path,
+                host: (Obj["ws-headers"] || Obj.headers || {}).Host,
+            }
+        }
+    }
+}
+
+function __searchParamsMapper (searchParams) {
+    let Query = {}
+    for (const [key, value] of searchParams) {
+        Query[key] = value
+    }
+    return Query;
+}
+
+================================================
+FILE: functions/internal/Parsers/share-link.js
+================================================
+export class ShareLinkParser {
+    constructor () {}
+
+    __validate (URI) {
+        if (!(URI.split(":")[0] in this)) {
+            console.warn(`[Parser: Share Link] [WARN] ${URI.__Type} is not supported to parse, ignoring...`)
+            return false;
+        }
+        return true;
+    }
+
+    http (URI) {
+        let URIObject = new URL (URI);
+        return {
+            __Type: "http",
+            __Remark: decodeURIComponent(URIObject.hash.replace(/^#/, "")) || URIObject.host,
+            Hostname: URIObject.hostname,
+            Port: parseInt(URIObject.port),
+            Auth: {
+                username: URIObject.username,
+                password: URIObject.password
+            }
+        }
+    }
+    socks5 (URI) {
+        let URIObject = new URL (URI);
+        return {
+            __Type: "socks5",
+            __Remark: decodeURIComponent(URIObject.hash.replace(/^#/, "")) || URIObject.host,
+            Hostname: URIObject.hostname,
+            Port: parseInt(URIObject.port),
+            Auth: {
+                username: URIObject.username,
+                password: URIObject.password
+            }
+        }
+    }
+    
+    hysteria (HYURL) {
+        const URIObject = new URL (HYURL);
+
+        const HY = {
+            __Type: "hysteria",
+            __Remark: decodeURIComponent(URIObject.hash.replace(/^#/, "")) || URIObject.host,
+            Hostname: URIObject.hostname,
+            Port: parseInt(URIObject.port),
+            Query: __searchParamsMapper(URIObject.searchParams)
+        }
+        return HY;
+    }
+    hysteria2 (HY2URL) {
+        const URIObject = new URL (HY2URL);
+
+        const HY2 = {
+            __Type: "hysteria2",
+            __Remark: decodeURIComponent(URIObject.hash.replace(/^#/, "")) || URIObject.host,
+            Auth: decodeURIComponent(URIObject.password || URIObject.username),
+            Hostname: URIObject.hostname,
+            Port: parseInt(URIObject.port),
+            Query: __searchParamsMapper(URIObject.searchParams)
+        }
+        return HY2;
+    }
+    hy2 = this.hysteria2;
+
+    tuic (TUICURI) {
+        let URIObject = new URL(TUICURI);
+
+        const TUIC = {
+            __Type: "tuic",
+            __Remark: decodeURIComponent(URIObject.hash.replace(/^#/, "")) || URIObject.host,
+            Auth: { uuid: URIObject.username, password: URIObject.password},
+            Hostname: URIObject.hostname,
+            Port: parseInt(URIObject.port),
+            Query: __searchParamsMapper(URIObject.searchParams)
+        }
+        return TUIC;
+    }
+
+
+    vless (URI) {
+        let URIObject = new URL (URI);
+        let VLESS = {
+            __Type: "vless",
+            __Remark: decodeURIComponent(URIObject.hash.replace(/^#/, "")) || URIObject.host,
+            Hostname: URIObject.hostname,
+            Port: parseInt(URIObject.port),
+            Auth: URIObject.username,
+            Query: __searchParamsMapper(URIObject.searchParams)
+        }
+        return VLESS;
+    }
+    vmess (URI) {
+        let URIObject = new URL(URI);
+        let VMessRawData = atob(URIObject.host);
+        try {
+            let VMessRawObject = JSON.parse(VMessRawData);
+
+            let Remark;
+            try {
+                Remark = decodeURIComponent(escape(VMessRawObject.ps))
+            } catch (e) {
+                Remark = VMessRawObject.ps
+            }
+            let VMess =  {
+                __Type: "vmess",
+                __Remark: Remark || `${VMessRawObject.add}:${VMessRawObject.port}`,
+                Hostname: VMessRawObject.add,
+                Port: parseInt(VMessRawObject.port),
+                Auth: VMessRawObject.id,
+            }
+            delete VMessRawObject.ps
+            delete VMessRawObject.add
+            delete VMessRawObject.port
+            delete VMessRawObject.id
+
+            // am i doing right...
+            delete VMessRawObject.v // assume its version 2
+
+            // delete all the empty fields
+            for (let i in VMessRawObject) {
+                if (
+                    VMessRawObject[i] === "" || 
+                    VMessRawObject[i] === null || 
+                    VMessRawObject[i] === undefined
+                ) {
+                    delete VMessRawObject[i]
+                }
+            }
+
+            VMessRawObject.aid = parseInt(VMessRawObject.aid)
+
+            VMess.Query = VMessRawObject;
+
+            return VMess;
+        } catch (err) {
+            let StandardURIObj = new URL(`vmess://${VMessRawData}${URIObject.pathname}${URIObject.search}`)
+            let VMess =  {
+                //__Type: "vmess",
+                __Type: "vmess__shadowsocks_type",
+                __Remark: StandardURIObj.searchParams.get("remarks") || StandardURIObj.host,
+                Hostname: StandardURIObj.hostname,
+                Port: parseInt(StandardURIObj.port),
+                Auth: StandardURIObj.password,
+                Query: __searchParamsMapper(URIObject.searchParams)
+            }
+            delete VMess.Query.remarks
+            if (VMess.Query.obfs === "websocket") { VMess.Query.obfs = "ws" }
+            return VMess
+        }
+    }
+
+    ss (URI) {
+        let StandardURI = (URI => {
+            let URIObject = new URL(URI);
+            try {
+                // base64-encoded cipher:uuid@host:port
+                return `ss://${encodeURIComponent(atob(decodeURIComponent(URIObject.host))).replace(/\%3A/gi,":").replace(/\%40/gi,"@")}${URIObject.search}${URIObject.hash}`;
+            } catch (e) {}
+            try {
+                // base64-encoded cipher:uuid
+                return `ss://${encodeURIComponent(atob(decodeURIComponent(URIObject.username))).replace(/\%3A/i,":")}@${URIObject.host}${URIObject.search}${URIObject.hash}`;
+            } catch (e) {}
+            // plain
+            return URI;
+        })(URI)
+        
+        let URIObject = new URL(StandardURI);
+        
+
+        return {
+            __Type: "ss",
+            __Remark: decodeURIComponent(URIObject.hash.replace(/^#/, "")) || URIObject.host,
+            Auth: { cipher: decodeURIComponent(URIObject.username), password: decodeURIComponent(URIObject.password) },
+            Hostname: URIObject.hostname,
+            Port: parseInt(URIObject.port)
+        }
+
+    }
+
+    trojan (URI) {
+        let URIObject = new URL(URI);
+
+        const TROJAN = {
+            __Type: "trojan",
+            __Remark: decodeURIComponent(URIObject.hash.replace(/^#/, "")) || URIObject.host,
+            Auth: URIObject.username,
+            Hostname: URIObject.hostname,
+            Port: parseInt(URIObject.port),
+            Query: __searchParamsMapper(URIObject.searchParams)
+        }
+        return TROJAN;
+    }
+}
+
+function __searchParamsMapper (searchParams) {
+    let Query = {}
+    for (const [key, value] of searchParams) {
+        Query[key] = value
+    }
+    return Query;
+}
+
+================================================
+FILE: functions/internal/Parsers/sing-box.js
+================================================
+export class SingBoxParser {
+    constructor () {}
+
+    __validate (ProxyObject) {
+        if (!(ProxyObject.type in this)) {
+            console.warn(`[Parser: Sing-Box] [WARN] ${ProxyObject.__Type} is not supported to parse, ignoring...`)
+            return false;
+        }
+        if (ProxyObject.type === "socks" && ProxyObject.version != 5) {
+            console.warn(`[Parser: Sing-Box] [WARN] Only Socks version 5 is supported to parse, ignoring...`)
+            return false;
+        }
+        return true;
+    }
+
+    http (Obj) {
+        return {
+            __Type: "http",
+            __Remark: Obj.tag,
+            Hostname: Obj.server,
+            Port: Obj.server_port,
+            Auth: {
+                username: Obj.username,
+                password: Obj.password
+            }
+        }
+    }
+    socks (Obj) {
+        return {
+            __Type: "socks5",
+            __Remark: Obj.tag,
+            Hostname: Obj.server,
+            Port: Obj.server_port,
+            Auth: {
+                username: Obj.username,
+                password: Obj.password
+            }
+        }
+    }
+    
+    hysteria (Obj) {
+        return {
+            __Type: "hysteria",
+            __Remark: Obj.tag,
+            Hostname: Obj.server,
+            Port: Obj.server_port,
+            Query: {
+                auth: (Obj["auth_str"] || Obj["auth"]),
+                alpn: Obj.tls && Obj.tls.alpn ? Obj.tls.alpn.join(",") : undefined,
+                upmbps: Obj.up || Obj.up_mbps,
+                downmbps: Obj.down || Obj.down_mbps,
+                peer: Obj.tls && Obj.tls.server_name,
+                mport: Obj.server_ports ? Obj.server_ports.map(i=>i.replace(/\:/gi, "-")).join(",") : undefined,
+            }
+        }
+    }
+    hysteria2 (Obj) {
+        return {
+            __Type: "hysteria2",
+            __Remark: Obj.tag,
+            Hostname: Obj.server,
+            Port: Obj.server_port,
+            Auth: Obj.password,
+            Query: {
+                upmbps: Obj.up_mbps,
+                downmbps: Obj.down_mbps,
+                objs: Obj.obfs ? Obj.obfs.type : undefined,
+                "obfs-password": Obj.obfs ? Obj.obfs.password : undefined,
+                insecure: Obj.tls && Obj.tls.insecure ? 1 : 0,
+                mport: Obj.server_ports ? Obj.server_ports.map(i=>i.replace(/\:/gi, "-")).join(",") : undefined,
+            }
+        }
+    }
+
+    tuic (Obj) {
+        return {
+            __Type: "tuic",
+            __Remark: Obj.tag,
+            Hostname: Obj.server,
+            Port: Obj.server_port,
+            Auth: { uuid: Obj.uuid, password: Obj.password },
+            Query: {
+                alpn: Obj.alpn ? Obj.alpn.join(",") : undefined,
+                disable_sni: Obj.tls.disable_sni,
+                udp_relay_mode: Obj.udp_relay_mode,
+                congestion_control: Obj.congestion_control,
+                sni: Obj.tls && Obj.tls.server_name,
+            }
+        }
+    }
+
+
+    vless (Obj) {
+        return {
+            __Type: "vless",
+            __Remark: Obj.tag,
+            Hostname: Obj.server,
+            Port: Obj.server_port,
+            Auth: Obj.uuid,
+            Query: {
+                flow: Obj.flow,
+                packetEncoding: Obj.packet_encoding,
+                sni: Obj.tls && Obj.tls.server_name,
+                alpn: Obj.tls && Obj.tls.alpn ? Obj.tls.alpn.join(",") : undefined,
+                fp: Obj.tls && Obj.tls.utls && Obj.tls.utls.enabled === true ? Obj.tls.utls.fingerprint: undefined,
+                type: Obj.network,
+
+                // reality
+                security: Obj.tls && Obj.tls.reality && Obj.tls.reality.enabled ? "reality" : undefined,
+                pbk: Obj.tls && Obj.tls.reality && Obj.tls.reality.enabled ? Obj.tls.reality["public_key"] : undefined,
+                sid: Obj.tls && Obj.tls.reality && Obj.tls.reality.enabled ? Obj.tls.reality["short_id"] : undefined,
+
+                // transport layer config
+                // - ws
+                ed: Obj.transport && Obj.transport["max_early_data"],
+                eh: Obj.transport && Obj.transport["early_data_header_name"],
+                // - grpc
+                serviceName: Obj.transport && Obj.transport["service_name"],
+                // - http
+                method: Obj.method,
+                // - http & ws
+                path: Obj.transport && Obj.transport.path,
+                host: (Obj.transport && Obj.transport.headers || {}).Host,
+            }
+        }
+    }
+    vmess (Obj) {
+        return {
+            __Type: "vmess",
+            __Remark: Obj.tag,
+            Hostname: Obj.server,
+            Port: Obj.server_port,
+            Auth: Obj.uuid,
+            Query: {
+                aid: Obj.alter_id,
+                cipher: Obj.security,
+                net: Obj.network,
+                type: Obj.protocol,
+                fp: Obj.tls && Obj.tls.utls ? Obj.tls.utls.fingerprint : undefined,
+                alpn: Obj.alpn ? Obj.alpn.join(",") : undefined,
+                tls: Obj.tls && Obj.tls.enabled ? "tls" : undefined,
+                sni: Obj.server_name,
+
+                // transport layer config
+                // - http & ws & h2 
+                host: (Obj.headers || {}).Host,
+                // - http & ws & h2 & grpc
+                path: Obj.path || undefined
+            }
+        }
+    }
+
+    shadowsocks (Obj) {
+        return {
+            __Type: "ss",
+            __Remark: Obj.tag,
+            Hostname: Obj.server,
+            Port: Obj.server_port,
+            Auth: { cipher: Obj.method, password: Obj.password },
+        }
+    }
+
+    trojan (Obj) {
+        return {
+            __Type: "trojan",
+            __Remark: Obj.tag,
+            Hostname: Obj.server,
+            Port: Obj.server_port,
+            Auth: Obj.password,
+            Query: {
+                type: Obj.network,
+                sni: Obj.tls && Obj.tls.server_name,
+
+                // reality
+                security: Obj.tls && Obj.tls.reality && Obj.tls.reality.enabled ? "reality" : undefined,
+                pbk: Obj.tls && Obj.tls.reality && Obj.tls.reality.enabled ? Obj.tls.reality["public_key"] : undefined,
+                sid: Obj.tls && Obj.tls.reality && Obj.tls.reality.enabled ? Obj.tls.reality["short_id"] : undefined,
+
+
+                // transport layer config
+                // - ws
+                ed: Obj.transport && Obj.transport["max_early_data"],
+                eh: Obj.transport && Obj.transport["early_data_header_name"],
+                // - grpc
+                serviceName: Obj.transport && Obj.transport["service_name"],
+                // - http
+                method: Obj.method,
+                // - http & ws
+                path: Obj.transport && Obj.transport["path"] || Obj.path,
+                host: (Obj.transport && Obj.transport["headers"] || Obj.headers || {}).Host,
+            }
+        }
+    }
+}
+
+================================================
+FILE: functions/internal/RemoteConfigReader/main.js
+================================================
+import { ini } from "./Readers/ini.js"
+
+export class RemoteConfigReader {
+    RemoteConfig = {};
+    Reader = {
+        ini,
+    }
+    constructor (RemoteConfigURL) {
+        this.RemoteConfig.URL = RemoteConfigURL;
+        this.RemoteConfig.Type = RemoteConfigURL.split(".").slice(-1)[0].toLowerCase();
+
+        console.info(`[Remote Config Reader] Inputed remote config type: ${this.RemoteConfig.Type}`);
+
+        if (this.RemoteConfig.Type in this.Reader) {
+            return true;
+        } else {
+            console.warn("[Remote Config Reader] [WARN] Inputed remote config type not supported, skipping.");
+            return false;
+        }
+    }
+
+    Process = async function (EdgeSubDB, isForcedRefresh) {
+        let __startTime = performance.now();
+        console.info(`[Remote Config Reader] Job started`);
+        const response = this.Reader[this.RemoteConfig.Type](this.RemoteConfig.URL, EdgeSubDB, isForcedRefresh);
+        //let RawConfig = await fetchRemoteConfig(RemoteConfigURL, isForcedRefresh);
+        console.info(`[Remote Config Reader] Job done, wasting ${performance.now() - __startTime}ms`);
+        return response
+    }
+
+}
+
+================================================
+FILE: functions/internal/RemoteConfigReader/Readers/ini.js
+================================================
+import { parse as INIParse } from "ini";
+import { fetchCached } from "../utils/fetchCached.js";
+
+export async function ini(RemoteConfigURL, CacheDB, isForcedRefresh) {
+    console.info(`[ini Reader] Processing remote config: ${RemoteConfigURL}`);
+    let Config = {
+        RuleSet: [],
+        ProxyGroup: []
+    };
+
+    let rawINI;
+    try {
+        rawINI = await fetchCached(RemoteConfigURL, "RemoteConfig", CacheDB, isForcedRefresh);
+        if (!rawINI || typeof rawINI !== 'string') {
+            throw new Error("Fetched remote config is empty or invalid.");
+        }
+        console.info(`[ini Reader] Raw INI content:`, rawINI);
+    } catch (e) {
+        console.error(`[ini Reader] Failed to fetch or read remote config: ${RemoteConfigURL}`, e);
+        return Config;
+    }
+
+    const lines = rawINI.split('\n').map(line => line.trim()).filter(line => line && !line.startsWith(';'));
+    let customProxyGroups = [];
+    for (const line of lines) {
+        if (line.startsWith("custom_proxy_group=")) {
+            customProxyGroups.push(line.replace("custom_proxy_group=", ""));
+        }
+    }
+    console.info(`[ini Reader] Found ${customProxyGroups.length} custom_proxy_group lines:`, customProxyGroups);
+
+    if (customProxyGroups.length > 0) {
+        console.info(`[ini Reader] Processing ${customProxyGroups.length} custom proxy groups.`);
+        for (const groupString of customProxyGroups) {
+            try {
+                const ConfigArr = groupString.split("`").map(s => s.trim()).filter(Boolean);
+                if (ConfigArr.length < 2) {
+                    console.warn(`[ini Reader] Skipping malformed custom_proxy_group line (less than 2 parts): ${groupString}`);
+                    continue;
+                }
+
+                const groupName = ConfigArr[0];
+                const groupType = ConfigArr[1].toLowerCase();
+                const args = ConfigArr.slice(2);
+
+                let ProxyGroupConfig = {
+                    name: groupName,
+                    type: groupType,
+                    RegExps: [],
+                    GroupSelectors: [],
+                    TestConfig: undefined
+                };
+
+                const testConfigTypes = ["url-test", "fallback", "load-balance"];
+                let testUrl = null;
+                let testParamsRaw = null;
+
+                for (const arg of args) {
+                    if (arg.startsWith("[]") || ["DIRECT", "REJECT"].includes(arg)) {
+                        ProxyGroupConfig.GroupSelectors.push(arg);
+                    } else if (testConfigTypes.includes(groupType) && (arg.startsWith("http://") || arg.startsWith("https://"))) {
+                        if (testUrl === null) {
+                            testUrl = arg;
+                        } else {
+                            console.warn(`[ini Reader] Found second URL "${arg}" in group "${groupName}". Treating as RegExp.`);
+                            ProxyGroupConfig.RegExps.push(arg);
+                        }
+                    } else if (testConfigTypes.includes(groupType) && testUrl !== null && testParamsRaw === null) {
+                        testParamsRaw = arg;
+                    } else {
+                        ProxyGroupConfig.RegExps.push(arg);
+                    }
+                }
+
+                if (testConfigTypes.includes(groupType) && testUrl) {
+                    ProxyGroupConfig.TestConfig = {
+                        TestURL: testUrl,
+                        Interval: 300,
+                        Timeout: 5000,
+                        Tolerance: 50
+                    };
+                    if (testParamsRaw) {
+                        const testParams = testParamsRaw.split(',').map(p => p.trim());
+                        const interval = parseInt(testParams[0], 10);
+                        const timeout = parseInt(testParams[1], 10);
+                        const tolerance = parseInt(testParams[2], 10);
+
+                        if (!isNaN(interval)) ProxyGroupConfig.TestConfig.Interval = interval;
+                        if (!isNaN(timeout)) ProxyGroupConfig.TestConfig.Timeout = timeout;
+                        if (!isNaN(tolerance)) ProxyGroupConfig.TestConfig.Tolerance = tolerance;
+                    }
+                    console.info(`[ini Reader] Parsed TestConfig for group "${groupName}":`, ProxyGroupConfig.TestConfig);
+                } else if (testConfigTypes.includes(groupType) && !testUrl) {
+                    console.warn(`[ini Reader] Group "${groupName}" is type "${groupType}" but no test URL was found.`);
+                }
+
+                console.info(`[ini Reader] Parsed group "${groupName}": Type=${groupType}, RegExps=${JSON.stringify(ProxyGroupConfig.RegExps)}, Selectors=${JSON.stringify(ProxyGroupConfig.GroupSelectors)}`);
+                Config.ProxyGroup.push(ProxyGroupConfig);
+
+            } catch (groupError) {
+                console.error(`[ini Reader] Failed to process custom_proxy_group line: ${groupString}`, groupError);
+            }
+        }
+    } else {
+        console.info("[ini Reader] No custom_proxy_group entries found.");
+    }
+
+    console.info(`[ini Reader] Finished processing. Returning ${Config.ProxyGroup.length} proxy groups.`);
+    return Config;
+}
+
+================================================
+FILE: functions/internal/RemoteConfigReader/RuleSetReader/main.js
+================================================
+import { fetchCached } from "../utils/fetchCached.js";
+
+export class RuleSetReader {
+    RuleSet = {};
+    // for what really supported, plz refer to `this.Reader`
+    static ExpectedTypes = ["surge", "quanx", "clash-domain", "clash-ipcidr", "clash-classic"];
+    constructor (RuleSet) {
+        const [Outbound, ...Args] = RuleSet.split(",");
+        this.RuleSet = { Outbound, Args };
+    }
+    async Process (CacheDB, isForcedRefresh) {
+        const { Outbound, Args } = this.RuleSet;
+        let Rules = [];
+        if (Args[0].startsWith("[]")) { // quote a proxy group when starts with `[]`
+            Rules = [Args.join(",").replace(/^\[\]/, "")];
+        } else {
+            // this.RuleSet.Interval = Args[1]; // we are not using this for now, but it's a reminder #todo
+
+            // get rule type, assume it's surge type when unmatched.
+            let RuleType = Args[0].split(":");
+            RuleType = !RuleSetReader.ExpectedTypes.includes(RuleType) ? "surge" : RuleType;
+
+            // get rule list
+            let RawRuleURL = Args[0].replace(new RegExp(`^${RuleType}:`, ""))
+            let RawRule = await fetchCached(RawRuleURL, "RuleSet", CacheDB, isForcedRefresh);
+
+            // process rule list 
+            Rules = await this.Parser[RuleType](RawRule)
+        }
+        return { Outbound, Rules }
+    }
+    Parser = {
+        surge: RawRule => RawRule.replaceAll("\r", "\n").split("\n").filter(i => i && !i.startsWith("#")).map(i => i.trim())
+    }
+}
+
+================================================
+FILE: functions/internal/RemoteConfigReader/utils/fetchCached.js
+================================================
+export async function fetchCached (URL, Prefix = "Cached", CacheDB, isForcedRefresh = false) {
+    // const CacheKey = `RemoteConfig_${URL}`;
+    const CacheKey = `${Prefix}_${URL}`;
+    const CacheTTL =  6 * 60 * 60; // 6hrs for default
+
+    // check if data was cached
+    let CachedData;
+    if (!CacheDB) {
+        CachedData = null;
+        console.info(`[fetchCached] - CacheDB is not configured, fetching.`)
+    } else {
+        if (isForcedRefresh) {
+            CachedData = null;
+        } else {
+            CachedData = await CacheDB.get(CacheKey)
+        }
+    }
+
+    // return cached data when it exist
+    if (CachedData) {
+        return CachedData;
+    }
+
+    console.info(`[fetchCached] - "${CacheKey}" is not cached, fetching.`)
+    // only when CachedData == falsy
+    let data = await fetch (URL)
+        .then(res => {
+            if (res.status === 200 || res.status === 304) {
+                return res
+            } else {
+                throw "Failed to fetch."
+            }
+        })
+        .then(res => res.text())
+        .catch(() => false);
+    // save it into CacheDB when success, and, whatever, when CacheDB exist.
+    if (data !== false && CacheDB) {
+        await CacheDB.put(CacheKey, data, { expirationTtl: CacheTTL })
+    }
+    // just return
+    return data;
+}
+
+================================================
+FILE: functions/internal/types/ClashMetaConfig.ts
+================================================
+// reference: https://wiki.metacubex.one/
+
+type ClashMetaProxyGroup = {
+    name: string;
+    type: string; // head to https://wiki.metacubex.one/config/proxy-groups/
+    url?: string | URL;
+    interval?: number;
+    tolerance?: number;
+    proxies: string[]
+}
+
+export type ClashMetaConfig = {
+    port: number;
+    "socks-port": number;
+    "allow-lan": boolean;
+    mode: "Rule" | "Global" | "Direct";
+    "log-level": "silent" | "error" | "warning" | "info" | "debug";
+    "external-controller": string; // start with ":"
+    ipv6: boolean; // default true
+    dns: {
+        enabled: boolean; // default true
+        nameserver: string[];
+        fallback: string[];
+    };
+    proxies: []
+    "proxy-groups": ClashMetaProxyGroup[];
+    rules: string[] // head to https://wiki.metacubex.one/config/rules/
+}
+
+
+// for transport layers
+export type TransportHTTP = {
+    method: string;
+    path: string[];
+    headers?: {
+        host?: string
+    };
+}
+export type TransportH2 = {
+    method: string;
+    path: string;
+}
+export type TransportGRPC = {
+    "grpc-service-name": string;
+}
+export type TransportWS = {
+    path?: string;
+    headers?: {
+        host?: string
+    };
+    "max-early-data"?: number;
+    "early-data-header-name"?: "Sec-WebSocket-Protocol" | string;
+    "v2ray-http-upgrade"?: unknown;
+    "v2ray-http-upgrade-fast-open"?: unknown;
+}
+
+// for reality
+export type RealityConfig = {
+    "public-key"?: string;
+    "short-id"?: string;
+}
+
+
+================================================
+FILE: functions/internal/utils/removeUndefinedFields.ts
+================================================
+export function removeUndefinedFields (obj: object) : object {
+    for (const key in obj) {
+        if (typeof obj[key] === 'object' && obj[key] !== null) {
+            removeUndefinedFields(obj[key]);
+        }
+        if (obj[key] === undefined) {
+            delete obj[key];
+        }
+    }
+    return obj;
+}
+
+================================================
+FILE: functions/internal/utils/TrulyAssign.js
+================================================
+/**
+ * Assign source to target, note that its only for the first frame. 
+ * You will not get the target modified, instead, the target you need is in the returns.
+ * @param {Object} target 
+ * @param {Object} source 
+ * @returns {Object} Assigned Target
+ */
+export function TrulyAssign (target, source) {
+    let DeepCopiedTarget = JSON.parse(JSON.stringify(target))
+    for (let key in source) {
+        if (key in source && source[key] !== "__DEFAULT") {
+            DeepCopiedTarget[key] = source[key];
+        }
+    }
+    return DeepCopiedTarget;
+}
+
+
+================================================
+FILE: functions/sub/base64.js
+================================================
+import { onRequest as ShareLinkOnRequest } from "./share-link.js";
+
+export async function onRequest (context) {
+    return await ShareLinkOnRequest(context, true)
+}
+
+================================================
+FILE: functions/sub/clash-meta.js
+================================================
+import { getClashMetaConfig } from "../internal/Converter/getClashMetaConfig.js";
+import getParsedSubData from "../internal/getParsedSubData.ts";
+import Yaml from "js-yaml";
+
+// Helper function for safer JSON parsing
+function safeJsonParse(jsonString, defaultValue = {}) {
+    try {
+        return JSON.parse(jsonString || "{}");
+    } catch (e) {
+        console.warn(`[safeJsonParse] Error parsing JSON: ${e.message}. Falling back to default.`);
+        return defaultValue;
+    }
+}
+
+
+export async function onRequest(context, isClashOriginal = false) {
+    const { request, env } = context; // Destructure env for EdgeSubDB
+    const URLObject = new URL(request.url);
+
+    try {
+        // --- 1. Parse Parameters ---
+        const urlParam = URLObject.searchParams.get("url");
+        const showHostParam = URLObject.searchParams.get("show_host") === "true";
+        const httpHeadersParam = URLObject.searchParams.get("http_headers");
+        const udpParam = URLObject.searchParams.get("udp") === "true";
+        const ssUotParam = URLObject.searchParams.get("ss_uot") === "true";
+        const remoteConfigParam = URLObject.searchParams.get("remote_config") || undefined; // Use undefined to trigger default in getClashMetaConfig
+        const forcedRefreshParam = URLObject.searchParams.get("forced_refresh") === "true";
+        const forcedWs0rttParam = URLObject.searchParams.get("forced_ws0rtt") === "true";
+
+        if (!urlParam) {
+            return new Response("Error: 'url' parameter is missing.", {
+                status: 400,
+                headers: { "Content-Type": "text/plain; charset=utf-8" }
+            });
+        }
+
+        const httpHeaders = safeJsonParse(httpHeadersParam);
+
+        // --- 2. Fetch and Parse Subscription Data ---
+        console.info("[onRequest] Fetching and parsing subscription data...");
+        let Proxies = await getParsedSubData(
+            urlParam,
+            env.EdgeSubDB, // Use env.EdgeSubDB
+            showHostParam,
+            httpHeaders
+        );
+        console.info(`[onRequest] Found ${Proxies.length} initial proxies.`);
+
+        // --- 3. Filter Proxies (if Clash Original) ---
+        if (isClashOriginal === true) {
+            console.info("[onRequest] Filtering proxies for Clash Original compatibility.");
+            const ClashSupportedProxyType = ["trojan", "vmess", "ss", "ssr", "http", "socks5"];
+            const ClashSupportedSSCipher = [
+                "aes-128-gcm", "aes-192-gcm", "aes-256-gcm",
+                "chacha20-ietf-poly1305", "xchacha20-ietf-poly1305",
+                "aes-128-cfb", "aes-192-cfb", "aes-256-cfb",
+                "rc4-md5", "chacha20-ietf", "xchacha20",
+                "aes-128-ctr", "aes-192-ctr", "aes-256-ctr"
+            ];
+
+            const initialProxyCount = Proxies.length;
+            Proxies = Proxies
+                .filter(proxy => proxy && ClashSupportedProxyType.includes(proxy.__Type)) // Ensure proxy exists and type is supported
+                .filter(proxy => {
+                    if (proxy.__Type === "ss") {
+                        // Check if Auth and cipher exist and cipher is supported
+                        const isSupported = proxy.Auth && ClashSupportedSSCipher.includes(proxy.Auth.cipher);
+                        if (!isSupported) {
+                            // *** Corrected console.warn syntax ***
+                            console.warn(`[onRequest] Filtering out SS proxy "${proxy.__Remark || 'Unnamed'}" due to unsupported cipher: ${proxy.Auth?.cipher || 'N/A'}`);
+                        }
+                        return isSupported;
+                    }
+                    return true; // Keep non-SS proxies that passed the first filter
+                });
+            console.info(`[onRequest] Filtered proxies: ${initialProxyCount} -> ${Proxies.length}`);
+        }
+
+        // --- 4. Generate Clash Meta Config Object ---
+        console.info("[onRequest] Generating Clash Meta config object...");
+        let ClashMetaConfigObject = await getClashMetaConfig(
+            Proxies,
+            env.EdgeSubDB, // Use env.EdgeSubDB
+            {
+                isUDP: udpParam,
+                isSSUoT: ssUotParam,
+                isInsecure: true, // Assuming always true based on previous code
+                RemoteConfig: remoteConfigParam,
+                isForcedRefresh: forcedRefreshParam
+            }
+        );
+        console.info("[onRequest] Config object generated.");
+
+        // --- 5. Apply Forced WS 0-RTT (if requested) ---
+        if (forcedWs0rttParam) {
+            console.info("[onRequest] Applying Forced WS 0-RTT...");
+            if (ClashMetaConfigObject && Array.isArray(ClashMetaConfigObject.proxies)) {
+                let appliedCount = 0;
+                for (let proxy of ClashMetaConfigObject.proxies) {
+                    // Check if proxy is valid, has ws-opts as a valid object
+                    if (proxy && typeof proxy === 'object' && proxy.hasOwnProperty('ws-opts') && typeof proxy['ws-opts'] === 'object' && proxy['ws-opts'] !== null) {
+                        proxy["ws-opts"]["max-early-data"] = 2048; // Standard value
+                        proxy["ws-opts"]["early-data-header-name"] = "Sec-WebSocket-Protocol";
+                        appliedCount++;
+                    } else if (proxy && typeof proxy === 'object' && (proxy.network === 'ws' || (proxy.transport && proxy.transport.type === 'ws'))) {
+                        // *** Corrected console.warn syntax ***
+                        console.warn(`[onRequest] Proxy "${proxy.name || 'Unnamed'}" uses WS but 'ws-opts' is missing/invalid. Cannot apply forced_ws0rtt.`);
+                    }
+                }
+                console.info(`[onRequest] Applied Forced WS 0-RTT to ${appliedCount} proxies.`);
+            } else {
+                console.warn("[onRequest] Cannot apply forced_ws0rtt: ClashMetaConfigObject or its proxies array is invalid.");
+            }
+        }
+
+         // --- 6. Dump Config to YAML ---
+        console.info("[onRequest] Dumping config object to YAML...");
+        let ResponseBody;
+        try {
+            if (!ClashMetaConfigObject || typeof ClashMetaConfigObject !== 'object') {
+                throw new Error("Generated config object is invalid or empty.");
+            }
+
+            console.log("[onRequest] Final proxy-groups before YAML dump:", JSON.stringify(ClashMetaConfigObject["proxy-groups"], null, 2));
+
+            ResponseBody = Yaml.dump(ClashMetaConfigObject);
+            console.info("[onRequest] YAML dump successful.");
+        } catch (e) {
+            const errorMessage = `Error: Failed to generate YAML config. Internal error: ${e.message}`;
+            return new Response(errorMessage, {
+                status: 500,
+                headers: { "Content-Type": "text/plain; charset=utf-8" }
+            });
+        }
+        // --- 7. Return Response ---
+        console.info("[onRequest] Sending YAML response.");
+        // *** Use TextEncoder for Content-Length in Worker environments ***
+        const responseHeaders = {
+            "Content-Type": "text/plain; charset=utf-8",
+            "Content-Length": new TextEncoder().encode(ResponseBody).length.toString()
+        };
+        return new Response(ResponseBody, {
+            status: 200,
+            headers: responseHeaders
+        });
+
+    } catch (e) {
+        // --- Global Error Handling ---
+        console.error("[onRequest] Unexpected error:", e.message, e.stack);
+        // *** Corrected Response generation in catch block ***
+        const errorMessage = `Error: An unexpected error occurred. ${e.message}`;
+        return new Response(errorMessage, {
+            status: 500,
+            headers: { "Content-Type": "text/plain; charset=utf-8" }
+        });
+    }
+}
+
+================================================
+FILE: functions/sub/clash.js
+================================================
+import { onRequest as ClashMetaOnRequest } from "./clash-meta.js";
+
+export async function onRequest (context) {
+    return await ClashMetaOnRequest(context, true)
+}
+
+================================================
+FILE: functions/sub/debug.js
+================================================
+import getParsedSubData from "../internal/getParsedSubData.ts";
+
+export async function onRequest (context) {
+    const { request } = context;
+    const URLObject = new URL(request.url);
+    const ParsedSubData = await getParsedSubData(
+        URLObject.searchParams.get("url"), 
+        context.env.EdgeSubDB, 
+        URLObject.searchParams.get("show_host") === "true",
+        JSON.parse(URLObject.searchParams.get("http_headers")),
+    );
+    const ResponseBody = JSON.stringify(ParsedSubData)
+    
+    return new Response(ResponseBody, {
+        status: 200,
+        headers: {
+            "Content-Type": "application/json, charset=utf-8",
+            "Content-Length": ResponseBody.length,
+        }
+    })
+}
+
+================================================
+FILE: functions/sub/share-link.js
+================================================
+import getParsedSubData from "../internal/getParsedSubData.ts";
+import { ShareLinkDumper } from "../internal/Dumpers/share-link.js";
+
+export async function onRequest (context, isBase64 = false) {
+    const { request } = context;
+    const URLObject = new URL(request.url);
+    // do convert
+    const Proxies = await getParsedSubData(
+        URLObject.searchParams.get("url"), 
+        context.env.EdgeSubDB, 
+        URLObject.searchParams.get("show_host") === "true",
+        JSON.parse(URLObject.searchParams.get("http_headers")),
+    );
+    let Dumper = new ShareLinkDumper();
+    let ShareLinkArray = [];
+    for (let i of Proxies) {
+        if (Dumper[i.__Type]) {
+            ShareLinkArray.push(Dumper[i.__Type](i))
+        }
+    }
+    
+    // generate final response
+    let ShareLinkResponse = ShareLinkArray.join("\n");
+    if (isBase64 === true) {
+        ShareLinkResponse = btoa(ShareLinkResponse);
+    }
+
+    return new Response(ShareLinkResponse, {
+        status: 200,
+        headers: {
+            "Content-Type": "text/plain, charset=utf-8",
+            "Content-Length": ShareLinkResponse.length
+        }
+    })
+}
+
+
+
+================================================
+FILE: functions/sub/sing-box.js
+================================================
+import { getSingBoxConfig } from "../internal/Converter/getSingBoxConfig.js";
+import getParsedSubData from "../internal/getParsedSubData.ts";
+
+export async function onRequest (context) {
+    const { request } = context;
+    const URLObject = new URL(request.url);
+    let Proxies = await getParsedSubData(
+        URLObject.searchParams.get("url"), 
+        context.env.EdgeSubDB, 
+        URLObject.searchParams.get("show_host") === "true",
+        JSON.parse(URLObject.searchParams.get("http_headers")),
+    );
+
+    // a javascript object !!! not YAML !!!
+    let SingBoxConfigObject = await getSingBoxConfig (
+        Proxies,
+        context.env.EdgeSubDB,
+        {
+            isUDP: URLObject.searchParams.get("udp") === "true",
+            isSSUoT: URLObject.searchParams.get("ss_uot") === "true",
+            isInsecure: true,
+            RemoteConfig: URLObject.searchParams.get("remote_config") || "__DEFAULT",
+            isForcedRefresh: URLObject.searchParams.get("forced_refresh") === "true" ? true : false
+        }
+    )
+
+    // handle forced ws 0-rtt
+    if (URLObject.searchParams.get("forced_ws0rtt") === "true") {
+        console.info("[Main] ForcedWS0RTT enabled.")
+        for (let i of SingBoxConfigObject.outbounds) {
+            if (!("transport" in i)) {
+                continue;
+            }
+            if (i.transport.type !== "ws") {
+                continue;
+            }
+            i.transport.max_early_data = 2560
+            i.transport.early_data_header_name = "Sec-WebSocket-Protocol"
+        }
+    }
+
+    const ResponseBody = JSON.stringify(SingBoxConfigObject)
+
+    return new Response(ResponseBody, {
+        status: 200,
+        headers: {
+            "Content-Type": "application/json; charset=utf-8",
+            "Content-Length": ResponseBody.length,
+        }
+    })
+}
+
+
+================================================
+FILE: public/minimal_remote_rules.ini
+================================================
+[custom]
+
+ruleset=ir,DIRECT
+ruleset=ir-cidr,DIRECT
+ruleset=malware,REJECT
+ruleset=phishing,REJECT
+ruleset=cryptominers,REJECT
+ruleset=ads,REJECT
+ruleset=MATCH,⚪ REvil
+
+custom_proxy_group=⚫ AUTO`url-test`.*`http://www.gstatic.com/generate_204`300,,50
+custom_proxy_group=⚪ REvil`select`[]⚫ AUTO`DIRECT`.*
+
+enable_rule_generator=true
+overwrite_original_rules=true
+
+
+================================================
+FILE: public/minimal_sing_rules.ini
+================================================
+
+[custom]
+ruleset=CN-Directed,[]GEOIP,CN
+ruleset=CN-Directed,[]GEOSITE,CN
+ruleset=Proxies,[]DOMAIN-SUFFIX,googleapis.cn
+ruleset=Proxies,[]MATCH
+
+custom_proxy_group=Proxies`select`[]DIRECT`[]REJECT`.*
+custom_proxy_group=CN-Directed`select`[]DIRECT`[]REJECT`[]Proxies
+```
+
+
+
+
