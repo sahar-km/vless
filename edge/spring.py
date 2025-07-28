@@ -209,7 +209,7 @@ def export_SingBox(t_ips):
         raise
     
     # اضافه کردن تگ‌ها به outbounds
-    if "outbounds" not in data or len(data["outbounds") < 2:
+    if "outbounds" not in data or len(data["outbounds"]) < 2:
         logging.error("Invalid template structure: missing or insufficient outbounds")
         raise ValueError("Invalid template structure")
         
