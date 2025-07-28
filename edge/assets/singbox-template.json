@@ -23,19 +23,17 @@
     "servers": [
       {
         "detour": "proxy",
-        "domain_resolver": "local-dns",
         "server": "185.228.168.9",
         "tag": "proxy-dns",
         "type": "tcp"
       },
       {
         "detour": "direct",
-        "server": "8.8.8.8",
         "tag": "local-dns",
-        "type": "tcp"
+        "type": "local"
       },
       {
-        "detour": "direct",
+        "server": "8.8.8.8",
         "tag": "direct-dns",
         "type": "local"
       }
@@ -68,7 +66,6 @@
     {
       "listen": "127.0.0.1",
       "listen_port": 2080,
-      "tag": "mixed-in",
       "type": "mixed"
     }
   ],
@@ -78,16 +75,16 @@
   },
   "outbounds": [
     {
-      "default": "🟡Berlin",
       "outbounds": ["auto", "direct"],
       "tag": "proxy",
-      "type": "selector"
+      "type": "selector",
+      "default": "auto"
     },
     {
-      "interval": "90s",
+      "interval": "5m0s",
       "outbounds": [],
       "tag": "auto",
-      "tolerance": 50,
+      "tolerance": 1,
       "type": "urltest",
       "url": "https://www.gstatic.com/generate_204"
     },
@@ -101,43 +98,42 @@
     }
   ],
   "route": {
-    "auto_detect_interface": true,
-    "default_domain_resolver": "direct-dns",
     "final": "proxy",
+    "auto_detect_interface": true,
     "override_android_vpn": true,
     "rule_set": [
       {
         "download_detour": "direct",
-        "format": "binary",
         "tag": "geosite-ads",
+        "format": "binary",
         "type": "remote",
         "url": "https://testingcf.jsdelivr.net/gh/MetaCubeX/meta-rules-dat@sing/geo/geosite/category-ads-all.srs"
       },
       {
         "download_detour": "direct",
-        "format": "binary",
         "tag": "geosite-private",
+        "format": "binary",
         "type": "remote",
         "url": "https://testingcf.jsdelivr.net/gh/MetaCubeX/meta-rules-dat@sing/geo/geosite/private.srs"
       },
       {
         "download_detour": "direct",
-        "format": "binary",
         "tag": "geosite-ir",
+        "format": "binary",
         "type": "remote",
         "url": "https://testingcf.jsdelivr.net/gh/MetaCubeX/meta-rules-dat@sing/geo/geosite/category-ir.srs"
       },
       {
         "download_detour": "direct",
-        "format": "binary",
         "tag": "geoip-private",
+        "format": "binary",
         "type": "remote",
         "url": "https://testingcf.jsdelivr.net/gh/MetaCubeX/meta-rules-dat@sing/geo/geoip/private.srs"
       },
       {
         "download_detour": "direct",
-        "format": "binary",
         "tag": "geoip-ir",
+        "format": "binary",
         "type": "remote",
         "url": "https://testingcf.jsdelivr.net/gh/MetaCubeX/meta-rules-dat@sing/geo/geoip/ir.srs"
       }
