@@ -13,7 +13,10 @@
       },
       {
         "server": "proxy-dns",
-        "source_ip_cidr": ["172.19.0.1/30", "fdfe:dcba:9876::1/126"]
+        "source_ip_cidr": [
+          "172.19.0.1/30",
+          "fdfe:dcba:9876::1/126"
+        ]
       },
       {
         "clash_mode": "Global",
@@ -40,52 +43,7 @@
     ],
     "strategy": "prefer_ipv4"
   },
-  "endpoints": [
-    {
-      "address": [
-        "172.16.0.2/32",
-        "2606:4700:110:8836:f1c9:4393:9b37:3814/128"
-      ],
-      "detour": "direct",
-      "mtu": 1280,
-      "peers": [
-        {
-          "address": "188.114.96.214",
-          "allowed_ips": ["0.0.0.0/0", "::/0"],
-          "persistent_keepalive_interval": 30,
-          "port": 8854,
-          "public_key": "bmXOC+F1FxEMF9dyiK2H5/1SUtzH0JuVo51h2wPfgyo=",
-          "reserved": [198, 121, 208]
-        }
-      ],
-      "private_key": "0Ee/CUpBdSaYFfXKBlNnIJcP9kPW9R0e8QrAzyKYHGU=",
-      "tag": "\u26aa\ufe0fTehran",
-      "type": "wireguard",
-      "workers": 2
-    },
-    {
-      "address": [
-        "172.16.0.2/32",
-        "2606:4700:110:8836:f1c9:4393:9b37:3814/128"
-      ],
-      "detour": "\u26aa\ufe0fTehran",
-      "mtu": 1280,
-      "peers": [
-        {
-          "address": "188.114.99.22",
-          "allowed_ips": ["0.0.0.0/0", "::/0"],
-          "persistent_keepalive_interval": 30,
-          "port": 4233,
-          "public_key": "bmXOC+F1FxEMF9dyiK2H5/1SUtzH0JuVo51h2wPfgyo=",
-          "reserved": [18, 103, 147]
-        }
-      ],
-      "private_key": "4PTVn/704l9GkeaiBYDs7+EBduD40wpfn4DD+YR28mA=",
-      "tag": "\ud83d\udfe2Somewhere",
-      "type": "wireguard",
-      "workers": 2
-    }
-  ],
+  "endpoints": [],
   "experimental": {
     "cache_file": {
       "enabled": true
@@ -93,7 +51,10 @@
   },
   "inbounds": [
     {
-      "address": ["172.19.0.1/30", "fdfe:dcba:9876::1/126"],
+      "address": [
+        "172.19.0.1/30",
+        "fdfe:dcba:9876::1/126"
+      ],
       "auto_route": true,
       "endpoint_independent_nat": false,
       "mtu": 1500,
@@ -122,13 +83,20 @@
   "outbounds": [
     {
       "default": "auto",
-      "outbounds": ["auto", "\u26aa\ufe0fTehran", "\ud83d\udfe2Somewhere"],
+      "outbounds": [
+        "auto",
+        "\u26aa\ufe0fTehran",
+        "\ud83d\udfe2Somewhere"
+      ],
       "tag": "proxy",
       "type": "selector"
     },
     {
       "interval": "90s",
-      "outbounds": ["\u26aa\ufe0fTehran", "\ud83d\udfe2Somewhere"],
+      "outbounds": [
+        "\u26aa\ufe0fTehran",
+        "\ud83d\udfe2Somewhere"
+      ],
       "tag": "auto",
       "tolerance": 50,
       "type": "urltest",
