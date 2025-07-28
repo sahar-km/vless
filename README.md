@@ -1187,21 +1187,33 @@ for NikaNG
       "port": 10808,
       "protocol": "socks",
       "settings": { "auth": "noauth", "udp": true, "userLevel": 8 },
-      "sniffing": { "destOverride": ["http", "tls"], "enabled": true, "routeOnly": true },
+      "sniffing": {
+        "destOverride": ["http", "tls"],
+        "enabled": true,
+        "routeOnly": true
+      },
       "tag": "socks-in"
     },
     {
       "port": 10809,
       "protocol": "http",
       "settings": { "auth": "noauth", "udp": true, "userLevel": 8 },
-      "sniffing": { "destOverride": ["http", "tls"], "enabled": true, "routeOnly": true },
+      "sniffing": {
+        "destOverride": ["http", "tls"],
+        "enabled": true,
+        "routeOnly": true
+      },
       "tag": "http-in"
     },
     {
       "listen": "127.0.0.1",
       "port": 10853,
       "protocol": "dokodemo-door",
-      "settings": { "address": "1.1.1.1", "network": "tcp,udp", "port": 53 },
+      "settings": {
+        "address": "1.1.1.1",
+        "network": "tcp,udp",
+        "port": 53
+      },
       "tag": "dns-in"
     }
   ],
@@ -1209,7 +1221,10 @@ for NikaNG
     {
       "protocol": "wireguard",
       "settings": {
-        "address": ["172.16.0.2/32", "2606:4700:110:846c:e510:bfa1:ea9f:5247/128"],
+        "address": [
+          "172.16.0.2/32",
+          "2606:4700:110:846c:e510:bfa1:ea9f:5247/128"
+        ],
         "mtu": 1330,
         "peers": [
           {
@@ -1231,7 +1246,10 @@ for NikaNG
     {
       "protocol": "wireguard",
       "settings": {
-        "address": ["172.16.0.2/32", "2606:4700:110:846c:e510:bfa1:ea9f:5247/128"],
+        "address": [
+          "172.16.0.2/32",
+          "2606:4700:110:846c:e510:bfa1:ea9f:5247/128"
+        ],
         "mtu": 1330,
         "peers": [
           {
@@ -1251,19 +1269,50 @@ for NikaNG
     },
     { "protocol": "dns", "tag": "dns-out" },
     { "protocol": "freedom", "settings": {}, "tag": "direct" },
-    { "protocol": "blackhole", "settings": { "response": { "type": "http" } }, "tag": "block" }
+    {
+      "protocol": "blackhole",
+      "settings": { "response": { "type": "http" } },
+      "tag": "block"
+    }
   ],
   "policy": {
-    "levels": { "8": { "connIdle": 300, "downlinkOnly": 1, "handshake": 4, "uplinkOnly": 1 } },
-    "system": { "statsOutboundUplink": true, "statsOutboundDownlink": true }
+    "levels": {
+      "8": {
+        "connIdle": 300,
+        "downlinkOnly": 1,
+        "handshake": 4,
+        "uplinkOnly": 1
+      }
+    },
+    "system": {
+      "statsOutboundUplink": true,
+      "statsOutboundDownlink": true
+    }
   },
   "routing": {
     "domainStrategy": "IPIfNonMatch",
     "rules": [
-      { "inboundTag": ["dns-in"], "outboundTag": "dns-out", "type": "field" },
-      { "ip": ["8.8.8.8"], "outboundTag": "direct", "port": "53", "type": "field" },
-      { "domain": ["geosite:category-ir", "domain:.ir"], "outboundTag": "direct", "type": "field" },
-      { "ip": ["geoip:ir", "geoip:private"], "outboundTag": "direct", "type": "field" },
+      {
+        "inboundTag": ["dns-in"],
+        "outboundTag": "dns-out",
+        "type": "field"
+      },
+      {
+        "ip": ["8.8.8.8"],
+        "outboundTag": "direct",
+        "port": "53",
+        "type": "field"
+      },
+      {
+        "domain": ["geosite:category-ir", "domain:.ir"],
+        "outboundTag": "direct",
+        "type": "field"
+      },
+      {
+        "ip": ["geoip:ir", "geoip:private"],
+        "outboundTag": "direct",
+        "type": "field"
+      },
       {
         "domain": ["geosite:category-ads-all", "geosite:category-ads-ir"],
         "outboundTag": "block",

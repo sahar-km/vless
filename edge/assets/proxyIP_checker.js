@@ -1,112 +1,135 @@
-import { connect } from 'cloudflare:sockets';
+import { connect } from 'cloudflare:sockets'
 
 /**
  *  Server-Side Helper Functions
  */
 
 async function doubleHash(text) {
-  const encoder = new TextEncoder();
-  const firstHashBuffer = await crypto.subtle.digest('MD5', encoder.encode(text));
-  const firstHashArray = Array.from(new Uint8Array(firstHashBuffer));
-  const firstHex = firstHashArray.map(byte => byte.toString(16).padStart(2, '0')).join('');
-  const secondHashBuffer = await crypto.subtle.digest('MD5', encoder.encode(firstHex.slice(7, 27)));
-  const secondHashArray = Array.from(new Uint8Array(secondHashBuffer));
-  const secondHex = secondHashArray.map(byte => byte.toString(16).padStart(2, '0')).join('');
-  return secondHex.toLowerCase();
+  const encoder = new TextEncoder()
+  const firstHashBuffer = await crypto.subtle.digest(
+    'MD5',
+    encoder.encode(text)
+  )
+  const firstHashArray = Array.from(new Uint8Array(firstHashBuffer))
+  const firstHex = firstHashArray
+    .map(byte => byte.toString(16).padStart(2, '0'))
+    .join('')
+  const secondHashBuffer = await crypto.subtle.digest(
+    'MD5',
+    encoder.encode(firstHex.slice(7, 27))
+  )
+  const secondHashArray = Array.from(new Uint8Array(secondHashBuffer))
+  const secondHex = secondHashArray
+    .map(byte => byte.toString(16).padStart(2, '0'))
+    .join('')
+  return secondHex.toLowerCase()
 }
 
 function simpleHash(str) {
-  let hash = 0;
-  if (str.length === 0) return hash.toString();
+  let hash = 0
+  if (str.length === 0) return hash.toString()
   for (let i = 0; i < str.length; i++) {
-    const char = str.charCodeAt(i);
-    hash = (hash << 5) - hash + char;
-    hash |= 0;
+    const char = str.charCodeAt(i)
+    hash = (hash << 5) - hash + char
+    hash |= 0
   }
-  return hash.toString();
+  return hash.toString()
 }
 
 async function resolveDomain(domain) {
-  domain = domain.includes(':') ? domain.split(':')[0] : domain;
+  domain = domain.includes(':') ? domain.split(':')[0] : domain
   try {
     const [ipv4Response, ipv6Response] = await Promise.all([
       fetch(`https://1.1.1.1/dns-query?name=${domain}&type=A`, {
-        headers: { Accept: 'application/dns-json' },
+        headers: { Accept: 'application/dns-json' }
       }),
       fetch(`https://1.1.1.1/dns-query?name=${domain}&type=AAAA`, {
-        headers: { Accept: 'application/dns-json' },
-      }),
-    ]);
+        headers: { Accept: 'application/dns-json' }
+      })
+    ])
     if (!ipv4Response.ok && !ipv6Response.ok)
-      throw new Error('DNS query failed for both IPv4 and IPv6.');
+      throw new Error('DNS query failed for both IPv4 and IPv6.')
 
-    const ipv4Data = ipv4Response.ok ? await ipv4Response.json() : {};
-    const ipv6Data = ipv6Response.ok ? await ipv6Response.json() : {};
+    const ipv4Data = ipv4Response.ok ? await ipv4Response.json() : {}
+    const ipv6Data = ipv6Response.ok ? await ipv6Response.json() : {}
 
-    const ips = [];
-    if (ipv4Data.Answer) ips.push(...ipv4Data.Answer.filter(r => r.type === 1).map(r => r.data));
+    const ips = []
+    if (ipv4Data.Answer)
+      ips.push(
+        ...ipv4Data.Answer.filter(r => r.type === 1).map(r => r.data)
+      )
     if (ipv6Data.Answer)
-      ips.push(...ipv6Data.Answer.filter(r => r.type === 28).map(r => `[${r.data}]`));
-    if (ips.length === 0) throw new Error('No A or AAAA records found for this domain.');
-    return ips;
+      ips.push(
+        ...ipv6Data.Answer.filter(r => r.type === 28).map(
+          r => `[${r.data}]`
+        )
+      )
+    if (ips.length === 0)
+      throw new Error('No A or AAAA records found for this domain.')
+    return ips
   } catch (error) {
-    throw new Error(`DNS resolution failed: ${error.message}`);
+    throw new Error(`DNS resolution failed: ${error.message}`)
   }
 }
 
 async function checkProxyIP(proxyIP) {
-  let portRemote = 443;
-  let hostToCheck = proxyIP;
+  let portRemote = 443
+  let hostToCheck = proxyIP
 
   if (proxyIP.includes('.tp')) {
-    const portMatch = proxyIP.match(/\.tp(\d+)\./);
-    if (portMatch) portRemote = parseInt(portMatch[1], 10);
-    hostToCheck = proxyIP.split('.tp')[0];
+    const portMatch = proxyIP.match(/\.tp(\d+)\./)
+    if (portMatch) portRemote = parseInt(portMatch[1], 10)
+    hostToCheck = proxyIP.split('.tp')[0]
   } else if (proxyIP.includes('[') && proxyIP.includes(']:')) {
-    portRemote = parseInt(proxyIP.split(']:')[1], 10);
-    hostToCheck = proxyIP.split(']:')[0] + ']';
+    portRemote = parseInt(proxyIP.split(']:')[1], 10)
+    hostToCheck = proxyIP.split(']:')[0] + ']'
   } else if (proxyIP.includes(':') && !proxyIP.startsWith('[')) {
-    const parts = proxyIP.split(':');
+    const parts = proxyIP.split(':')
     if (parts.length === 2 && parts[0].includes('.')) {
-      hostToCheck = parts[0];
-      portRemote = parseInt(parts[1], 10) || 443;
+      hostToCheck = parts[0]
+      portRemote = parseInt(parts[1], 10) || 443
     }
   }
 
-  let tcpSocket;
+  let tcpSocket
   try {
-    tcpSocket = connect({ hostname: hostToCheck.replace(/\[|\]/g, ''), port: portRemote });
-    const writer = tcpSocket.writable.getWriter();
+    tcpSocket = connect({
+      hostname: hostToCheck.replace(/\[|\]/g, ''),
+      port: portRemote
+    })
+    const writer = tcpSocket.writable.getWriter()
     const httpRequest =
-      'GET /cdn-cgi/trace HTTP/1.1\r\nHost: speed.cloudflare.com\r\nUser-Agent: checkip/mehdi/\r\nConnection: close\r\n\r\n';
-    await writer.write(new TextEncoder().encode(httpRequest));
+      'GET /cdn-cgi/trace HTTP/1.1\r\nHost: speed.cloudflare.com\r\nUser-Agent: checkip/mehdi/\r\nConnection: close\r\n\r\n'
+    await writer.write(new TextEncoder().encode(httpRequest))
 
-    const reader = tcpSocket.readable.getReader();
-    let responseData = new Uint8Array(0);
+    const reader = tcpSocket.readable.getReader()
+    let responseData = new Uint8Array(0)
     const timeout = new Promise((_, reject) =>
-      setTimeout(() => reject(new Error('Timeout')), 5000),
-    );
+      setTimeout(() => reject(new Error('Timeout')), 5000)
+    )
 
     while (responseData.length < 4096) {
-      const { value, done } = await Promise.race([reader.read(), timeout]);
-      if (done) break;
+      const { value, done } = await Promise.race([reader.read(), timeout])
+      if (done) break
       if (value) {
-        const newData = new Uint8Array(responseData.length + value.length);
-        newData.set(responseData);
-        newData.set(value, responseData.length);
-        responseData = newData;
-        if (new TextDecoder().decode(responseData).includes('\r\n\r\n')) break;
+        const newData = new Uint8Array(responseData.length + value.length)
+        newData.set(responseData)
+        newData.set(value, responseData.length)
+        responseData = newData
+        if (new TextDecoder().decode(responseData).includes('\r\n\r\n'))
+          break
       }
     }
 
-    const responseText = new TextDecoder().decode(responseData);
-    const statusMatch = responseText.match(/^HTTP\/\d\.\d\s+(\d+)/i);
-    const statusCode = statusMatch ? parseInt(statusMatch[1], 10) : null;
+    const responseText = new TextDecoder().decode(responseData)
+    const statusMatch = responseText.match(/^HTTP\/\d\.\d\s+(\d+)/i)
+    const statusCode = statusMatch ? parseInt(statusMatch[1], 10) : null
     const isSuccessful =
       statusCode !== null &&
       responseText.includes('cloudflare') &&
-      (responseText.includes('plain HTTP request') || responseText.includes('400 Bad Request')) &&
-      responseData.length > 100;
+      (responseText.includes('plain HTTP request') ||
+        responseText.includes('400 Bad Request')) &&
+      responseData.length > 100
 
     return {
       success: isSuccessful,
@@ -114,20 +137,20 @@ async function checkProxyIP(proxyIP) {
       portRemote,
       statusCode,
       responseSize: responseData.length,
-      timestamp: new Date().toISOString(),
-    };
+      timestamp: new Date().toISOString()
+    }
   } catch (error) {
     return {
       success: false,
       proxyIP: hostToCheck,
       portRemote,
       timestamp: new Date().toISOString(),
-      error: error.message,
-    };
+      error: error.message
+    }
   } finally {
     if (tcpSocket) {
       try {
-        await tcpSocket.close();
+        await tcpSocket.close()
       } catch (e) {}
     }
   }
@@ -136,48 +159,61 @@ async function checkProxyIP(proxyIP) {
 async function getIpInfo(ip) {
   try {
     const response = await fetch(
-      `http://ip-api.com/json/${ip}?fields=status,message,country,countryCode,as&lang=en`,
-    );
-    if (!response.ok) return { country: 'N/A', countryCode: 'N/A', as: 'N/A' };
-    const data = await response.json();
-    if (data.status === 'fail') return { country: 'N/A', countryCode: 'N/A', as: 'N/A' };
-    return data;
+      `http://ip-api.com/json/${ip}?fields=status,message,country,countryCode,as&lang=en`
+    )
+    if (!response.ok)
+      return { country: 'N/A', countryCode: 'N/A', as: 'N/A' }
+    const data = await response.json()
+    if (data.status === 'fail')
+      return { country: 'N/A', countryCode: 'N/A', as: 'N/A' }
+    return data
   } catch (e) {
-    return { country: 'N/A', countryCode: 'N/A', as: 'N/A' };
+    return { country: 'N/A', countryCode: 'N/A', as: 'N/A' }
   }
 }
 
 function parseIPRangeServer(rangeInput) {
-  const ips = [];
-  const cidrMatch = rangeInput.match(/^(\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3})\/24$/);
-  const rangeMatch = rangeInput.match(/^(\d{1,3}\.\d{1,3}\.\d{1,3}\.)(\d{1,3})-(\d{1,3})$/);
+  const ips = []
+  const cidrMatch = rangeInput.match(
+    /^(\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3})\/24$/
+  )
+  const rangeMatch = rangeInput.match(
+    /^(\d{1,3}\.\d{1,3}\.\d{1,3}\.)(\d{1,3})-(\d{1,3})$/
+  )
 
   if (cidrMatch) {
-    const prefix = cidrMatch[1].substring(0, cidrMatch[1].lastIndexOf('.'));
-    for (let i = 0; i <= 255; i++) ips.push(`${prefix}.${i}`);
+    const prefix = cidrMatch[1].substring(0, cidrMatch[1].lastIndexOf('.'))
+    for (let i = 0; i <= 255; i++) ips.push(`${prefix}.${i}`)
   } else if (rangeMatch) {
-    const prefix = rangeMatch[1];
-    const start = parseInt(rangeMatch[2], 10);
-    const end = parseInt(rangeMatch[3], 10);
-    if (!isNaN(start) && !isNaN(end) && start <= end && start >= 0 && end <= 255) {
-      for (let i = start; i <= end; i++) ips.push(`${prefix}${i}`);
+    const prefix = rangeMatch[1]
+    const start = parseInt(rangeMatch[2], 10)
+    const end = parseInt(rangeMatch[3], 10)
+    if (
+      !isNaN(start) &&
+      !isNaN(end) &&
+      start <= end &&
+      start >= 0 &&
+      end <= 255
+    ) {
+      for (let i = start; i <= end; i++) ips.push(`${prefix}${i}`)
     }
   }
-  return ips;
+  return ips
 }
 
-const forgivingIPv4Regex = /\b(?:\d{1,3}\.){3}\d{1,3}\b/g;
-const ipv6Regex = /(?:[A-F0-9]{1,4}:){7}[A-F0-9]{1,4}|\[(?:[A-F0-9]{1,4}:){7}[A-F0-9]{1,4}\]/gi;
+const forgivingIPv4Regex = /\b(?:\d{1,3}\.){3}\d{1,3}\b/g
+const ipv6Regex =
+  /(?:[A-F0-9]{1,4}:){7}[A-F0-9]{1,4}|\[(?:[A-F0-9]{1,4}:){7}[A-F0-9]{1,4}\]/gi
 
 // --- HTML Page Generators ---
 function generateDomainCheckPageHTML({ domains, temporaryTOKEN }) {
-  const domainsJson = JSON.stringify(domains);
+  const domainsJson = JSON.stringify(domains)
   const domainsHTML = domains
     .map(
       domain =>
-        `<div><strong>Domain:</strong> <span class="range-tag" onclick="copyToClipboard('${domain}', this)">${domain}</span></div>`,
+        `<div><strong>Domain:</strong> <span class="range-tag" onclick="copyToClipboard('${domain}', this)">${domain}</span></div>`
     )
-    .join('');
+    .join('')
 
   return `<!DOCTYPE html>
 <html lang="en">
@@ -331,7 +367,7 @@ function generateDomainCheckPageHTML({ domains, temporaryTOKEN }) {
         });
     </script>
 </body>
-</html>`;
+</html>`
 }
 
 function generateClientSideCheckPageHTML({
@@ -341,24 +377,24 @@ function generateClientSideCheckPageHTML({
   ipsToCheck,
   temporaryTOKEN,
   pageType,
-  contentHash,
+  contentHash
 }) {
-  const ipsJson = JSON.stringify(ipsToCheck);
-  let subtitleHTML = '';
+  const ipsJson = JSON.stringify(ipsToCheck)
+  let subtitleHTML = ''
   if (subtitleLabel && subtitleContent) {
     if (pageType === 'file') {
-      subtitleHTML = `<div class="ranges-list"><strong>${subtitleLabel}</strong> <a href="${subtitleContent}" class="range-tag" target="_blank" rel="noopener noreferrer">${subtitleContent}</a></div>`;
+      subtitleHTML = `<div class="ranges-list"><strong>${subtitleLabel}</strong> <a href="${subtitleContent}" class="range-tag" target="_blank" rel="noopener noreferrer">${subtitleContent}</a></div>`
     } else if (pageType === 'iprange') {
       const ranges = subtitleContent
         .split(',')
         .map(
           r =>
-            `<span class="range-tag" onclick="copyToClipboard('${r.trim()}', this)">${r.trim()}</span>`,
+            `<span class="range-tag" onclick="copyToClipboard('${r.trim()}', this)">${r.trim()}</span>`
         )
-        .join('<br>');
-      subtitleHTML = `<div class="ranges-list"><strong>${subtitleLabel}</strong><br>${ranges}</div>`;
+        .join('<br>')
+      subtitleHTML = `<div class="ranges-list"><strong>${subtitleLabel}</strong><br>${ranges}</div>`
     } else {
-      subtitleHTML = `<div class="ranges-list"><strong>${subtitleLabel}</strong> <span class="range-tag">${subtitleContent}</span></div>`;
+      subtitleHTML = `<div class="ranges-list"><strong>${subtitleLabel}</strong> <span class="range-tag">${subtitleContent}</span></div>`
     }
   }
 
@@ -534,7 +570,7 @@ function generateClientSideCheckPageHTML({
         });
     </script>
 </body>
-</html>`;
+</html>`
 }
 // --- Client-Side Script for Main Page ---
 const CLIENT_SCRIPT = `
@@ -908,11 +944,11 @@ const CLIENT_SCRIPT = `
             </div>\`
         ).join('');
     }
-`;
+`
 
 // --- Main HTML Generation ---
 function generateMainHTML(faviconURL) {
-  const year = new Date().getFullYear();
+  const year = new Date().getFullYear()
   const countries = {
     ALL: 'All Countries',
     AE: 'United Arab Emirates',
@@ -977,30 +1013,30 @@ function generateMainHTML(faviconURL) {
     UA: 'Ukraine',
     US: 'United States',
     UZ: 'Uzbekistan',
-    VN: 'Vietnam',
-  };
+    VN: 'Vietnam'
+  }
 
   const allCountriesButtonImage =
-    'https://raw.githubusercontent.com/mehdi-hexing/Get-Github-Achievements/main/527112cc-4097-432b-b30c-0b9657451c5f.jpg';
-  const allCountriesURL = `https://raw.githubusercontent.com/NiREvil/vless/main/sub/country_proxies/02_proxies.csv`;
-  const countryFileBaseURL = `https://raw.githubusercontent.com/NiREvil/vless/main/sub/country_proxies/`;
+    'https://raw.githubusercontent.com/mehdi-hexing/Get-Github-Achievements/main/527112cc-4097-432b-b30c-0b9657451c5f.jpg'
+  const allCountriesURL = `https://raw.githubusercontent.com/NiREvil/vless/main/sub/country_proxies/02_proxies.csv`
+  const countryFileBaseURL = `https://raw.githubusercontent.com/NiREvil/vless/main/sub/country_proxies/`
 
   let countryButtonsHTML = `
     <div class="country-item">
         <a href="/file/${encodeURIComponent(allCountriesURL)}" class="country-button" style="background-image: url('${allCountriesButtonImage}');"></a>
         <p class="country-name">${countries['ALL']}</p>
     </div>
-  `;
+  `
 
   for (const code in countries) {
-    if (code === 'ALL') continue;
-    const fileUrl = `${countryFileBaseURL}${code.toUpperCase()}.txt`;
+    if (code === 'ALL') continue
+    const fileUrl = `${countryFileBaseURL}${code.toUpperCase()}.txt`
     countryButtonsHTML += `
         <div class="country-item">
             <a href="/file/${encodeURIComponent(fileUrl)}" class="country-button" style="background-image: url('https://flagcdn.com/${code.toLowerCase()}.svg');"></a>
             <p class="country-name">${countries[code]}</p>
         </div>
-      `;
+      `
   }
 
   return `<!DOCTYPE html>
@@ -1075,31 +1111,36 @@ function generateMainHTML(faviconURL) {
   </button>
   <script src="/client.js"></script>
 </body>
-</html>`;
+</html>`
 }
 
 // --- Main Fetch Handler ---
 export default {
   async fetch(request, env, ctx) {
-    const url = new URL(request.url);
-    const path = url.pathname;
-    const UA = request.headers.get('User-Agent') || 'null';
-    const hostname = url.hostname;
+    const url = new URL(request.url)
+    const path = url.pathname
+    const UA = request.headers.get('User-Agent') || 'null'
+    const hostname = url.hostname
 
     if (path.toLowerCase().startsWith('/domain/')) {
-      const domains_string = decodeURIComponent(path.substring('/domain/'.length));
+      const domains_string = decodeURIComponent(
+        path.substring('/domain/'.length)
+      )
       const domains = domains_string
         .split(',')
         .map(s => s.trim())
-        .filter(Boolean);
+        .filter(Boolean)
       if (domains.length === 0) {
-        return new Response('No domains provided', { status: 400 });
+        return new Response('No domains provided', { status: 400 })
       }
-      const timestamp = Math.ceil(new Date().getTime() / (1000 * 60 * 31));
-      const temporaryTOKEN = await doubleHash(hostname + timestamp + UA);
-      return new Response(generateDomainCheckPageHTML({ domains, temporaryTOKEN }), {
-        headers: { 'Content-Type': 'text/html;charset=UTF-8' },
-      });
+      const timestamp = Math.ceil(new Date().getTime() / (1000 * 60 * 31))
+      const temporaryTOKEN = await doubleHash(hostname + timestamp + UA)
+      return new Response(
+        generateDomainCheckPageHTML({ domains, temporaryTOKEN }),
+        {
+          headers: { 'Content-Type': 'text/html;charset=UTF-8' }
+        }
+      )
     }
 
     if (
@@ -1107,68 +1148,80 @@ export default {
       path.toLowerCase().startsWith('/iprange/') ||
       path.toLowerCase().startsWith('/proxyip/')
     ) {
-      const timestamp = Math.ceil(new Date().getTime() / (1000 * 60 * 31));
-      const temporaryTOKEN = await doubleHash(hostname + timestamp + UA);
-      let ipsToCheck = [];
-      let options = {};
-      let pageType = '';
-      let contentHash = '';
+      const timestamp = Math.ceil(new Date().getTime() / (1000 * 60 * 31))
+      const temporaryTOKEN = await doubleHash(hostname + timestamp + UA)
+      let ipsToCheck = []
+      let options = {}
+      let pageType = ''
+      let contentHash = ''
 
       if (path.toLowerCase().startsWith('/proxyip/')) {
-        pageType = 'proxyip';
-        const ips_string = decodeURIComponent(path.substring('/proxyip/'.length));
+        pageType = 'proxyip'
+        const ips_string = decodeURIComponent(
+          path.substring('/proxyip/'.length)
+        )
         ipsToCheck = ips_string
           .split(',')
           .map(s => s.trim())
-          .filter(Boolean);
-        contentHash = simpleHash(ipsToCheck.join(''));
+          .filter(Boolean)
+        contentHash = simpleHash(ipsToCheck.join(''))
         options = {
           title: "Proxy IP's Results:",
           subtitleLabel: 'IPs:',
-          subtitleContent: ips_string,
-        };
+          subtitleContent: ips_string
+        }
       } else if (path.toLowerCase().startsWith('/iprange/')) {
-        pageType = 'iprange';
-        const ranges_string = decodeURIComponent(path.substring('/iprange/'.length));
-        ipsToCheck = ranges_string.split(',').flatMap(range => parseIPRangeServer(range.trim()));
-        contentHash = simpleHash(ipsToCheck.join(''));
+        pageType = 'iprange'
+        const ranges_string = decodeURIComponent(
+          path.substring('/iprange/'.length)
+        )
+        ipsToCheck = ranges_string
+          .split(',')
+          .flatMap(range => parseIPRangeServer(range.trim()))
+        contentHash = simpleHash(ipsToCheck.join(''))
         options = {
           title: "IP Range's Results:",
           subtitleLabel: "Range's:",
-          subtitleContent: ranges_string,
-        };
+          subtitleContent: ranges_string
+        }
       } else {
         // /file/ path
-        pageType = 'file';
+        pageType = 'file'
         const targetUrl = decodeURIComponent(
-          request.url.substring(request.url.indexOf('/file/') + 6),
-        );
+          request.url.substring(request.url.indexOf('/file/') + 6)
+        )
         if (!targetUrl || !targetUrl.startsWith('http'))
-          return new Response('Invalid URL', { status: 400 });
+          return new Response('Invalid URL', { status: 400 })
         try {
           const response = await fetch(targetUrl, {
-            headers: { 'User-Agent': 'ProxyChecker/1.0' },
-          });
-          if (!response.ok) throw new Error(`Fetch failed: ${response.statusText}`);
-          const text = await response.text();
-          contentHash = simpleHash(text);
+            headers: { 'User-Agent': 'ProxyChecker/1.0' }
+          })
+          if (!response.ok)
+            throw new Error(`Fetch failed: ${response.statusText}`)
+          const text = await response.text()
+          contentHash = simpleHash(text)
           const foundIPs = [
             ...new Set([
               ...(text.match(forgivingIPv4Regex) || []),
-              ...(text.match(ipv6Regex) || []),
-            ]),
-          ];
+              ...(text.match(ipv6Regex) || [])
+            ])
+          ]
           ipsToCheck = foundIPs.filter(ip => {
-            const parts = ip.split(':');
-            return parts.length === 1 || !isNaN(parseInt(parts[parts.length - 1]));
-          });
+            const parts = ip.split(':')
+            return (
+              parts.length === 1 ||
+              !isNaN(parseInt(parts[parts.length - 1]))
+            )
+          })
           options = {
             title: 'File Test Results:',
             subtitleLabel: 'File Link Address:',
-            subtitleContent: targetUrl,
-          };
+            subtitleContent: targetUrl
+          }
         } catch (e) {
-          return new Response(`Error processing file: ${e.message}`, { status: 500 });
+          return new Response(`Error processing file: ${e.message}`, {
+            status: 500
+          })
         }
       }
       return new Response(
@@ -1177,109 +1230,149 @@ export default {
           ipsToCheck,
           temporaryTOKEN,
           pageType,
-          contentHash,
+          contentHash
         }),
-        { headers: { 'Content-Type': 'text/html;charset=UTF-8' } },
-      );
+        { headers: { 'Content-Type': 'text/html;charset=UTF-8' } }
+      )
     }
 
     if (path === '/client.js') {
       return new Response(CLIENT_SCRIPT, {
-        headers: { 'Content-Type': 'application/javascript;charset=UTF-8' },
-      });
+        headers: { 'Content-Type': 'application/javascript;charset=UTF-8' }
+      })
     }
 
     if (path.toLowerCase().startsWith('/api/')) {
-      const timestampForToken = Math.ceil(new Date().getTime() / (1000 * 60 * 31));
-      const temporaryTOKEN = await doubleHash(hostname + timestampForToken + UA);
-      const permanentTOKEN = env.TOKEN || temporaryTOKEN;
+      const timestampForToken = Math.ceil(
+        new Date().getTime() / (1000 * 60 * 31)
+      )
+      const temporaryTOKEN = await doubleHash(
+        hostname + timestampForToken + UA
+      )
+      const permanentTOKEN = env.TOKEN || temporaryTOKEN
 
       const isTokenValid = () => {
-        if (!env.TOKEN) return true;
-        const providedToken = url.searchParams.get('token');
-        return providedToken === permanentTOKEN || providedToken === temporaryTOKEN;
-      };
+        if (!env.TOKEN) return true
+        const providedToken = url.searchParams.get('token')
+        return (
+          providedToken === permanentTOKEN ||
+          providedToken === temporaryTOKEN
+        )
+      }
 
       if (path.toLowerCase() === '/api/get-token') {
         return new Response(JSON.stringify({ token: temporaryTOKEN }), {
-          headers: { 'Content-Type': 'application/json' },
-        });
+          headers: { 'Content-Type': 'application/json' }
+        })
       }
 
       if (!isTokenValid()) {
-        return new Response(JSON.stringify({ status: 'error', message: 'Invalid TOKEN' }), {
-          status: 403,
-          headers: { 'Content-Type': 'application/json' },
-        });
+        return new Response(
+          JSON.stringify({ status: 'error', message: 'Invalid TOKEN' }),
+          {
+            status: 403,
+            headers: { 'Content-Type': 'application/json' }
+          }
+        )
       }
 
       if (path.toLowerCase() === '/api/check') {
-        const proxyIPInput = url.searchParams.get('proxyip');
+        const proxyIPInput = url.searchParams.get('proxyip')
         if (!proxyIPInput)
           return new Response(
-            JSON.stringify({ success: false, error: 'Missing proxyip parameter' }),
-            { status: 400, headers: { 'Content-Type': 'application/json' } },
-          );
-        const result = await checkProxyIP(proxyIPInput);
+            JSON.stringify({
+              success: false,
+              error: 'Missing proxyip parameter'
+            }),
+            {
+              status: 400,
+              headers: { 'Content-Type': 'application/json' }
+            }
+          )
+        const result = await checkProxyIP(proxyIPInput)
         return new Response(JSON.stringify(result), {
           status: 200,
-          headers: { 'Content-Type': 'application/json' },
-        });
+          headers: { 'Content-Type': 'application/json' }
+        })
       }
 
       if (path.toLowerCase() === '/api/resolve') {
-        const domain = url.searchParams.get('domain');
+        const domain = url.searchParams.get('domain')
         if (!domain)
           return new Response(
-            JSON.stringify({ success: false, error: 'Missing domain parameter' }),
-            { status: 400, headers: { 'Content-Type': 'application/json' } },
-          );
+            JSON.stringify({
+              success: false,
+              error: 'Missing domain parameter'
+            }),
+            {
+              status: 400,
+              headers: { 'Content-Type': 'application/json' }
+            }
+          )
         try {
-          const ips = await resolveDomain(domain);
-          return new Response(JSON.stringify({ success: true, domain, ips }), {
-            headers: { 'Content-Type': 'application/json' },
-          });
+          const ips = await resolveDomain(domain)
+          return new Response(
+            JSON.stringify({ success: true, domain, ips }),
+            {
+              headers: { 'Content-Type': 'application/json' }
+            }
+          )
         } catch (error) {
-          return new Response(JSON.stringify({ success: false, error: error.message }), {
-            status: 500,
-            headers: { 'Content-Type': 'application/json' },
-          });
+          return new Response(
+            JSON.stringify({ success: false, error: error.message }),
+            {
+              status: 500,
+              headers: { 'Content-Type': 'application/json' }
+            }
+          )
         }
       }
 
       if (path.toLowerCase() === '/api/ip-info') {
-        let ip = url.searchParams.get('ip') || request.headers.get('CF-Connecting-IP');
+        let ip =
+          url.searchParams.get('ip') ||
+          request.headers.get('CF-Connecting-IP')
         if (!ip)
           return new Response(
-            JSON.stringify({ success: false, error: 'IP parameter not provided' }),
-            { status: 400, headers: { 'Content-Type': 'application/json' } },
-          );
-        if (ip.includes('[')) ip = ip.replace(/\[|\]/g, '');
-        const data = await getIpInfo(ip);
+            JSON.stringify({
+              success: false,
+              error: 'IP parameter not provided'
+            }),
+            {
+              status: 400,
+              headers: { 'Content-Type': 'application/json' }
+            }
+          )
+        if (ip.includes('[')) ip = ip.replace(/\[|\]/g, '')
+        const data = await getIpInfo(ip)
         return new Response(JSON.stringify(data), {
-          headers: { 'Content-Type': 'application/json' },
-        });
+          headers: { 'Content-Type': 'application/json' }
+        })
       }
 
-      return new Response(JSON.stringify({ success: false, error: 'API route not found' }), {
-        status: 404,
-        headers: { 'Content-Type': 'application/json' },
-      });
+      return new Response(
+        JSON.stringify({ success: false, error: 'API route not found' }),
+        {
+          status: 404,
+          headers: { 'Content-Type': 'application/json' }
+        }
+      )
     }
 
     const faviconURL =
-      env.ICO || 'https://github.com/user-attachments/assets/31a6ced0-62b8-429f-a98e-082ea5ac1990';
+      env.ICO ||
+      'https://github.com/user-attachments/assets/31a6ced0-62b8-429f-a98e-082ea5ac1990'
 
     if (path.toLowerCase() === '/favicon.ico') {
-      return Response.redirect(faviconURL, 302);
+      return Response.redirect(faviconURL, 302)
     }
 
     if (path === '/') {
       return new Response(generateMainHTML(faviconURL), {
-        headers: { 'content-type': 'text/html;charset=UTF-8' },
-      });
+        headers: { 'content-type': 'text/html;charset=UTF-8' }
+      })
     }
 
-    return new Response('Not Found', { status: 404 });
-  },
-};
+    return new Response('Not Found', { status: 404 })
+  }
+}

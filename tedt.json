@@ -13,10 +13,7 @@
       },
       {
         "server": "proxy-dns",
-        "source_ip_cidr": [
-          "172.19.0.1/30",
-          "fdfe:dcba:9876::1/126"
-        ]
+        "source_ip_cidr": ["172.19.0.1/30", "fdfe:dcba:9876::1/126"]
       },
       {
         "clash_mode": "Global",
@@ -25,8 +22,8 @@
     ],
     "servers": [
       {
-        "server": "1.1.1.1",
         "detour": "proxy",
+        "server": "1.1.1.1",
         "tag": "proxy-dns",
         "type": "udp"
       },
@@ -54,18 +51,11 @@
       "peers": [
         {
           "address": "188.114.96.214",
-          "allowed_ips": [
-            "0.0.0.0/0",
-            "::/0"
-          ],
+          "allowed_ips": ["0.0.0.0/0", "::/0"],
           "persistent_keepalive_interval": 25,
           "port": 8854,
           "public_key": "bmXOC+F1FxEMF9dyiK2H5/1SUtzH0JuVo51h2wPfgyo=",
-          "reserved": [
-            105,
-            101,
-            49
-          ]
+          "reserved": [105, 101, 49]
         }
       ],
       "private_key": "mORijzxEE8Jdr1E5+lP8cOsV5AaRdCJoz7FZGsZbbEU=",
@@ -83,18 +73,11 @@
       "peers": [
         {
           "address": "188.114.99.22",
-          "allowed_ips": [
-            "0.0.0.0/0",
-            "::/0"
-          ],
+          "allowed_ips": ["0.0.0.0/0", "::/0"],
           "persistent_keepalive_interval": 25,
           "port": 4233,
           "public_key": "bmXOC+F1FxEMF9dyiK2H5/1SUtzH0JuVo51h2wPfgyo=",
-          "reserved": [
-            49,
-            172,
-            102
-          ]
+          "reserved": [49, 172, 102]
         }
       ],
       "private_key": "oKhf2LpEtorto5V8SbgfCngP9ABvOrQ4kHcW7c6if3c=",
@@ -110,10 +93,7 @@
   },
   "inbounds": [
     {
-      "address": [
-        "172.19.0.1/30",
-        "fdfe:dcba:9876::1/126"
-      ],
+      "address": ["172.19.0.1/30", "fdfe:dcba:9876::1/126"],
       "auto_route": true,
       "endpoint_independent_nat": false,
       "mtu": 1500,
@@ -142,20 +122,13 @@
   "outbounds": [
     {
       "default": "auto",
-      "outbounds": [
-        "auto",
-        "\u26aa\ufe0fTehran",
-        "\ud83d\udfe1Berlin"
-      ],
+      "outbounds": ["auto", "\u26aa\ufe0fTehran", "\ud83d\udfe1Berlin"],
       "tag": "proxy",
       "type": "selector"
     },
     {
       "interval": "90s",
-      "outbounds": [
-        "\u26aa\ufe0fTehran",
-        "\ud83d\udfe1Berlin"
-      ],
+      "outbounds": ["\u26aa\ufe0fTehran", "\ud83d\udfe1Berlin"],
       "tag": "auto",
       "tolerance": 50,
       "type": "urltest",

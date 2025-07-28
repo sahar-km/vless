@@ -75,10 +75,10 @@
   },
   "outbounds": [
     {
+      "default": "auto",
       "outbounds": ["auto", "direct"],
       "tag": "proxy",
-      "type": "selector",
-      "default": "auto"
+      "type": "selector"
     },
     {
       "interval": "5m0s",
@@ -98,42 +98,42 @@
     }
   ],
   "route": {
-    "final": "proxy",
     "auto_detect_interface": true,
+    "final": "proxy",
     "override_android_vpn": true,
     "rule_set": [
       {
         "download_detour": "direct",
-        "tag": "geosite-ads",
         "format": "binary",
+        "tag": "geosite-ads",
         "type": "remote",
         "url": "https://testingcf.jsdelivr.net/gh/MetaCubeX/meta-rules-dat@sing/geo/geosite/category-ads-all.srs"
       },
       {
         "download_detour": "direct",
-        "tag": "geosite-private",
         "format": "binary",
+        "tag": "geosite-private",
         "type": "remote",
         "url": "https://testingcf.jsdelivr.net/gh/MetaCubeX/meta-rules-dat@sing/geo/geosite/private.srs"
       },
       {
         "download_detour": "direct",
-        "tag": "geosite-ir",
         "format": "binary",
+        "tag": "geosite-ir",
         "type": "remote",
         "url": "https://testingcf.jsdelivr.net/gh/MetaCubeX/meta-rules-dat@sing/geo/geosite/category-ir.srs"
       },
       {
         "download_detour": "direct",
-        "tag": "geoip-private",
         "format": "binary",
+        "tag": "geoip-private",
         "type": "remote",
         "url": "https://testingcf.jsdelivr.net/gh/MetaCubeX/meta-rules-dat@sing/geo/geoip/private.srs"
       },
       {
         "download_detour": "direct",
-        "tag": "geoip-ir",
         "format": "binary",
+        "tag": "geoip-ir",
         "type": "remote",
         "url": "https://testingcf.jsdelivr.net/gh/MetaCubeX/meta-rules-dat@sing/geo/geoip/ir.srs"
       }
@@ -157,7 +157,12 @@
       },
       {
         "outbound": "direct",
-        "rule_set": ["geoip-private", "geosite-private", "geosite-ir", "geoip-ir"]
+        "rule_set": [
+          "geoip-private",
+          "geosite-private",
+          "geosite-ir",
+          "geoip-ir"
+        ]
       },
       {
         "outbound": "block",

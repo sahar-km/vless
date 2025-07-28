@@ -1,11 +1,11 @@
-import js from '@eslint/js';
-import globals from 'globals';
-import eslintPluginJsonc from 'eslint-plugin-jsonc';
-import jsoncParser from 'jsonc-eslint-parser';
-import eslintPluginYml from 'eslint-plugin-yml';
-import ymlParser from 'yaml-eslint-parser';
-import eslintPluginHtml from 'eslint-plugin-html';
-import eslintConfigPrettier from 'eslint-config-prettier';
+import js from '@eslint/js'
+import globals from 'globals'
+import eslintPluginJsonc from 'eslint-plugin-jsonc'
+import jsoncParser from 'jsonc-eslint-parser'
+import eslintPluginYml from 'eslint-plugin-yml'
+import ymlParser from 'yaml-eslint-parser'
+import eslintPluginHtml from 'eslint-plugin-html'
+import eslintConfigPrettier from 'eslint-config-prettier'
 
 export default [
   {
@@ -28,8 +28,8 @@ export default [
       'edge/all-in-one.js',
       'edge/LoadBalance.js',
       'real address generator/**',
-      'boringtun-boringtun-cli-0.5.2/**',
-    ],
+      'boringtun-boringtun-cli-0.5.2/**'
+    ]
   },
 
   js.configs.recommended,
@@ -41,8 +41,8 @@ export default [
       sourceType: 'module',
       globals: {
         ...globals.node,
-        ...globals.browser,
-      },
+        ...globals.browser
+      }
     },
     rules: {
       'no-unused-vars': 'warn',
@@ -55,49 +55,49 @@ export default [
           skipStrings: true,
           skipComments: false,
           skipRegExps: true,
-          skipTemplates: true,
-        },
-      ],
+          skipTemplates: true
+        }
+      ]
     },
 
     // ⚙️ JSON, JSONC, JSON5
     files: ['**/*.json', '**/*.jsonc', '**/*.json5'],
     plugins: {
-      jsonc: eslintPluginJsonc,
+      jsonc: eslintPluginJsonc
     },
     languageOptions: {
-      parser: jsoncParser,
+      parser: jsoncParser
     },
     rules: {
       ...eslintPluginJsonc.configs['recommended-with-jsonc'].rules,
-      'jsonc/sort-keys': 'error',
-    },
+      'jsonc/sort-keys': 'error'
+    }
   },
 
   {
     // ⚙️ YAML
     files: ['**/*.yaml', '**/*.yml'],
     plugins: {
-      yml: eslintPluginYml,
+      yml: eslintPluginYml
     },
     languageOptions: {
-      parser: ymlParser,
+      parser: ymlParser
     },
     rules: {
       ...eslintPluginYml.configs.standard.rules,
-      ...eslintPluginYml.configs.prettier.rules,
-    },
+      ...eslintPluginYml.configs.prettier.rules
+    }
   },
 
   {
     // ⚙️ HTML (For linting inside <script>)
     files: ['**/*.html'],
     plugins: {
-      html: eslintPluginHtml,
+      html: eslintPluginHtml
     },
     languageOptions: {
-      globals: { ...globals.browser },
+      globals: { ...globals.browser }
     },
-    rules: {},
-  },
-];
+    rules: {}
+  }
+]
