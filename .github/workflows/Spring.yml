@@ -6,12 +6,12 @@ on:
       - '**/spring.*'
       - 'edge/assets/singbox-template.json'
   schedule:
-    - cron: '0 */12 * * *'
+    - cron: '0 */6 * * *'
   workflow_dispatch:
 jobs:
   build:
     runs-on: ubuntu-24.04
-    timeout-minutes: 10
+    timeout-minutes: 15
     strategy:
       matrix:
         python-version: ['3.12']
@@ -33,7 +33,7 @@ jobs:
       - name: Install dependencies
         run: |
           python -m pip install --upgrade pip
-          # requirements.txt
+          pip install requests
       
       - name: Create log directory
         run: |
@@ -47,7 +47,23 @@ jobs:
         uses: actions/upload-artifact@v4
         with:
           name: spring-execution-log
-          path: edge/assets/logs/log.txt    
+          path: edge/assets/logs/log.txt
+      
+      - name: Upload debug log
+        uses: actions/upload-artifact@v4
+        with:
+          name: spring-debug-log
+          path: spring_debug.log
+      
+      - name: Check if Endpoints.csv was created
+        run: |
+          if [ -f edge/Endpoints.csv ]; then
+            echo "Endpoints.csv was created successfully"
+            head -5 edge/Endpoints.csv
+          else
+            echo "ERROR: Endpoints.csv was not created"
+            exit 1
+          fi
       
       - name: Commit and push if changed
         run: |
