@@ -8,17 +8,25 @@ import platform
 import subprocess
 import sys
 import shutil
+import requests  # اضافه کردن ماژول requests
 
-# Set up logging
-logging.basicConfig(level=logging.INFO, format='%(asctime)s - %(levelname)s - %(message)s')
+# تنظیم لاگینگ
+logging.basicConfig(
+    level=logging.INFO,
+    format='%(asctime)s - %(levelname)s - %(message)s',
+    handlers=[
+        logging.FileHandler("spring_debug.log"),
+        logging.StreamHandler()
+    ]
+)
 
-# Constants
+# ثابت‌ها
 IRAN_SYMBOL = "⚪️"
 FOREIGN_SYMBOL = "🟢"
 IR_TAG = f"{IRAN_SYMBOL}Tehran"
 SW_TAG = f"{FOREIGN_SYMBOL}Somewhere"
 
-# IPv4 prefixes associated with the CloudFlare WARP service
+# پیشوندهای IPv4 مرتبط با سرویس CloudFlare WARP
 warp_cidr = [
     "8.6.112.0/24",
     "8.34.70.0/24",
@@ -35,7 +43,7 @@ warp_cidr = [
     "188.114.99.0/24",
 ]
 
-# Paths
+# مسیرها
 script_directory = os.path.dirname(os.path.abspath(__file__))
 main_directory = os.path.dirname(script_directory)
 edge_directory = os.path.join(main_directory, "edge")
@@ -46,9 +54,9 @@ edge_result_path = os.path.join(edge_directory, "Endpoints.csv")
 main_singbox_path = os.path.join(main_directory, "sing-box.json")
 main_warp_path = os.path.join(main_directory, "warp.json")
 
-# Function to create required directories
+# تابع برای ایجاد دایرکتوری‌های مورد نیاز
 def create_directories():
-    """Create all required directories if they don't exist"""
+    """ایجاد تمام دایرکتوری‌های مورد نیاز در صورت عدم وجود"""
     directories = [
         edge_directory,
         edge_assets_directory,
@@ -59,16 +67,21 @@ def create_directories():
             os.makedirs(directory)
             logging.info(f"Created directory: {directory}")
 
-# Function to create list of IP addresses
+# تابع برای ایجاد لیست آدرس‌های IP
 def create_ips():
     logging.info("Creating Bestip.txt file...")
-    with open(edge_bestip_path, "w") as file:
-        for cidr in warp_cidr:
-            for addr in ipaddress.IPv4Network(cidr):
-                file.write(f"{addr}\n")
-    logging.info("Bestip.txt file created successfully!")
+    try:
+        with open(edge_bestip_path, "w") as file:
+            for cidr in warp_cidr:
+                for addr in ipaddress.IPv4Network(cidr):
+                    file.write(f"{addr}\n")
+        logging.info("Bestip.txt file created successfully!")
+        return True
+    except Exception as e:
+        logging.error(f"Error creating Bestip.txt: {e}")
+        return False
 
-# Function to determine architecture suffix
+# تابع برای تعیین پسوند معماری
 def arch_suffix():
     machine = platform.machine().lower()
     if machine.startswith("i386") or machine.startswith("i686"):
@@ -80,60 +93,72 @@ def arch_suffix():
     elif machine.startswith("s390x"):
         return "s390x"
     else:
+        logging.error(f"Unsupported CPU architecture: {machine}")
         raise ValueError(
             "Unsupported CPU architecture. Supported architectures are: i386, i686, x86_64, amd64, armv8, arm64, aarch64, s390x"
         )
 
-# Function to generate Hiddify config
+# تابع برای تولید کانفیگ Hiddify
 def export_Hiddify(t_ips):
-    config_prefix = f"warp://{t_ips[0]}?ifp=1-3&ifpm=m4#{IR_TAG}&&detour=warp://{t_ips[1]}?ifp=1-2&ifpm=m5#{SW_TAG}"
-    formatted_time = datetime.datetime.now().strftime("%A, %d %b %Y, %H:%M")
-    return config_prefix, formatted_time
+    try:
+        config_prefix = f"warp://{t_ips[0]}?ifp=1-3&ifpm=m4#{IR_TAG}&&detour=warp://{t_ips[1]}?ifp=1-2&ifpm=m5#{SW_TAG}"
+        formatted_time = datetime.datetime.now().strftime("%A, %d %b %Y, %H:%M")
+        return config_prefix, formatted_time
+    except Exception as e:
+        logging.error(f"Error generating Hiddify config: {e}")
+        return None, None
 
-# Function to generate Sing-box config
+# تابع برای تولید کانفیگ Sing-box
 def toSingBox(tag, clean_ip, detour):
     logging.info(f"Generating Warp config for {tag}")
     
-    # دانلود اسکریپت API
+    # دانلود اسکریپت API با استفاده از requests به جای subprocess
+    api_script_url = "https://gitlab.com/fscarmen/warp/-/raw/main/api.sh"
     api_script_path = "api.sh"
-    try:
-        subprocess.run(
-            ["wget", "-N", "https://gitlab.com/fscarmen/warp/-/raw/main/api.sh"], 
-            check=True, 
-            capture_output=True, 
-            text=True
-        )
-    except subprocess.CalledProcessError as e:
-        logging.error(f"Failed to download api.sh: {e}")
-        return None
     
-    # اجرای اسکریپت API بدون sudo
     try:
+        response = requests.get(api_script_url)
+        response.raise_for_status()
+        
+        with open(api_script_path, "w") as f:
+            f.write(response.text)
+        
         # تغییر مجوز فایل برای اجرا
         os.chmod(api_script_path, 0o755)
         
         # اجرای اسکریپت بدون sudo
-        prc = subprocess.run(
+        result = subprocess.run(
             ["bash", api_script_path, "-r"], 
             capture_output=True, 
-            text=True
+            text=True,
+            timeout=30  # افزودن تایم‌اوت برای جلوگیری از هنگ کردن
         )
         
-        if prc.returncode != 0:
-            logging.error(f"api.sh execution failed with return code {prc.returncode}")
-            logging.error(f"stderr: {prc.stderr}")
+        if result.returncode != 0:
+            logging.error(f"api.sh execution failed with return code {result.returncode}")
+            logging.error(f"stderr: {result.stderr}")
             return None
             
-        output = prc.stdout
+        output = result.stdout
         logging.info(f"api.sh executed successfully")
+        
+    except requests.RequestException as e:
+        logging.error(f"Failed to download api.sh: {e}")
+        return None
+    except subprocess.TimeoutExpired:
+        logging.error("api.sh execution timed out")
+        return None
     except Exception as e:
         logging.error(f"Error executing api.sh: {e}")
         return None
     finally:
         # حذف فایل موقت
         if os.path.exists(api_script_path):
-            os.remove(api_script_path)
-            logging.info("api.sh file removed.")
+            try:
+                os.remove(api_script_path)
+                logging.info("api.sh file removed.")
+            except Exception as e:
+                logging.warning(f"Failed to remove api.sh: {e}")
     
     if not output:
         logging.error("api.sh produced no output")
@@ -166,10 +191,10 @@ def toSingBox(tag, clean_ip, detour):
         return wg
     except (json.JSONDecodeError, KeyError) as e:
         logging.error(f"Error processing JSON data: {e}")
-        logging.error(f"Raw output: {output}")
+        logging.error(f"Raw output: {output[:500]}...")  # نمایش فقط 500 کاراکتر اول
         return None
 
-# Function to export Sing-box config
+# تابع برای صادرات کانفیگ Sing-box
 def export_SingBox(t_ips):
     template_path = os.path.join(edge_assets_directory, "singbox-template.json")
     if not os.path.exists(template_path):
@@ -184,7 +209,7 @@ def export_SingBox(t_ips):
         raise
     
     # اضافه کردن تگ‌ها به outbounds
-    if "outbounds" not in data or len(data["outbounds"]) < 2:
+    if "outbounds" not in data or len(data["outbounds") < 2:
         logging.error("Invalid template structure: missing or insufficient outbounds")
         raise ValueError("Invalid template structure")
         
@@ -215,7 +240,63 @@ def export_SingBox(t_ips):
         logging.error(f"Error saving Sing-box config: {e}")
         raise
 
-# Main function
+# تابع برای اجرای اسکن IP با استفاده از برنامه warp
+def scan_ips(warp_executable):
+    logging.info("Scanning IPs...")
+    try:
+        # اجرای برنامه warp با تایم‌اوت برای جلوگیری از هنگ کردن
+        result = subprocess.run(
+            [warp_executable], 
+            check=True, 
+            capture_output=True, 
+            text=True,
+            timeout=300,  # 5 دقیقه تایم‌اوت
+            cwd=edge_directory  # اجرا در دایرکتوری edge
+        )
+        logging.info("Warp executed successfully.")
+        logging.debug(f"Warp output: {result.stdout[:500]}...")  # نمایش فقط 500 کاراکتر اول
+        
+        # بررسی وجود فایل نتایج
+        if not os.path.exists(edge_result_path):
+            logging.error("Endpoints.csv was not generated by warp executable.")
+            raise FileNotFoundError("Endpoints.csv was not generated by warp executable.")
+        
+        return True
+    except subprocess.TimeoutExpired:
+        logging.error("Warp execution timed out")
+        return False
+    except subprocess.CalledProcessError as e:
+        logging.error(f"Error executing warp: {e}")
+        logging.error(f"stderr: {e.stderr}")
+        return False
+    except Exception as e:
+        logging.error(f"Unexpected error during IP scanning: {e}")
+        return False
+
+# تابع برای خواندن بهترین IPها از فایل نتایج
+def read_best_ips():
+    Bestip = []
+    try:
+        with open(edge_result_path, "r") as csv_file:
+            next(csv_file)  # پرش از هدر
+            for line in csv_file:
+                ip = line.split(",")[0].strip()
+                if ip:  # اطمینان از اینکه IP خالی نیست
+                    Bestip.append(ip)
+                    if len(Bestip) == 2:
+                        break
+    except Exception as e:
+        logging.error(f"Error reading Endpoints.csv: {e}")
+        return []
+    
+    if len(Bestip) < 2:
+        logging.error("Less than 2 clean IPs found in Endpoints.csv.")
+        return []
+    
+    logging.info(f"Selected IPs: {Bestip}")
+    return Bestip
+
+# تابع اصلی
 def main():
     try:
         # ایجاد دایرکتوری‌های مورد نیاز
@@ -225,7 +306,9 @@ def main():
         if os.path.exists(edge_bestip_path):
             logging.info("Bestip.txt file already exists.")
         else:
-            create_ips()
+            if not create_ips():
+                logging.error("Failed to create Bestip.txt")
+                sys.exit(1)
         
         # تعیین معماری سیستم
         arch = arch_suffix()
@@ -237,59 +320,39 @@ def main():
         warp_executable = os.path.join(edge_directory, "warp")
         
         try:
-            # دانلود با wget
-            subprocess.run(["wget", "-O", warp_executable, url], check=True)
+            # دانلود با استفاده از requests به جای subprocess
+            response = requests.get(url, stream=True)
+            response.raise_for_status()
+            
+            with open(warp_executable, "wb") as f:
+                for chunk in response.iter_content(chunk_size=8192):
+                    f.write(chunk)
+            
             # تنظیم مجوز اجرا
             os.chmod(warp_executable, 0o755)
             logging.info("Warp program downloaded successfully.")
-        except subprocess.CalledProcessError as e:
+        except requests.RequestException as e:
             logging.error(f"Failed to download warp program: {e}")
-            raise
+            sys.exit(1)
         
         # اجرای اسکن IP
-        logging.info("Scanning IPs...")
-        try:
-            result = subprocess.run(
-                [warp_executable], 
-                check=True, 
-                capture_output=True, 
-                text=True,
-                cwd=edge_directory  # اجرا در دایرکتوری edge
-            )
-            logging.info("Warp executed successfully.")
-            logging.debug(f"Warp output: {result.stdout}")
-        except subprocess.CalledProcessError as e:
-            logging.error(f"Error executing warp: {e}")
-            logging.error(f"stderr: {e.stderr}")
-            raise
-        
-        # بررسی وجود فایل نتایج
-        if not os.path.exists(edge_result_path):
-            logging.error("Endpoints.csv was not generated by warp executable.")
-            raise FileNotFoundError("Endpoints.csv was not generated by warp executable.")
+        if not scan_ips(warp_executable):
+            logging.error("IP scanning failed")
+            sys.exit(1)
         
         # خواندن بهترین IPها
-        Bestip = []
-        try:
-            with open(edge_result_path, "r") as csv_file:
-                next(csv_file)  # پرش از هدر
-                for line in csv_file:
-                    Bestip.append(line.split(",")[0])
-                    if len(Bestip) == 2:
-                        break
-        except Exception as e:
-            logging.error(f"Error reading Endpoints.csv: {e}")
-            raise
-        
-        if len(Bestip) < 2:
-            logging.error("Less than 2 clean IPs found in Endpoints.csv.")
-            raise ValueError("Less than 2 clean IPs found in Endpoints.csv.")
-        
-        logging.info(f"Selected IPs: {Bestip}")
+        Bestip = read_best_ips()
+        if not Bestip:
+            logging.error("No valid IPs found")
+            sys.exit(1)
         
         # تولید کانفیگ Hiddify
         formatted_time = datetime.datetime.now().strftime("%a, %H:%M:%S")
         config_prefix, _ = export_Hiddify(Bestip)
+        
+        if not config_prefix:
+            logging.error("Failed to generate Hiddify config")
+            sys.exit(1)
         
         # جزئیات پروفایل Hiddify
         title = (
@@ -316,21 +379,18 @@ def main():
             logging.info(f"Hiddify config saved to {main_warp_path}")
         except Exception as e:
             logging.error(f"Error saving Hiddify config: {e}")
-            raise
+            sys.exit(1)
         
         # تولید کانفیگ Sing-box
         export_SingBox(Bestip)
         
         logging.info("All configurations generated successfully!")
         
-    except subprocess.CalledProcessError as e:
-        logging.error(f"Error executing command: {e}")
-        sys.exit(1)
     except Exception as e:
         logging.error(f"An unexpected error occurred: {e}")
         sys.exit(1)
     finally:
-        # حذف فایل‌های موقت با استفاده از shutil که خطا را مدیریت می‌کند
+        # حذف فایل‌های موقت
         temp_files = [edge_bestip_path, os.path.join(edge_directory, "warp")]
         for temp_file in temp_files:
             try:
