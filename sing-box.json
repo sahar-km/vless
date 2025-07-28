@@ -13,10 +13,7 @@
       },
       {
         "server": "proxy-dns",
-        "source_ip_cidr": [
-          "172.19.0.1/30",
-          "fdfe:dcba:9876::1/126"
-        ]
+        "source_ip_cidr": ["172.19.0.1/30", "fdfe:dcba:9876::1/126"]
       },
       {
         "clash_mode": "Global",
@@ -54,18 +51,11 @@
       "peers": [
         {
           "address": "188.114.96.214",
-          "allowed_ips": [
-            "0.0.0.0/0",
-            "::/0"
-          ],
+          "allowed_ips": ["0.0.0.0/0", "::/0"],
           "persistent_keepalive_interval": 30,
           "port": 8854,
           "public_key": "bmXOC+F1FxEMF9dyiK2H5/1SUtzH0JuVo51h2wPfgyo=",
-          "reserved": [
-            198,
-            121,
-            208
-          ]
+          "reserved": [198, 121, 208]
         }
       ],
       "private_key": "0Ee/CUpBdSaYFfXKBlNnIJcP9kPW9R0e8QrAzyKYHGU=",
@@ -83,18 +73,11 @@
       "peers": [
         {
           "address": "188.114.99.22",
-          "allowed_ips": [
-            "0.0.0.0/0",
-            "::/0"
-          ],
+          "allowed_ips": ["0.0.0.0/0", "::/0"],
           "persistent_keepalive_interval": 30,
           "port": 4233,
           "public_key": "bmXOC+F1FxEMF9dyiK2H5/1SUtzH0JuVo51h2wPfgyo=",
-          "reserved": [
-            18,
-            103,
-            147
-          ]
+          "reserved": [18, 103, 147]
         }
       ],
       "private_key": "4PTVn/704l9GkeaiBYDs7+EBduD40wpfn4DD+YR28mA=",
@@ -110,10 +93,7 @@
   },
   "inbounds": [
     {
-      "address": [
-        "172.19.0.1/30",
-        "fdfe:dcba:9876::1/126"
-      ],
+      "address": ["172.19.0.1/30", "fdfe:dcba:9876::1/126"],
       "auto_route": true,
       "endpoint_independent_nat": false,
       "mtu": 1500,
@@ -142,20 +122,13 @@
   "outbounds": [
     {
       "default": "auto",
-      "outbounds": [
-        "auto",
-        "\u26aa\ufe0fTehran",
-        "\ud83d\udfe2Somewhere"
-      ],
+      "outbounds": ["auto", "\u26aa\ufe0fTehran", "\ud83d\udfe2Somewhere"],
       "tag": "proxy",
       "type": "selector"
     },
     {
       "interval": "90s",
-      "outbounds": [
-        "\u26aa\ufe0fTehran",
-        "\ud83d\udfe2Somewhere"
-      ],
+      "outbounds": ["\u26aa\ufe0fTehran", "\ud83d\udfe2Somewhere"],
       "tag": "auto",
       "tolerance": 50,
       "type": "urltest",
