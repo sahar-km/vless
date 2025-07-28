@@ -26,19 +26,17 @@
     "servers": [
       {
         "detour": "proxy",
-        "domain_resolver": "local-dns",
         "server": "185.228.168.9",
         "tag": "proxy-dns",
         "type": "tcp"
       },
       {
         "detour": "direct",
-        "server": "8.8.8.8",
         "tag": "local-dns",
-        "type": "tcp"
+        "type": "local"
       },
       {
-        "detour": "direct",
+        "server": "8.8.8.8",
         "tag": "direct-dns",
         "type": "local"
       }
@@ -60,17 +58,17 @@
             "0.0.0.0/0",
             "::/0"
           ],
-          "persistent_keepalive_interval": 25,
+          "persistent_keepalive_interval": 30,
           "port": 8854,
           "public_key": "bmXOC+F1FxEMF9dyiK2H5/1SUtzH0JuVo51h2wPfgyo=",
           "reserved": [
-            105,
-            101,
-            49
+            63,
+            64,
+            221
           ]
         }
       ],
-      "private_key": "mORijzxEE8Jdr1E5+lP8cOsV5AaRdCJoz7FZGsZbbEU=",
+      "private_key": "yOhMl01WwGDxgy6CyN0Dqqk1xJIzs8P5UgdOjOozEHo=",
       "tag": "\u26aa\ufe0fTehran",
       "type": "wireguard",
       "workers": 2
@@ -89,18 +87,18 @@
             "0.0.0.0/0",
             "::/0"
           ],
-          "persistent_keepalive_interval": 25,
+          "persistent_keepalive_interval": 30,
           "port": 4233,
           "public_key": "bmXOC+F1FxEMF9dyiK2H5/1SUtzH0JuVo51h2wPfgyo=",
           "reserved": [
-            49,
-            172,
-            102
+            35,
+            10,
+            66
           ]
         }
       ],
-      "private_key": "oKhf2LpEtorto5V8SbgfCngP9ABvOrQ4kHcW7c6if3c=",
-      "tag": "\ud83d\udfe1Berlin",
+      "private_key": "IJ/+wd6HBqnrz0TCUCWh7yrLSmkqkItJDou7RA92kmM=",
+      "tag": "\ud83d\udfe2Somewhere",
       "type": "wireguard",
       "workers": 2
     }
@@ -133,7 +131,6 @@
     {
       "listen": "127.0.0.1",
       "listen_port": 2080,
-      "tag": "mixed-in",
       "type": "mixed"
     }
   ],
@@ -143,24 +140,24 @@
   },
   "outbounds": [
     {
-      "default": "\ud83d\udfe1Berlin",
       "outbounds": [
         "auto",
         "direct",
         "\u26aa\ufe0fTehran",
-        "\ud83d\udfe1Berlin"
+        "\ud83d\udfe2Somewhere"
       ],
       "tag": "proxy",
-      "type": "selector"
+      "type": "selector",
+      "default": "auto"
     },
     {
-      "interval": "90s",
+      "interval": "5m0s",
       "outbounds": [
         "\u26aa\ufe0fTehran",
-        "\ud83d\udfe1Berlin"
+        "\ud83d\udfe2Somewhere"
       ],
       "tag": "auto",
-      "tolerance": 50,
+      "tolerance": 1,
       "type": "urltest",
       "url": "https://www.gstatic.com/generate_204"
     },
@@ -174,43 +171,42 @@
     }
   ],
   "route": {
-    "auto_detect_interface": true,
-    "default_domain_resolver": "direct-dns",
     "final": "proxy",
+    "auto_detect_interface": true,
     "override_android_vpn": true,
     "rule_set": [
       {
         "download_detour": "direct",
-        "format": "binary",
         "tag": "geosite-ads",
+        "format": "binary",
         "type": "remote",
         "url": "https://testingcf.jsdelivr.net/gh/MetaCubeX/meta-rules-dat@sing/geo/geosite/category-ads-all.srs"
       },
       {
         "download_detour": "direct",
-        "format": "binary",
         "tag": "geosite-private",
+        "format": "binary",
         "type": "remote",
         "url": "https://testingcf.jsdelivr.net/gh/MetaCubeX/meta-rules-dat@sing/geo/geosite/private.srs"
       },
       {
         "download_detour": "direct",
-        "format": "binary",
         "tag": "geosite-ir",
+        "format": "binary",
         "type": "remote",
         "url": "https://testingcf.jsdelivr.net/gh/MetaCubeX/meta-rules-dat@sing/geo/geosite/category-ir.srs"
       },
       {
         "download_detour": "direct",
-        "format": "binary",
         "tag": "geoip-private",
+        "format": "binary",
         "type": "remote",
         "url": "https://testingcf.jsdelivr.net/gh/MetaCubeX/meta-rules-dat@sing/geo/geoip/private.srs"
       },
       {
         "download_detour": "direct",
-        "format": "binary",
         "tag": "geoip-ir",
+        "format": "binary",
         "type": "remote",
         "url": "https://testingcf.jsdelivr.net/gh/MetaCubeX/meta-rules-dat@sing/geo/geoip/ir.srs"
       }
