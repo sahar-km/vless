@@ -19,8 +19,8 @@ const defaultConfigvless = {
   tls: 'tls',
   sni: '',
   ed: '2560', // Max Early Data, Default set is "2048"
-  eh: 'Sec-WebSocket-Protocol' // Early Data Header Name
-}
+  eh: 'Sec-WebSocket-Protocol', // Early Data Header Name
+};
 
 const fp = [
   'randomized',
@@ -31,10 +31,10 @@ const fp = [
   'randomized',
   'firefox',
   'chrome',
-  'ios'
-] // Preferred fingeprints, is better to use chrome, firefox, safari.
+  'ios',
+]; // Preferred fingeprints, is better to use chrome, firefox, safari.
 
-const port = ['8443', '2053'] // Preferred TLS Ports for 1st configs ex: ['443', '8443', '2053', '2083', '2087', '2096'];
+const port = ['8443', '2053']; // Preferred TLS Ports for 1st configs ex: ['443', '8443', '2053', '2083', '2087', '2096'];
 
 const IP1 = [
   //1st source of cloudflare clean IPv4/IPv6 addresses.
@@ -889,49 +889,46 @@ const IP1 = [
   '195.85.59.96',
   '199.34.228.184',
   '206.238.236.36',
-  '208.86.168.210'
-]
+  '208.86.168.210',
+];
 
 addEventListener('fetch', event => {
-  event.respondWith(handleRequest(event.request))
-})
+  event.respondWith(handleRequest(event.request));
+});
 
 async function handleRequest(request) {
-  const configsList = []
+  const configsList = [];
 
-  const shuffledVLESS = shuffleArray(Array.from(new Set(IP1)))
+  const shuffledVLESS = shuffleArray(Array.from(new Set(IP1)));
   const ipv4urlRE1 =
-    'https://raw.githubusercontent.com/NiREvil/Harmony/refs/heads/main/cf-clean.json' //Second source of Cloudflare clean IP addresses.
-  const ipv4urlRE2 = 'https://strawberry.victoriacross.ir' //3rd source of Cloudflare clean IP addresses.
+    'https://raw.githubusercontent.com/NiREvil/Harmony/refs/heads/main/cf-clean.json'; //Second source of Cloudflare clean IP addresses.
+  const ipv4urlRE2 = 'https://strawberry.victoriacross.ir'; //3rd source of Cloudflare clean IP addresses.
 
-  const [ipv4listRE1, ipv4listRE2] = await Promise.all([
-    fetch(ipv4urlRE1),
-    fetch(ipv4urlRE2)
-  ])
+  const [ipv4listRE1, ipv4listRE2] = await Promise.all([fetch(ipv4urlRE1), fetch(ipv4urlRE2)]);
 
-  const ipListDataRE1 = await ipv4listRE1.json()
-  const ipListDataRE2 = await ipv4listRE2.json()
+  const ipListDataRE1 = await ipv4listRE1.json();
+  const ipListDataRE2 = await ipv4listRE2.json();
 
-  const ipv4ListRE1 = ipListDataRE1.ipv4 || []
-  const ipv4ListRE2 = ipListDataRE2.data.map(item => item.ipv4) || []
+  const ipv4ListRE1 = ipListDataRE1.ipv4 || [];
+  const ipv4ListRE2 = ipListDataRE2.data.map(item => item.ipv4) || [];
 
-  const ipListRE1 = ipv4ListRE1.map(ipData => ipData.ip)
-  const ipListRE2 = ipv4ListRE2.filter(ip => ip)
+  const ipListRE1 = ipv4ListRE1.map(ipData => ipData.ip);
+  const ipListRE2 = ipv4ListRE2.filter(ip => ip);
 
-  const shuffledIPListRE1 = shuffleArray(ipListRE1)
-  const shuffledIPListRE2 = shuffleArray(ipListRE2)
+  const shuffledIPListRE1 = shuffleArray(ipListRE1);
+  const shuffledIPListRE2 = shuffleArray(ipListRE2);
 
   for (let i = 0; i < 10; i++) {
-    const randomport = port[Math.floor(Math.random() * port.length)]
-    const randomfp = fp[Math.floor(Math.random() * fp.length)]
-    const ip = shuffledVLESS.shift()
+    const randomport = port[Math.floor(Math.random() * port.length)];
+    const randomfp = fp[Math.floor(Math.random() * fp.length)];
+    const ip = shuffledVLESS.shift();
 
     const config = {
       ...defaultConfigvless,
       add: ip,
       ps: 'HARMONY-1', // Specify the 1st set configs name
-      port: randomport
-    }
+      port: randomport,
+    };
     const queryParams = new URLSearchParams({
       path: config.path,
       security: config.tls,
@@ -942,21 +939,21 @@ async function handleRequest(request) {
       type: config.net,
       sni: 'YOUR-VlESS.PAGES.DEV', // Set your SNI here -1
       ed: config.ed, // Add ed parameter
-      eh: config.eh // Add eh parameter
-    })
-    const vlessUrl = `vless://${config.id}@${config.add}:${config.port}?${queryParams.toString()}#${config.ps}`
-    configsList.push(vlessUrl)
+      eh: config.eh, // Add eh parameter
+    });
+    const vlessUrl = `vless://${config.id}@${config.add}:${config.port}?${queryParams.toString()}#${config.ps}`;
+    configsList.push(vlessUrl);
   }
 
-  const uniqueIPsRE1 = new Set()
+  const uniqueIPsRE1 = new Set();
   for (const ip of shuffledIPListRE1) {
-    if (uniqueIPsRE1.size >= 10) break
-    const randomfp = fp[Math.floor(Math.random() * fp.length)]
+    if (uniqueIPsRE1.size >= 10) break;
+    const randomfp = fp[Math.floor(Math.random() * fp.length)];
     const config = {
       ...defaultConfigvless,
       add: ip,
-      ps: 'HARMONY-2' // Specify the 2nd set configs name
-    }
+      ps: 'HARMONY-2', // Specify the 2nd set configs name
+    };
     const queryParams = new URLSearchParams({
       path: config.path,
       security: config.tls,
@@ -967,24 +964,24 @@ async function handleRequest(request) {
       type: config.net,
       sni: 'YOUR-VlESS.PAGES.DEV', // Set your SNI here -2
       ed: config.ed,
-      eh: config.eh
-    })
-    const vlessUrl = `vless://${config.id}@${config.add}:${config.port}?${queryParams.toString()}#${config.ps}`
+      eh: config.eh,
+    });
+    const vlessUrl = `vless://${config.id}@${config.add}:${config.port}?${queryParams.toString()}#${config.ps}`;
     if (!uniqueIPsRE1.has(ip)) {
-      configsList.push(vlessUrl)
-      uniqueIPsRE1.add(ip)
+      configsList.push(vlessUrl);
+      uniqueIPsRE1.add(ip);
     }
   }
 
-  const uniqueIPsRE2 = new Set()
+  const uniqueIPsRE2 = new Set();
   for (const ip of shuffledIPListRE2) {
-    if (uniqueIPsRE2.size >= 10) break
-    const randomfp = fp[Math.floor(Math.random() * fp.length)]
+    if (uniqueIPsRE2.size >= 10) break;
+    const randomfp = fp[Math.floor(Math.random() * fp.length)];
     const config = {
       ...defaultConfigvless,
       add: ip,
-      ps: 'HARMONY-3' // Specify the 3rd set configs name
-    }
+      ps: 'HARMONY-3', // Specify the 3rd set configs name
+    };
     const queryParams = new URLSearchParams({
       path: config.path,
       security: config.tls,
@@ -995,28 +992,28 @@ async function handleRequest(request) {
       type: config.net,
       sni: 'YOUR-VlESS.PAGES.DEV', // Set your SNI here -3
       ed: config.ed,
-      eh: config.eh
-    })
-    const vlessUrl = `vless://${config.id}@${config.add}:${config.port}?${queryParams.toString()}#${config.ps}`
+      eh: config.eh,
+    });
+    const vlessUrl = `vless://${config.id}@${config.add}:${config.port}?${queryParams.toString()}#${config.ps}`;
     if (!uniqueIPsRE2.has(ip)) {
-      configsList.push(vlessUrl)
-      uniqueIPsRE2.add(ip)
+      configsList.push(vlessUrl);
+      uniqueIPsRE2.add(ip);
     }
   }
 
   return new Response(btoa(configsList.join('\n')), {
     status: 200,
     headers: {
-      'Content-Type': 'text/plain'
-    }
-  })
+      'Content-Type': 'text/plain',
+    },
+  });
 }
 
 function shuffleArray(array) {
-  const shuffled = array.slice()
+  const shuffled = array.slice();
   for (let i = shuffled.length - 1; i > 0; i--) {
-    const j = Math.floor(Math.random() * (i + 1))
-    ;[shuffled[i], shuffled[j]] = [shuffled[j], shuffled[i]]
+    const j = Math.floor(Math.random() * (i + 1));
+    [shuffled[i], shuffled[j]] = [shuffled[j], shuffled[i]];
   }
-  return shuffled
+  return shuffled;
 }

@@ -1221,10 +1221,7 @@ for NikaNG
     {
       "protocol": "wireguard",
       "settings": {
-        "address": [
-          "172.16.0.2/32",
-          "2606:4700:110:846c:e510:bfa1:ea9f:5247/128"
-        ],
+        "address": ["172.16.0.2/32", "2606:4700:110:846c:e510:bfa1:ea9f:5247/128"],
         "mtu": 1330,
         "peers": [
           {
@@ -1246,10 +1243,7 @@ for NikaNG
     {
       "protocol": "wireguard",
       "settings": {
-        "address": [
-          "172.16.0.2/32",
-          "2606:4700:110:846c:e510:bfa1:ea9f:5247/128"
-        ],
+        "address": ["172.16.0.2/32", "2606:4700:110:846c:e510:bfa1:ea9f:5247/128"],
         "mtu": 1330,
         "peers": [
           {

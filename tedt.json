@@ -42,10 +42,7 @@
   },
   "endpoints": [
     {
-      "address": [
-        "172.16.0.2/32",
-        "2606:4700:110:8836:f1c9:4393:9b37:3814/128"
-      ],
+      "address": ["172.16.0.2/32", "2606:4700:110:8836:f1c9:4393:9b37:3814/128"],
       "detour": "direct",
       "mtu": 1280,
       "peers": [
@@ -64,10 +61,7 @@
       "workers": 2
     },
     {
-      "address": [
-        "172.16.0.2/32",
-        "2606:4700:110:8836:f1c9:4393:9b37:3814/128"
-      ],
+      "address": ["172.16.0.2/32", "2606:4700:110:8836:f1c9:4393:9b37:3814/128"],
       "detour": "\u26aa\ufe0fTehran",
       "mtu": 1280,
       "peers": [
@@ -208,12 +202,7 @@
       },
       {
         "outbound": "direct",
-        "rule_set": [
-          "geoip-private",
-          "geosite-private",
-          "geosite-ir",
-          "geoip-ir"
-        ]
+        "rule_set": ["geoip-private", "geosite-private", "geosite-ir", "geoip-ir"]
       },
       {
         "outbound": "block",
