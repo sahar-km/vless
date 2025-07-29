@@ -6,7 +6,7 @@ on:
       - '**/spring.*'
       - 'edge/assets/singbox-template.json'
   schedule:
-    - cron: '0 */6 * * *'
+    - cron: '0 */12 * * *'
   workflow_dispatch:
 jobs:
   build:
@@ -48,22 +48,6 @@ jobs:
         with:
           name: spring-execution-log
           path: edge/assets/logs/log.txt
-      
-      - name: Upload debug log
-        uses: actions/upload-artifact@v4
-        with:
-          name: spring-debug-log
-          path: spring_debug.log
-      
-      - name: Check if Endpoints.csv was created
-        run: |
-          if [ -f edge/Endpoints.csv ]; then
-            echo "Endpoints.csv was created successfully"
-            head -5 edge/Endpoints.csv
-          else
-            echo "ERROR: Endpoints.csv was not created"
-            exit 1
-          fi
       
       - name: Commit and push if changed
         run: |
