@@ -39,9 +39,8 @@ warp_cidr = [
 script_directory = os.path.dirname(__file__)
 main_directory = os.path.dirname(script_directory)
 edge_directory = os.path.join(main_directory, "edge")
-
 edge_bestip_path = os.path.join(edge_directory, "Bestip.txt")
-edge_result_path = os.path.join(edge_directory, "Endpoints.csv")
+edge_result_path = os.path.join(main_directory, "result.csv")
 main_singbox_path = os.path.join(main_directory, "sing-box.json")
 main_warp_path = os.path.join(main_directory, "warp.json")
 
