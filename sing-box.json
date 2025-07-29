@@ -13,7 +13,10 @@
       },
       {
         "server": "proxy-dns",
-        "source_ip_cidr": ["172.19.0.1/30", "fdfe:dcba:9876::1/126"]
+        "source_ip_cidr": [
+          "172.19.0.1/30",
+          "fdfe:dcba:9876::1/126"
+        ]
       },
       {
         "clash_mode": "Global",
@@ -48,7 +51,10 @@
   },
   "inbounds": [
     {
-      "address": ["172.19.0.1/30", "fdfe:dcba:9876::1/126"],
+      "address": [
+        "172.19.0.1/30",
+        "fdfe:dcba:9876::1/126"
+      ],
       "auto_route": true,
       "endpoint_independent_nat": false,
       "mtu": 1500,
@@ -77,13 +83,20 @@
   "outbounds": [
     {
       "default": "auto",
-      "outbounds": ["auto", "\u26aa\ufe0fTehran", "\ud83d\udfe2Somewhere"],
+      "outbounds": [
+        "auto",
+        "\u26aa\ufe0fTehran",
+        "\ud83d\udfe2Somewhere"
+      ],
       "tag": "proxy",
       "type": "selector"
     },
     {
       "interval": "90s",
-      "outbounds": ["\u26aa\ufe0fTehran", "\ud83d\udfe2Somewhere"],
+      "outbounds": [
+        "\u26aa\ufe0fTehran",
+        "\ud83d\udfe2Somewhere"
+      ],
       "tag": "auto",
       "tolerance": 50,
       "type": "urltest",
