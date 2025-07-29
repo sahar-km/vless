@@ -173,7 +173,7 @@ def main():
         url = f"https://gitlab.com/Misaka-blog/warp-script/-/raw/main/files/warp-yxip/warp-linux-{arch}"
 
         warp_executable = os.path.join(edge_directory, "warp")
-        
+
         # Download the executable and make it runnable
         logging.info(f"Downloading warp executable from {url}")
         subprocess.run(["wget", "-O", warp_executable, url], check=True)
@@ -185,7 +185,7 @@ def main():
             logging.info("Removed existing Endpoints.csv to force a new scan.")
 
         logging.info("Scanning IPs...")
-        
+
         logging.info("Warp executed successfully.")
         logging.info(f"Warp output: {result.stdout}")
 
