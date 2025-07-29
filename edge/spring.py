@@ -20,19 +20,19 @@ SW_TAG = f"{FOREIGN_SYMBOL}Somewhere"
 
 # IPv4 prefixes associated with the CloudFlare WARP service
 warp_cidr = [
-    "8.6.112.0/24",
-    "8.34.70.0/24",
-    "8.34.146.0/24",
-    "8.35.211.0/24",
-    "8.39.125.0/24",
-    "8.39.204.0/24",
-    "8.47.69.0/24",
-    "162.159.192.0/24",
-    "162.159.195.0/24",
-    "188.114.96.0/24",
-    "188.114.97.0/24",
-    "188.114.98.0/24",
-    "188.114.99.0/24",
+  "8.6.112.0/24",
+  "8.34.70.0/24",
+  "8.34.146.0/24",
+  "8.35.211.0/24",
+  "8.39.125.0/24",
+  "8.39.204.0/24",
+  "8.39.214.0/24",
+  "8.47.69.0/24",
+  "162.159.192.0/24",
+  "162.159.195.0/24",
+  "188.114.96.0/24",
+  "188.114.97.0/24",
+  "188.114.98.0/24",
 ]
 
 # Paths
@@ -94,21 +94,18 @@ def toSingBox(tag, clean_ip, detour):
         try:
             data = json.loads(output)
             wg = {
-                "address": [
-                    "172.16.0.2/32",
-                    "2606:4700:110:8836:f1c9:4393:9b37:3814/128",
-                ],
+                "address": ["172.16.0.2/32", "2606:4700:110:8836:f1c9:4393:9b37:3814/128"],
                 "detour": f"{detour}",
                 "mtu": 1280,
                 "peers": [
-                    {
-                        "address": f"{clean_ip.split(':')[0]}",
-                        "allowed_ips": ["0.0.0.0/0", "::/0"],
-                        "persistent_keepalive_interval": 30,
-                        "port": int(clean_ip.split(":")[1]),
-                        "public_key": "bmXOC+F1FxEMF9dyiK2H5/1SUtzH0JuVo51h2wPfgyo=",
-                        "reserved": data["config"]["reserved"],
-                    }
+                  {
+                    "allowed_ips": ["0.0.0.0/0", "::/0"],
+                    "address": f"{clean_ip.split(':')[0]}",
+                    "port": int(clean_ip.split(":")[1]),
+                    "persistent_keepalive_interval": 30,
+                    "public_key": "bmXOC+F1FxEMF9dyiK2H5/1SUtzH0JuVo51h2wPfgyo=",
+                    "reserved": data["config"]["reserved"],
+                  }
                 ],
                 "private_key": f"{data['private_key']}",
                 "tag": tag,
