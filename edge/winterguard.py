@@ -153,8 +153,6 @@ def log_before_sleep(retry_state):
     reraise=True,  # Reraise the exception if all retries fail
     before_sleep=log_before_sleep,
 )
-
-
 def register_key_on_CF(pub_key):
     logger.info(f"Registering public key: {pub_key[:10]}... with Cloudflare API")
     try:
