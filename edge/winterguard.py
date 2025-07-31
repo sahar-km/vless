@@ -14,7 +14,7 @@ from tenacity import (
     retry,
     stop_after_attempt,
     wait_exponential,
-    retry_if_exception_type,
+    retry_if_exception,
 )
 
 # --- Configuration ---
@@ -47,7 +47,6 @@ ENTRY_PROXY_BASE_NAME = os.environ.get("ENTRY_PROXY_BASE_NAME", "IRN-ENTRY")
 MAIN_SELECTOR_GROUP_NAME = os.environ.get("MAIN_SELECTOR_GROUP_NAME", "🔰 PROXIES")
 DIALER_URL_TEST_GROUP_NAME = f"🇩🇪 AUTO-{DIALER_PROXY_BASE_NAME}"
 ENTRY_URL_TEST_GROUP_NAME = f"🇮🇷 AUTO-{ENTRY_PROXY_BASE_NAME}"
-# --- End Configuration ---
 
 # Log settings
 logging.basicConfig(
@@ -127,12 +126,35 @@ def save_cached_keys(keys):
 
 
 # Function to register a public key with Cloudflare API using tenacity for retries
+def should_retry(exception):
+    if isinstance(exception, RateLimitError):
+        return True
+    if isinstance(exception, requests.exceptions.HTTPError):
+        if 500 <= exception.response.status_code < 600:
+            return True
+    return False
+
+
+def log_before_sleep(retry_state):
+    exc = retry_state.outcome.exception()
+    if isinstance(exc, requests.exceptions.HTTPError):
+        status_code = exc.response.status_code if exc.response is not None else "N/A"
+        logger.warning(f"Retrying due to HTTP {status_code} error: {exc}")
+    elif isinstance(exc, RateLimitError):
+        logger.warning("Retrying due to Cloudflare rate limiting (429)")
+    else:
+        logger.warning(f"Retrying due to exception: {exc}")
+
+
 @retry(
-    stop=stop_after_attempt(4),  # Retry up to 4 times
-    wait=wait_exponential(multiplier=1, min=5, max=15),  # Exponential backoff
-    retry=retry_if_exception_type(RateLimitError),  # Only retry on RateLimitError
+    stop=stop_after_attempt(6),  # Retry up to 6 times
+    wait=wait_exponential(multiplier=1, min=5, max=60),  # Exponential backoff
+    retry=retry_if_exception(should_retry),
     reraise=True,  # Reraise the exception if all retries fail
+    before_sleep=log_before_sleep,
 )
+
+
 def register_key_on_CF(pub_key):
     logger.info(f"Registering public key: {pub_key[:10]}... with Cloudflare API")
     try:
@@ -304,10 +326,16 @@ ipv6_prefixes = ["2606:4700:d1", "2606:4700:d0"]
 
 # IPv4 prefixes for generating endpoints
 ipv4_prefixes = [
+    "8.6.112.",
+    "8.34.70.",
+    "8.34.146.",
+    "8.35.211.",
+    "8.39.125.",
+    "8.39.204.",
+    "8.39.214.",
+    "8.47.69.",
     "162.159.192.",
-    "162.159.193.",
     "162.159.195.",
-    #   "162.159.204.",
     "188.114.96.",
     "188.114.97.",
     "188.114.98.",
@@ -459,14 +487,11 @@ def main():
                 )
                 server_entry, port_entry = generate_ipv4_endpoint()
             else:
-                # For pairs > 4, we can revert to the original logic if needed,
                 # or simply use IPv6 like the dialer. Here we mirror the dialer logic.
                 logger.debug(f"Using IPv6 endpoint for Entry proxy {pair_num}")
                 server_entry, port_entry = generate_ipv6_endpoint()
 
             # Note: The previous logic using ipv6_endpoint_count and NUM_IPV6_ENTRY_ENDPOINTS
-            # for entry proxy endpoint selection has been replaced by the logic above.
-
             entry_proxy = {
                 "name": entry_proxy_name,
                 "type": "wireguard",
@@ -497,23 +522,23 @@ def main():
                     ENTRY_URL_TEST_GROUP_NAME,
                     DIALER_URL_TEST_GROUP_NAME,
                     "DIRECT",
-                    *dialer_proxy_names,  # Dialer proxies first in list
-                    *entry_proxy_names,  # Entry proxies second
+                    *dialer_proxy_names,
+                    *entry_proxy_names,
                 ],
             },
             {
                 "name": ENTRY_URL_TEST_GROUP_NAME,
                 "type": "url-test",
-                "url": "https://www.gstatic.com/generate_204",
-                "interval": 30,
+                "url": "http://www.gstatic.com/generate_204",
+                "interval": 60,
                 "tolerance": 50,
                 "proxies": entry_proxy_names,
             },
             {
                 "name": DIALER_URL_TEST_GROUP_NAME,
                 "type": "url-test",
-                "url": "https://www.gstatic.com/generate_204",
-                "interval": 30,
+                "url": "http://www.gstatic.com/generate_204",
+                "interval": 60,
                 "tolerance": 50,
                 "proxies": dialer_proxy_names,
             },
@@ -538,14 +563,13 @@ def main():
                 updated_rules.append(f"MATCH,{MAIN_SELECTOR_GROUP_NAME}")
             config_template_dict["rules"] = updated_rules
 
-        # Ensure the primary DNS nameserver uses the correct selector group name tag
         if (
             "dns" in config_template_dict
             and "nameserver" in config_template_dict["dns"]
         ):
             if config_template_dict["dns"]["nameserver"]:
                 parts = config_template_dict["dns"]["nameserver"][0].split("#")
-                if len(parts) >= 1:  # Check if there is at least a server part
+                if len(parts) >= 1:
                     # Rebuild tag using the main selector group name
                     config_template_dict["dns"]["nameserver"][0] = (
                         f"{parts[0]}#{MAIN_SELECTOR_GROUP_NAME}"
@@ -567,7 +591,7 @@ def main():
             # Add comments to the beginning of the file
             generation_time = datetime.datetime.now().isoformat()
             header_comment = "# Generated configs for clash-meta with WireGuard proxies that have amnesia values.\n"
-            header_comment += f"# Generated on: {generation_time}\n\n"
+            header_comment += f"# Time is: {generation_time}\n\n"
 
             with open(OUTPUT_YAML_FILENAME, "w", encoding="utf-8") as f:
                 f.write(header_comment)
