@@ -521,7 +521,6 @@ def main():
                     "DIRECT",
                     *dialer_proxy_names,
                     *entry_proxy_names,
-                    "auto",
                 ],
             },
             {
