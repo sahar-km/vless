@@ -18,17 +18,25 @@ from tenacity import (
 )
 
 # --- Configuration ---
-NUM_PROXY_PAIRS = int(os.environ.get("NUM_PROXY_PAIRS", 8))  # Number of proxy pairs to generate
-NUM_IPV6_ENTRY_ENDPOINTS = int(os.environ.get("NUM_IPV6_ENTRY_ENDPOINTS", 2))  # How many Entry proxies should use an IPv6 server endpoint
+NUM_PROXY_PAIRS = int(
+    os.environ.get("NUM_PROXY_PAIRS", 8)
+)  # Number of proxy pairs to generate
+NUM_IPV6_ENTRY_ENDPOINTS = int(
+    os.environ.get("NUM_IPV6_ENTRY_ENDPOINTS", 2)
+)  # How many Entry proxies should use an IPv6 server endpoint
 
-SCRIPT_DIR = os.path.dirname(os.path.abspath(__file__))  # Where the script is running (e.g., RepositoryName/assets)
+SCRIPT_DIR = os.path.dirname(
+    os.path.abspath(__file__)
+)  # Where the script is running (e.g., RepositoryName/assets)
 PARENT_DIR = os.path.dirname(SCRIPT_DIR)  # Parent directory (repository root)
 
 # Template is in the same directory as the script
-CONFIG_TEMPLATE_PATH = os.path.join(SCRIPT_DIR, "clash-wg-template.yml") 
+CONFIG_TEMPLATE_PATH = os.path.join(SCRIPT_DIR, "clash-wg-template.yml")
 
 # Output files in repository root
-OUTPUT_YAML_FILENAME = os.path.join(PARENT_DIR, "clash-wg.yml")  # Output directly in root
+OUTPUT_YAML_FILENAME = os.path.join(
+    PARENT_DIR, "clash-wg.yml"
+)  # Output directly in root
 CACHE_FILE_PATH = os.path.join(PARENT_DIR, "key_cache.json")  # Cache directly in root
 
 # --- Proxy Naming Configuration ---
