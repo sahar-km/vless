@@ -517,7 +517,7 @@ def main():
             {
                 "name": ENTRY_URL_TEST_GROUP_NAME,
                 "type": "url-test",
-                "url": 'https://www.gstatic.com/generate_204",
+                "url": "https://www.gstatic.com/generate_204",
                 "interval": 180,
                 "lazy": "true",
                 "timeout": 5000,
@@ -527,7 +527,7 @@ def main():
             {
                 "name": DIALER_URL_TEST_GROUP_NAME,
                 "type": "url-test",
-                "url": 'https://www.gstatic.com/generate_204",
+                "url": "https://www.gstatic.com/generate_204",
                 "interval": 180,
                 "lazy": "true",
                 "timeout": 5000,
