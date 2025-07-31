@@ -502,7 +502,7 @@ def main():
                 "reserved": reserved_entry,
                 "udp": True,
                 "mtu": 1280,
-                "amnezia-wg-option": {"jc": "4", "jmin": "40", "jmax": "70"},
+                "amnezia-wg-option": {"jc": "5", "jmin": "500", "jmax": "501"},
             }
             proxies_list.append(entry_proxy)
 
@@ -521,6 +521,7 @@ def main():
                     "DIRECT",
                     *dialer_proxy_names,
                     *entry_proxy_names,
+                    "auto",
                 ],
             },
             {
@@ -528,7 +529,7 @@ def main():
                 "type": "url-test",
                 "url": "https://www.gstatic.com/generate_204",
                 "interval": 180,
-                "lazy": true,
+                "tolerance": 50,
                 "timeout": 5000,
                 "max-failed-times": 3,
                 "proxies": entry_proxy_names,
@@ -538,7 +539,7 @@ def main():
                 "type": "url-test",
                 "url": "https://www.gstatic.com/generate_204",
                 "interval": 180,
-                "lazy": true,
+                "tolerance": 50,
                 "timeout": 5000,
                 "max-failed-times": 3,
                 "proxies": dialer_proxy_names,
