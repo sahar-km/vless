@@ -18,28 +18,18 @@ from tenacity import (
 )
 
 # --- Configuration ---
-NUM_PROXY_PAIRS = int(
-    os.environ.get("NUM_PROXY_PAIRS", 8)
-)  # Number of proxy pairs to generate
-NUM_IPV6_ENTRY_ENDPOINTS = int(
-    os.environ.get("NUM_IPV6_ENTRY_ENDPOINTS", 2)
-)  # How many Entry proxies should use an IPv6 server endpoint
+NUM_PROXY_PAIRS = int(os.environ.get("NUM_PROXY_PAIRS", 8))  # Number of proxy pairs to generate
+NUM_IPV6_ENTRY_ENDPOINTS = int(os.environ.get("NUM_IPV6_ENTRY_ENDPOINTS", 2))  # How many Entry proxies should use an IPv6 server endpoint
 
-SCRIPT_DIR = os.path.dirname(
-    os.path.abspath(__file__)
-)  # the (SCRIPT_DIR) = where the script is running, in this case: path:vless/edge
-PARENT_DIR = os.path.dirname(SCRIPT_DIR)  # Get the parent directory (repository root)
+SCRIPT_DIR = os.path.dirname(os.path.abspath(__file__))  # Where the script is running (e.g., RepositoryName/assets)
+PARENT_DIR = os.path.dirname(SCRIPT_DIR)  # Parent directory (repository root)
 
-CONFIG_TEMPLATE_PATH = os.path.join(
-    SCRIPT_DIR, "assets", "clash-meta-wg-template.yml"
-)  # Path to the template file
-CACHE_FILE_PATH = os.path.join(
-    PARENT_DIR, "sub", "key_cache.json"
-)  # Path for caching generated keys
-OUTPUT_YAML_FILENAME = os.path.join(
-    PARENT_DIR, "sub", "clash-meta-wg.yml"
-)  # Output YML filename
+# Template is in the same directory as the script
+CONFIG_TEMPLATE_PATH = os.path.join(SCRIPT_DIR, "clash-wg-template.yml") 
 
+# Output files in repository root
+OUTPUT_YAML_FILENAME = os.path.join(PARENT_DIR, "clash-wg.yml")  # Output directly in root
+CACHE_FILE_PATH = os.path.join(PARENT_DIR, "key_cache.json")  # Cache directly in root
 
 # --- Proxy Naming Configuration ---
 DIALER_PROXY_BASE_NAME = os.environ.get("DIALER_PROXY_BASE_NAME", "GER-DIALER")
@@ -527,17 +517,21 @@ def main():
             {
                 "name": ENTRY_URL_TEST_GROUP_NAME,
                 "type": "url-test",
-                "url": "http://www.gstatic.com/generate_204",
-                "interval": 60,
-                "tolerance": 50,
+                "url": 'https://www.gstatic.com/generate_204",
+                "interval": 180,
+                "lazy": "true",
+                "timeout": 5000,
+                "max-failed-times": 3,
                 "proxies": entry_proxy_names,
             },
             {
                 "name": DIALER_URL_TEST_GROUP_NAME,
                 "type": "url-test",
-                "url": "http://www.gstatic.com/generate_204",
-                "interval": 60,
-                "tolerance": 50,
+                "url": 'https://www.gstatic.com/generate_204",
+                "interval": 180,
+                "lazy": "true",
+                "timeout": 5000,
+                "max-failed-times": 3,
                 "proxies": dialer_proxy_names,
             },
         ]
