@@ -27,17 +27,18 @@ NUM_IPV6_ENTRY_ENDPOINTS = int(
 
 SCRIPT_DIR = os.path.dirname(
     os.path.abspath(__file__)
-)  # Where the script is running (e.g., RepositoryName/assets)
-PARENT_DIR = os.path.dirname(SCRIPT_DIR)  # Parent directory (repository root)
+)  # the (SCRIPT_DIR) = where the script is running, in this case: path:vless/edge
+PARENT_DIR = os.path.dirname(SCRIPT_DIR)  # Get the parent directory (repository root)
 
-# Template is in the same directory as the script
-CONFIG_TEMPLATE_PATH = os.path.join(SCRIPT_DIR, "clash-wg-template.yml")
-
-# Output files in repository root
+CONFIG_TEMPLATE_PATH = os.path.join(
+    SCRIPT_DIR, "assets", "clash-meta-wg-template.yml"
+)  # Path to the template file
+CACHE_FILE_PATH = os.path.join(
+    PARENT_DIR, "sub", "key_cache.json"
+)  # Path for caching generated keys
 OUTPUT_YAML_FILENAME = os.path.join(
-    PARENT_DIR, "clash-wg.yml"
-)  # Output directly in root
-CACHE_FILE_PATH = os.path.join(PARENT_DIR, "key_cache.json")  # Cache directly in root
+    PARENT_DIR, "sub", "clash-meta-wg.yml"
+)  # Output YML filename
 
 # --- Proxy Naming Configuration ---
 DIALER_PROXY_BASE_NAME = os.environ.get("DIALER_PROXY_BASE_NAME", "GER-DIALER")
