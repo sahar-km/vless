@@ -1,20 +1,20 @@
-name: ClashMeta + Amnezia
+name: Clash & Amnezia
 
 on:
   push:
-    branches: ['main']
+    branches: 'main'
     paths:
       - '**/winterguard.*'
       - 'sub/*.yml'
       - 'edge/assets/*.yml'
   schedule:
-    - cron: '0 */6 * * *'
+    - cron: '0 12 * * *'
   workflow_dispatch:
 
 jobs:
   build:
     runs-on: ubuntu-24.04
-    timeout-minutes: 10
+    timeout-minutes: 15
 
     steps:
       - name: Checkout Repository
@@ -32,9 +32,8 @@ jobs:
       - name: Set up Python
         uses: actions/setup-python@v5
         with:
-          python-version: '3.12'
+          python-version: '3.13'
           cache: pip
-          architecture: x64
 
       # Creating a cache for increased speed and performance, also saving resources
       - name: Cache Python packages
@@ -50,7 +49,7 @@ jobs:
           python -m pip install --upgrade pip || exit 1
           pip install -r edge/requirements.txt || exit 1
        
-      # Run ;⁠)
+      # Run script
       - name: Run config generation script
         run: |
           python edge/winterguard.py 2>&1 || { echo "Script failed with exit code $?"; exit 1; }
@@ -63,8 +62,8 @@ jobs:
           if git status --porcelain | grep -q "sub/clash-meta-wg.yml" || git status --porcelain; then
             echo "Changes detected. Committing and pushing."
             git add sub/clash-meta-wg.yml
-            git commit -m "Auto: Update clash-wg configurations at: $(TZ='Asia/Tehran' date '+%H:%M:%S')" -m "Wireguard private key, addresses, reserved, and all IPs have been renewed"
-            git -c committer.name="NiREvil" -c committer.email="126243832+NiREvil@users.noreply.github.com" push
+            git commit -m "Auto: Update clash-wg configurations at: $(TZ='Asia/Tehran' date '+%H:%M:%S')" -m "Wireguard private key, addresses, reserved, and all IPs have been renewed" --author="sahar-km <165325276+sahar-km@users.noreply.github.com>"
+            git push
           else
             echo "No changes detected in config files."
           fi
