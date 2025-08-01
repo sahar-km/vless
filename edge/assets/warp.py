@@ -1,4 +1,9 @@
-import ipaddress, platform, subprocess, os, datetime, base64
+import ipaddress
+import platform
+import subprocess
+import os
+import datetime
+import base64
 
 warp_cidr = [
     "8.6.112.0/24",
@@ -94,12 +99,16 @@ def warp_ip():
         "%Y-%m-%d %H:%M:%S"
     )
     for i, ip in enumerate(Bestip):
-        config_prefix = f'warp://{Bestip[0]}/?ifp=40-80&ifps=50-100&ifpd=2-4&ifpm=m4#@mansor427🇮🇷&&detour=warp://{Bestip[1]}/?ifp=50-100&ifps=30-60&ifpd=2-4&ifpm=m6#ÐΛɌ₭ᑎΞ𐒡𐒡🇩🇪WoW\nwarp://{Bestip[0]}/?ifp=50-100&ifps=30-60&ifpd=2-4&ifpm=m3#@mansor427🇮🇷&&detour=warp://{Bestip[1]}/?ifp=50-100&ifps=30-60&ifpd=2-4&ifpm=m6#ÐΛɌ₭ᑎΞ𐒡𐒡🇩🇪WoW\nwarp://@auto6/?ifp=30-60&ifps=30-60&ifpd=2-4&ifpm=m4#LocalV6&&detour=warp://@auto4/?ifp=50-100&ifps=30-60&ifpd=2-4&ifpm=m4#WoWV4_v6'
+        config_prefix = f"warp://{Bestip[0]}/?ifp=40-80&ifps=50-100&ifpd=2-4&ifpm=m4#@mansor427🇮🇷&&detour=warp://{Bestip[1]}/?ifp=50-100&ifps=30-60&ifpd=2-4&ifpm=m6#ÐΛɌ₭ᑎΞ𐒡𐒡🇩🇪WoW\nwarp://{Bestip[0]}/?ifp=50-100&ifps=30-60&ifpd=2-4&ifpm=m3#@mansor427🇮🇷&&detour=warp://{Bestip[1]}/?ifp=50-100&ifps=30-60&ifpd=2-4&ifpm=m6#ÐΛɌ₭ᑎΞ𐒡𐒡🇩🇪WoW\nwarp://@auto6/?ifp=30-60&ifps=30-60&ifpd=2-4&ifpm=m4#LocalV6&&detour=warp://@auto4/?ifp=50-100&ifps=30-60&ifpd=2-4&ifpm=m4#WoWV4_v6"
 
     return config_prefix, formatted_time
 
 
-title = "//profile-title: base64:" + base64.b64encode('ʷᵃʳᵖ〘⬳𓄂𓆃⟿〙ʷᵃʳᵖ'.encode('utf-8')).decode('utf-8') + "\n"
+title = (
+    "//profile-title: base64:"
+    + base64.b64encode("ʷᵃʳᵖ〘⬳𓄂𓆃⟿〙ʷᵃʳᵖ".encode("utf-8")).decode("utf-8")
+    + "\n"
+)
 update_interval = "//profile-update-interval: 1\n"
 sub_info = "//subscription-userinfo: upload=0; download=0; total=10737418240000000; expire=2546249531\n"
 profile_web = "//profile-web-page-url: https://github.com/mansor427\n"
