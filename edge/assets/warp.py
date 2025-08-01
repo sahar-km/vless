@@ -3,9 +3,6 @@ import platform
 import subprocess
 import os
 import datetime
-import base64
-import json
-import shutil
 
 warp_cidr = [
     "8.6.112.0/24",
@@ -90,7 +87,9 @@ def warp_ip():
     counter = 0
     config_prefixes = ""
     creation_time = os.path.getctime(result_path)
-    formatted_time = datetime.datetime.fromtimestamp(creation_time).strftime("%Y-%m-%d %H:%M:%S")
+    formatted_time = datetime.datetime.fromtimestamp(creation_time).strftime(
+        "%Y-%m-%d %H:%M:%S"
+    )
     with open(result_path, "r") as csv_file:
         next(csv_file)
         for ips in csv_file:
@@ -98,8 +97,10 @@ def warp_ip():
             if counter == 5:
                 break
             else:
-                ip = ips.split(',')[0]
-                config_prefix = f'warp://{ip}/?ifp=40-80&ifps=50-100&ifpd=2-4&ifpm=m4#🇮🇷𓄂𓆃\n'
+                ip = ips.split(",")[0]
+                config_prefix = (
+                    f"warp://{ip}/?ifp=40-80&ifps=50-100&ifpd=2-4&ifpm=m4#🇮🇷𓄂𓆃\n"
+                )
                 config_prefixes += config_prefix
     return config_prefixes, formatted_time
 
