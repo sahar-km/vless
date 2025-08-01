@@ -26,13 +26,13 @@ warp_cidr = [
     "8.35.211.0/24",
     "8.39.125.0/24",
     "8.39.204.0/24",
-    "8.39.214.0/24",
     "8.47.69.0/24",
     "162.159.192.0/24",
     "162.159.195.0/24",
     "188.114.96.0/24",
     "188.114.97.0/24",
     "188.114.98.0/24",
+    "188.114.99.0/24",
 ]
 
 # Paths
@@ -102,10 +102,10 @@ def toSingBox(tag, clean_ip, detour):
                 "mtu": 1280,
                 "peers": [
                     {
-                        "allowed_ips": ["0.0.0.0/0", "::/0"],
                         "address": f"{clean_ip.split(':')[0]}",
-                        "port": int(clean_ip.split(":")[1]),
+                        "allowed_ips": ["0.0.0.0/0", "::/0"],
                         "persistent_keepalive_interval": 30,
+                        "port": int(clean_ip.split(":")[1]),
                         "public_key": "bmXOC+F1FxEMF9dyiK2H5/1SUtzH0JuVo51h2wPfgyo=",
                         "reserved": data["config"]["reserved"],
                     }
@@ -113,7 +113,7 @@ def toSingBox(tag, clean_ip, detour):
                 "private_key": f"{data['private_key']}",
                 "tag": tag,
                 "type": "wireguard",
-                "workers": 2,
+                "workers": 4,
             }
 
             if os.path.exists("api.sh"):
@@ -171,15 +171,12 @@ def main():
         logging.info("Fetching warp program...")
         url = f"https://gitlab.com/Misaka-blog/warp-script/-/raw/main/files/warp-yxip/warp-linux-{arch}"
 
-        # Replacement Code Block
         warp_executable = os.path.join(edge_directory, "warp")
 
-        # Download the executable and make it runnable
         logging.info(f"Downloading warp executable from {url}")
         subprocess.run(["wget", "-O", warp_executable, url], check=True)
         os.chmod(warp_executable, 0o755)
 
-        # Force a new scan by removing the old results file
         if os.path.exists(edge_result_path):
             os.remove(edge_result_path)
             logging.info("Removed existing Endpoints.csv to force a new scan.")
