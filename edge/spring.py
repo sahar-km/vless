@@ -77,7 +77,7 @@ def export_Hiddify(t_ips):
 
 
 # Function to generate Sing-box config
-def toSingBox(tag, clean_ip, detour):
+def toSingBox(tag, clean_ip, detour, addresses):
     logging.info(f"Generating Warp config for {tag}")
     subprocess.run(
         ["wget", "-N", "https://gitlab.com/fscarmen/warp/-/raw/main/api.sh"], check=True
@@ -91,10 +91,7 @@ def toSingBox(tag, clean_ip, detour):
         try:
             data = json.loads(output)
             wg = {
-                "address": [
-                    "172.16.0.2/32",
-                    "2606:4700:110:8836:f1c9:4393:9b37:3814/128",
-                ],
+                "address": addresses,
                 "detour": f"{detour}",
                 "mtu": 1280,
                 "peers": [
@@ -128,6 +125,15 @@ def toSingBox(tag, clean_ip, detour):
 
 # Function to export Sing-box config
 def export_SingBox(t_ips):
+    addresses_1 = [
+        "172.16.0.2/32",
+        "2606:4700:110:8836:f1c9:4393:9b37:3814/128",
+    ]
+    addresses_2 = [
+        "172.16.0.3/32",
+        "2606:4700:110:8867:3f4a:906:1933:43c5/128",
+    ]
+
     template_path = os.path.join(edge_directory, "assets", "singbox-template.json")
     if not os.path.exists(template_path):
         raise FileNotFoundError(f"Template file not found at {template_path}")
@@ -137,13 +143,13 @@ def export_SingBox(t_ips):
     data["outbounds"][0]["outbounds"].extend([IR_TAG, SW_TAG])
     data["outbounds"][1]["outbounds"].extend([IR_TAG, SW_TAG])
 
-    tehran_wg = toSingBox(IR_TAG, t_ips[0], "direct")
+    tehran_wg = toSingBox(IR_TAG, t_ips[0], "direct", addresses_1)
     if tehran_wg:
         data["endpoints"].append(tehran_wg)
     else:
         logging.error(f"Failed to generate {IR_TAG} configuration.")
 
-    Somewhere_wg = toSingBox(SW_TAG, t_ips[1], IR_TAG)
+    Somewhere_wg = toSingBox(SW_TAG, t_ips[1], IR_TAG, addresses_2)
     if Somewhere_wg:
         data["endpoints"].append(Somewhere_wg)
     else:
