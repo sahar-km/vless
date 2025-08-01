@@ -1,7 +1,11 @@
 import json
 
 true = True
-import platform, subprocess, os, datetime, base64, json
+import platform
+import subprocess
+import os
+import datetime
+import base64
 from cryptography.hazmat.primitives import serialization
 from cryptography.hazmat.primitives.asymmetric.x25519 import X25519PrivateKey
 import requests
@@ -406,7 +410,7 @@ def bind_keys():
                 "bmXOC+F1FxEMF9dyiK2H5/1SUtzH0JuVo51h2wPfgyo=",
             )
 
-        except Exception as e:
+        except Exception:
             print("Something went wronge with api")
             exit()
 
@@ -579,13 +583,13 @@ def export_SingBox(t_ips, arch):
     if main_wg:
         data["endpoints"].append(main_wg)
     else:
-        print(f"Failed to generate WARP-MAIN configuration")
+        print("Failed to generate WARP-MAIN configuration")
 
     wow_wg = toSingBox1("WARP-WOW", t_ips[1], "WARP-MAIN", temp)
     if wow_wg:
         data["endpoints"].append(wow_wg)
     else:
-        print(f"Failed to generate WARP-MAIN configuration")
+        print("Failed to generate WARP-MAIN configuration")
 
     with open("sing-box.json", "w") as f:
         f.write(json.dumps(data, indent=2))
@@ -630,7 +634,7 @@ def main(script_dir):
 
     result_path = os.path.join(script_dir, "result.csv")
     top_ips = export_bestIPS(result_path)
-    
+
     export_Hiddify(t_ips=top_ips, f_ips=result_path)
     export_SingBox(t_ips=top_ips, arch=arch)
     export_SingBox2(t_ips=top_ips, arch=arch)
