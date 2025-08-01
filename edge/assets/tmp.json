@@ -3,22 +3,22 @@
     "final": "proxy-dns",
     "independent_cache": true,
     "rules": [
-    {
-      "rule_set": "geosite-ir",
-      "server": "direct-dns"
-    },
-    {
-      "server": "proxy-dns",
-      "source_ip_cidr": ["172.19.0.1/30", "fdfe:dcba:9876::1/126"]
-    },
-    {
-      "clash_mode": "Direct",
-      "server": "direct-dns"
-    },
-    {
-      "clash_mode": "Global",
-      "server": "proxy-dns"
-    }
+      {
+        "rule_set": "geosite-ir",
+        "server": "direct-dns"
+      },
+      {
+        "server": "proxy-dns",
+        "source_ip_cidr": ["172.19.0.1/30", "fdfe:dcba:9876::1/126"]
+      },
+      {
+        "clash_mode": "Direct",
+        "server": "direct-dns"
+      },
+      {
+        "clash_mode": "Global",
+        "server": "proxy-dns"
+      }
     ],
     "servers": [
       {
@@ -121,10 +121,10 @@
       "type": "selector"
     },
     {
+      "interval": "3m",
       "outbounds": ["\u26aa\ufe0fTehran", "\ud83d\udfe2Somewhere"],
-"interval": "3m",
-      "tolerance": 50,
       "tag": "auto",
+      "tolerance": 50,
       "type": "urltest",
       "url": "https://www.gstatic.com/generate_204"
     },
@@ -184,30 +184,30 @@
       }
     ],
     "rules": [
-    {
-      "action": "sniff",
-      "timeout": "1s"
-    },
-    {
-      "action": "hijack-dns",
-      "protocol": "dns"
-    },
-    {
-      "clash_mode": "Direct",
-      "outbound": "direct"
-    },
-    {
-      "outbound": "direct",
-      "rule_set": ["geoip-private", "geosite-private", "geosite-ir", "geoip-ir"]
-    },
-    {
-      "outbound": "block",
-      "rule_set": "geosite-ads"
-    },
-    {
-      "clash_mode": "Global",
-      "outbound": "proxy"
-    }
-  ]
- }
+      {
+        "action": "sniff",
+        "timeout": "1s"
+      },
+      {
+        "action": "hijack-dns",
+        "protocol": "dns"
+      },
+      {
+        "clash_mode": "Direct",
+        "outbound": "direct"
+      },
+      {
+        "outbound": "direct",
+        "rule_set": ["geoip-private", "geosite-private", "geosite-ir", "geoip-ir"]
+      },
+      {
+        "outbound": "block",
+        "rule_set": "geosite-ads"
+      },
+      {
+        "clash_mode": "Global",
+        "outbound": "proxy"
+      }
+    ]
+  }
 }
