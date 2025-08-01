@@ -65,10 +65,6 @@ main_singbox_path = os.path.join(main_directory, "sing-box.json")
 main_warp_path = os.path.join(main_directory, "warp.json")
 
 
-
-
-
-
 # Function to generate Hiddify config
 def export_Hiddify(t_ips):
     config_prefix = f"warp://{t_ips[0]}?ifp=1-3&ifpm=m4#{IR_TAG}&&detour=warp://{t_ips[1]}?ifp=1-2&ifpm=m5#{SW_TAG}"
