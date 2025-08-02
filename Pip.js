@@ -2,33 +2,37 @@ import { connect } from 'cloudflare:sockets';
 
 async function validateProxyIP(proxyHost, proxyPort) {
   const maxRetries = 4;
-  let lastError = "Proxy validation failed after all attempts.";
+  let lastError = 'Proxy validation failed after all attempts.';
   const startTime = performance.now();
 
   for (let attempt = 0; attempt < maxRetries; attempt++) {
     let socket = null;
     try {
-      const connectionTimeout = 1000 + (attempt * 500);
-      socket = await connectWithTimeout({ hostname: proxyHost, port: proxyPort }, connectionTimeout);
+      const connectionTimeout = 1000 + attempt * 500;
+      socket = await connectWithTimeout(
+        { hostname: proxyHost, port: proxyPort },
+        connectionTimeout
+      );
       const writer = socket.writable.getWriter();
       const reader = socket.readable.getReader();
       await writer.write(buildTLSHandshake());
       const { value: responseData, timedOut } = await readWithTimeout(reader, connectionTimeout);
 
       if (timedOut) throw new Error(`Attempt ${attempt + 1}: Timed out waiting for response.`);
-      if (!responseData || responseData.length === 0) throw new Error(`Attempt ${attempt + 1}: Received no data.`);
+      if (!responseData || responseData.length === 0)
+        throw new Error(`Attempt ${attempt + 1}: Received no data.`);
       if (responseData[0] === 0x16) {
         return {
           success: true,
           message: `Proxy is valid. Verified on attempt ${attempt + 1}.`,
-          responseTime: Math.round(performance.now() - startTime)
+          responseTime: Math.round(performance.now() - startTime),
         };
       } else {
         throw new Error(`Attempt ${attempt + 1}: Received a non-TLS response.`);
       }
     } catch (error) {
       lastError = `Attempt ${attempt + 1} failed: ${error.message || error.toString()}`;
-      if ((error.message || "").toLowerCase().includes('connection refused')) break;
+      if ((error.message || '').toLowerCase().includes('connection refused')) break;
     } finally {
       if (socket) socket.close();
     }
@@ -37,7 +41,8 @@ async function validateProxyIP(proxyHost, proxyPort) {
 }
 
 function buildTLSHandshake() {
-  const hexStr = '16030107a30100079f0303af1f4d78be2002cf63e8c727224cf1ee4a8ac89a0ad04bc54cbed5cd7c830880203d8326ae1d1d076ec749df65de6d21dec7371c589056c0a548e31624e121001e0020baba130113021303c02bc02fc02cc030cca9cca8c013c014009c009d002f0035010007361a1a0000000a000c000acaca11ec001d00170018fe0d00ba0000010001fc00206a2fb0535a0a5e565c8a61dcb381bab5636f1502bbd09fe491c66a2d175095370090dd4d770fc5e14f4a0e13cfd919a532d04c62eb4a53f67b1375bf237538cea180470d942bdde74611afe80d70ad25afb1d5f02b2b4eed784bc2420c759a742885f6ca982b25d0fdd7d8f618b7f7bc10172f61d446d8f8a6766f3587abbae805b8ef40fcb819194ac49e91c6c3762775f8dc269b82a21ddccc9f6f43be62323147b411475e47ea2c4efe52ef2cef5c7b32000d00120010040308040401050308050501080606010010000e000c02683208687474702f312e31000b0002010000050005010000000044cd00050003026832001b00030200020017000000230000002d000201010012000000000010000e00000b636861746770742e636f6dff01000100002b0007061a1a03040303003304ef04edcaca00010011ec04c05eac5510812e46c13826d28279b13ce62b6464e01ae1bb6d49640e57fb3191c656c4b0167c246930699d4f467c19d60dacaa86933a49e5c97390c3249db33c1aa59f47205701419461569cb01a22b4378f5f3bb21d952700f250a6156841f2cc952c75517a481112653400913f9ab58982a3f2d0010aba5ae99a2d69f6617a4220cd616de58ccbf5d10c5c68150152b60e2797521573b10413cb7a3aab25409d426a5b64a9f3134e01dc0dd0fc1a650c7aafec00ca4b4dddb64c402252c1c69ca347bb7e49b52b214a7768657a808419173bcbea8aa5a8721f17c82bc6636189b9ee7921faa76103695a638585fe678bcbb8725831900f808863a74c52a1b2caf61f1dec4a9016261c96720c221f45546ce0e93af3276dd090572db778a865a07189ae4f1a64c6dbaa25a5b71316025bd13a6012994257929d199a7d90a59285c75bd4727a8c93484465d62379cd110170073aad2a3fd947087634574315c09a7ccb60c301d59a7c37a330253a994a6857b8556ce0ac3cda4c6fe3855502f344c0c8160313a3732bce289b6bda207301e7b318277331578f370ccbcd3730890b552373afeb162c0cb59790f79559123b2d437308061608a704626233d9f73d18826e27f1c00157b792460eda9b35d48b4515a17c6125bdb96b114503c99e7043b112a398888318b956a012797c8a039a51147b8a58071793c14a3611fb0424e865f48a61cac7c43088c634161cea089921d229e1a370effc5eff2215197541394854a201a6ebf74942226573bb95710454bd27a52d444690837d04611b676269873c50c3406a79077e6606478a841f96f7b076a2230fd34f3eea301b77bf00750c28357a9df5b04f192b9c0bbf4f71891f1842482856b021280143ae74356c5e6a8e3273893086a90daa7a92426d8c370a45e3906994b8fa7a57d66b503745521e40948e83641de2a751b4a836da54f2da413074c3d856c954250b5c8332f1761e616437e527c0840bc57d522529b9259ccac34d7a3888f0aade0a66c392458cc1a698443052413217d29fbb9a1124797638d76100f82807934d58f30fcff33197fc171cfa3b0daa7f729591b1d7389ad476fde2328af74effd946265b3b81fa33066923db476f71babac30b590e05a7ba2b22f86925abca7ef8058c2481278dd9a240c8816bba6b5e6603e30670dffa7e6e3b995b0b18ec404614198a43a07897d84b439878d179c7d6895ac3f42ecb7998d4491060d2b8a5316110830c3f20a3d9a488a85976545917124c1eb6eb7314ea9696712b7bcab1cfd2b66e5a85106b2f651ab4b8a145e18ac41f39a394da9f327c5c92d4a297a0c94d1b8dcc3b111a700ac8d81c45f983ca029fd2887ad4113c7a23badf807c6d0068b4fa7148402aae15cc55971b57669a4840a22301caaec392a6ea6d46dab63890594d41545ebc2267297e3f4146073814bb3239b3e566684293b9732894193e71f3b388228641bb8be6f5847abb9072d269cb40b353b6aa3259ccb7e438d6a37ffa8cc1b7e4911575c41501321769900d19792aa3cfbe58b0aaf91c91d3b63900697279ad6c1aa44897a07d937e0d5826c24439420ca5d8a63630655ce9161e58d286fc885fcd9b19d096080225d16c89939a24aa1e98632d497b5604073b13f65bdfddc1de4b40d2a829b0521010c5f0f241b1ccc759049579db79983434fac2748829b33f001d0020a8e86c9d3958e0257c867e59c8082238a1ea0a9f2cac9e41f9b3cb0294f34b484a4a000100002900eb00c600c0afc8dade37ae62fa550c8aa50660d8e73585636748040b8e01d67161878276b1ec1ee2aff7614889bb6a36d2bdf9ca097ff6d7bf05c4de1d65c2b8db641f1c8dfbd59c9f7e0fed0b8e0394567eda55173d198e9ca40883b291ab4cada1a91ca8306ca1c37e047ebfe12b95164219b06a24711c2182f5e37374d43c668d45a3ca05eda90e90e510e628b4cfa7ae880502dae9a70a8eced26ad4b3c2f05d77f136cfaa622e40eb084dd3eb52e23a9aeff6ae9018100af38acfd1f6ce5d8c53c4a61c547258002120fe93e5c7a5c9c1a04bf06858c4dd52b01875844e15582dd566d03f41133183a0';
+  const hexStr =
+    '16030107a30100079f0303af1f4d78be2002cf63e8c727224cf1ee4a8ac89a0ad04bc54cbed5cd7c830880203d8326ae1d1d076ec749df65de6d21dec7371c589056c0a548e31624e121001e0020baba130113021303c02bc02fc02cc030cca9cca8c013c014009c009d002f0035010007361a1a0000000a000c000acaca11ec001d00170018fe0d00ba0000010001fc00206a2fb0535a0a5e565c8a61dcb381bab5636f1502bbd09fe491c66a2d175095370090dd4d770fc5e14f4a0e13cfd919a532d04c62eb4a53f67b1375bf237538cea180470d942bdde74611afe80d70ad25afb1d5f02b2b4eed784bc2420c759a742885f6ca982b25d0fdd7d8f618b7f7bc10172f61d446d8f8a6766f3587abbae805b8ef40fcb819194ac49e91c6c3762775f8dc269b82a21ddccc9f6f43be62323147b411475e47ea2c4efe52ef2cef5c7b32000d00120010040308040401050308050501080606010010000e000c02683208687474702f312e31000b0002010000050005010000000044cd00050003026832001b00030200020017000000230000002d000201010012000000000010000e00000b636861746770742e636f6dff01000100002b0007061a1a03040303003304ef04edcaca00010011ec04c05eac5510812e46c13826d28279b13ce62b6464e01ae1bb6d49640e57fb3191c656c4b0167c246930699d4f467c19d60dacaa86933a49e5c97390c3249db33c1aa59f47205701419461569cb01a22b4378f5f3bb21d952700f250a6156841f2cc952c75517a481112653400913f9ab58982a3f2d0010aba5ae99a2d69f6617a4220cd616de58ccbf5d10c5c68150152b60e2797521573b10413cb7a3aab25409d426a5b64a9f3134e01dc0dd0fc1a650c7aafec00ca4b4dddb64c402252c1c69ca347bb7e49b52b214a7768657a808419173bcbea8aa5a8721f17c82bc6636189b9ee7921faa76103695a638585fe678bcbb8725831900f808863a74c52a1b2caf61f1dec4a9016261c96720c221f45546ce0e93af3276dd090572db778a865a07189ae4f1a64c6dbaa25a5b71316025bd13a6012994257929d199a7d90a59285c75bd4727a8c93484465d62379cd110170073aad2a3fd947087634574315c09a7ccb60c301d59a7c37a330253a994a6857b8556ce0ac3cda4c6fe3855502f344c0c8160313a3732bce289b6bda207301e7b318277331578f370ccbcd3730890b552373afeb162c0cb59790f79559123b2d437308061608a704626233d9f73d18826e27f1c00157b792460eda9b35d48b4515a17c6125bdb96b114503c99e7043b112a398888318b956a012797c8a039a51147b8a58071793c14a3611fb0424e865f48a61cac7c43088c634161cea089921d229e1a370effc5eff2215197541394854a201a6ebf74942226573bb95710454bd27a52d444690837d04611b676269873c50c3406a79077e6606478a841f96f7b076a2230fd34f3eea301b77bf00750c28357a9df5b04f192b9c0bbf4f71891f1842482856b021280143ae74356c5e6a8e3273893086a90daa7a92426d8c370a45e3906994b8fa7a57d66b503745521e40948e83641de2a751b4a836da54f2da413074c3d856c954250b5c8332f1761e616437e527c0840bc57d522529b9259ccac34d7a3888f0aade0a66c392458cc1a698443052413217d29fbb9a1124797638d76100f82807934d58f30fcff33197fc171cfa3b0daa7f729591b1d7389ad476fde2328af74effd946265b3b81fa33066923db476f71babac30b590e05a7ba2b22f86925abca7ef8058c2481278dd9a240c8816bba6b5e6603e30670dffa7e6e3b995b0b18ec404614198a43a07897d84b439878d179c7d6895ac3f42ecb7998d4491060d2b8a5316110830c3f20a3d9a488a85976545917124c1eb6eb7314ea9696712b7bcab1cfd2b66e5a85106b2f651ab4b8a145e18ac41f39a394da9f327c5c92d4a297a0c94d1b8dcc3b111a700ac8d81c45f983ca029fd2887ad4113c7a23badf807c6d0068b4fa7148402aae15cc55971b57669a4840a22301caaec392a6ea6d46dab63890594d41545ebc2267297e3f4146073814bb3239b3e566684293b9732894193e71f3b388228641bb8be6f5847abb9072d269cb40b353b6aa3259ccb7e438d6a37ffa8cc1b7e4911575c41501321769900d19792aa3cfbe58b0aaf91c91d3b63900697279ad6c1aa44897a07d937e0d5826c24439420ca5d8a63630655ce9161e58d286fc885fcd9b19d096080225d16c89939a24aa1e98632d497b5604073b13f65bdfddc1de4b40d2a829b0521010c5f0f241b1ccc759049579db79983434fac2748829b33f001d0020a8e86c9d3958e0257c867e59c8082238a1ea0a9f2cac9e41f9b3cb0294f34b484a4a000100002900eb00c600c0afc8dade37ae62fa550c8aa50660d8e73585636748040b8e01d67161878276b1ec1ee2aff7614889bb6a36d2bdf9ca097ff6d7bf05c4de1d65c2b8db641f1c8dfbd59c9f7e0fed0b8e0394567eda55173d198e9ca40883b291ab4cada1a91ca8306ca1c37e047ebfe12b95164219b06a24711c2182f5e37374d43c668d45a3ca05eda90e90e510e628b4cfa7ae880502dae9a70a8eced26ad4b3c2f05d77f136cfaa622e40eb084dd3eb52e23a9aeff6ae9018100af38acfd1f6ce5d8c53c4a61c547258002120fe93e5c7a5c9c1a04bf06858c4dd52b01875844e15582dd566d03f41133183a0';
   return new Uint8Array(hexStr.match(/.{1,2}/g).map(b => parseInt(b, 16)));
 }
 
@@ -46,7 +51,9 @@ async function connectWithTimeout({ hostname, port }, timeout) {
   try {
     await Promise.race([
       socket.opened,
-      new Promise((_, reject) => setTimeout(() => reject(new Error("Connection timed out")), timeout)),
+      new Promise((_, reject) =>
+        setTimeout(() => reject(new Error('Connection timed out')), timeout)
+      ),
     ]);
     return socket;
   } catch (err) {
@@ -57,7 +64,10 @@ async function connectWithTimeout({ hostname, port }, timeout) {
 
 function readWithTimeout(reader, timeout) {
   return new Promise(resolve => {
-    const timeoutId = setTimeout(() => resolve({ done: true, value: undefined, timedOut: true }), timeout);
+    const timeoutId = setTimeout(
+      () => resolve({ done: true, value: undefined, timedOut: true }),
+      timeout
+    );
     reader.read().then(result => {
       clearTimeout(timeoutId);
       resolve({ ...result, timedOut: false });
@@ -79,31 +89,37 @@ async function doubleHash(text) {
 }
 
 function simpleHash(str) {
-    let hash = 0;
-    if (str.length === 0) return hash.toString();
-    for (let i = 0; i < str.length; i++) {
-        const char = str.charCodeAt(i);
-        hash = (hash << 5) - hash + char;
-        hash |= 0;
-    }
-    return hash.toString();
+  let hash = 0;
+  if (str.length === 0) return hash.toString();
+  for (let i = 0; i < str.length; i++) {
+    const char = str.charCodeAt(i);
+    hash = (hash << 5) - hash + char;
+    hash |= 0;
+  }
+  return hash.toString();
 }
 
 async function resolveDomain(domain) {
   domain = domain.includes(':') ? domain.split(':')[0] : domain;
   try {
     const [ipv4Response, ipv6Response] = await Promise.all([
-      fetch(`https://1.1.1.1/dns-query?name=${domain}&type=A`, { headers: { 'Accept': 'application/dns-json' } }),
-      fetch(`https://1.1.1.1/dns-query?name=${domain}&type=AAAA`, { headers: { 'Accept': 'application/dns-json' } })
+      fetch(`https://1.1.1.1/dns-query?name=${domain}&type=A`, {
+        headers: { Accept: 'application/dns-json' },
+      }),
+      fetch(`https://1.1.1.1/dns-query?name=${domain}&type=AAAA`, {
+        headers: { Accept: 'application/dns-json' },
+      }),
     ]);
-    if (!ipv4Response.ok && !ipv6Response.ok) throw new Error('DNS query failed for both IPv4 and IPv6.');
-    
+    if (!ipv4Response.ok && !ipv6Response.ok)
+      throw new Error('DNS query failed for both IPv4 and IPv6.');
+
     const ipv4Data = ipv4Response.ok ? await ipv4Response.json() : {};
     const ipv6Data = ipv6Response.ok ? await ipv6Response.json() : {};
 
     const ips = [];
     if (ipv4Data.Answer) ips.push(...ipv4Data.Answer.filter(r => r.type === 1).map(r => r.data));
-    if (ipv6Data.Answer) ips.push(...ipv6Data.Answer.filter(r => r.type === 28).map(r => `[${r.data}]`));
+    if (ipv6Data.Answer)
+      ips.push(...ipv6Data.Answer.filter(r => r.type === 28).map(r => `[${r.data}]`));
     if (ips.length === 0) throw new Error('No A or AAAA records found for this domain.');
     return ips;
   } catch (error) {
@@ -114,76 +130,77 @@ async function resolveDomain(domain) {
 // --- REPLACED checkProxyIP FUNCTION ---
 
 async function checkProxyIP(proxyIPInput) {
-    let portRemote = 443;
-    let hostToCheck = proxyIPInput;
+  let portRemote = 443;
+  let hostToCheck = proxyIPInput;
 
-    if (proxyIPInput.includes('.tp')) {
-        const portMatch = proxyIPInput.match(/\.tp(\d+)\./);
-        if (portMatch) portRemote = parseInt(portMatch[1], 10);
-        hostToCheck = proxyIPInput.split('.tp')[0];
-    } else if (proxyIPInput.includes('[') && proxyIPInput.includes(']:')) {
-        portRemote = parseInt(proxyIPInput.split(']:')[1], 10);
-        hostToCheck = proxyIPInput.split(']:')[0] + ']';
-    } else if (proxyIPInput.includes(':') && !proxyIPInput.startsWith('[')) {
-        const parts = proxyIPInput.split(':');
-        if (parts.length === 2 && parts[0].includes('.')) { 
-            hostToCheck = parts[0];
-            portRemote = parseInt(parts[1], 10) || 443;
-        }
+  if (proxyIPInput.includes('.tp')) {
+    const portMatch = proxyIPInput.match(/\.tp(\d+)\./);
+    if (portMatch) portRemote = parseInt(portMatch[1], 10);
+    hostToCheck = proxyIPInput.split('.tp')[0];
+  } else if (proxyIPInput.includes('[') && proxyIPInput.includes(']:')) {
+    portRemote = parseInt(proxyIPInput.split(']:')[1], 10);
+    hostToCheck = proxyIPInput.split(']:')[0] + ']';
+  } else if (proxyIPInput.includes(':') && !proxyIPInput.startsWith('[')) {
+    const parts = proxyIPInput.split(':');
+    if (parts.length === 2 && parts[0].includes('.')) {
+      hostToCheck = parts[0];
+      portRemote = parseInt(parts[1], 10) || 443;
     }
-    
-    const result = await validateProxyIP(hostToCheck.replace(/\[|\]/g, ''), portRemote);
+  }
 
-    if (result.success) {
-        return {
-            success: true,
-            proxyIP: hostToCheck,
-            portRemote: portRemote,
-            statusCode: 200,
-            responseSize: result.responseTime,
-            timestamp: new Date().toISOString()
-        };
-    } else {
-        return {
-            success: false,
-            proxyIP: hostToCheck,
-            portRemote: portRemote,
-            timestamp: new Date().toISOString(),
-            error: result.message
-        };
-    }
+  const result = await validateProxyIP(hostToCheck.replace(/\[|\]/g, ''), portRemote);
+
+  if (result.success) {
+    return {
+      success: true,
+      proxyIP: hostToCheck,
+      portRemote: portRemote,
+      statusCode: 200,
+      responseSize: result.responseTime,
+      timestamp: new Date().toISOString(),
+    };
+  } else {
+    return {
+      success: false,
+      proxyIP: hostToCheck,
+      portRemote: portRemote,
+      timestamp: new Date().toISOString(),
+      error: result.message,
+    };
+  }
 }
 
-
 async function getIpInfo(ip) {
-    try {
-        const response = await fetch(`http://ip-api.com/json/${ip}?fields=status,message,country,countryCode,as&lang=en`);
-        if (!response.ok) return { country: 'N/A', countryCode: 'N/A', as: 'N/A' };
-        const data = await response.json();
-        if (data.status === 'fail') return { country: 'N/A', countryCode: 'N/A', as: 'N/A' };
-        return data;
-    } catch (e) {
-        return { country: 'N/A', countryCode: 'N/A', as: 'N/A' };
-    }
+  try {
+    const response = await fetch(
+      `http://ip-api.com/json/${ip}?fields=status,message,country,countryCode,as&lang=en`
+    );
+    if (!response.ok) return { country: 'N/A', countryCode: 'N/A', as: 'N/A' };
+    const data = await response.json();
+    if (data.status === 'fail') return { country: 'N/A', countryCode: 'N/A', as: 'N/A' };
+    return data;
+  } catch (e) {
+    return { country: 'N/A', countryCode: 'N/A', as: 'N/A' };
+  }
 }
 
 function parseIPRangeServer(rangeInput) {
-    const ips = [];
-    const cidrMatch = rangeInput.match(/^(\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3})\/24$/);
-    const rangeMatch = rangeInput.match(/^(\d{1,3}\.\d{1,3}\.\d{1,3}\.)(\d{1,3})-(\d{1,3})$/);
+  const ips = [];
+  const cidrMatch = rangeInput.match(/^(\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3})\/24$/);
+  const rangeMatch = rangeInput.match(/^(\d{1,3}\.\d{1,3}\.\d{1,3}\.)(\d{1,3})-(\d{1,3})$/);
 
-    if (cidrMatch) {
-        const prefix = cidrMatch[1].substring(0, cidrMatch[1].lastIndexOf('.'));
-        for (let i = 0; i <= 255; i++) ips.push(`${prefix}.${i}`);
-    } else if (rangeMatch) {
-        const prefix = rangeMatch[1];
-        const start = parseInt(rangeMatch[2], 10);
-        const end = parseInt(rangeMatch[3], 10);
-        if (!isNaN(start) && !isNaN(end) && start <= end && start >=0 && end <= 255) {
-            for (let i = start; i <= end; i++) ips.push(`${prefix}${i}`);
-        }
+  if (cidrMatch) {
+    const prefix = cidrMatch[1].substring(0, cidrMatch[1].lastIndexOf('.'));
+    for (let i = 0; i <= 255; i++) ips.push(`${prefix}.${i}`);
+  } else if (rangeMatch) {
+    const prefix = rangeMatch[1];
+    const start = parseInt(rangeMatch[2], 10);
+    const end = parseInt(rangeMatch[3], 10);
+    if (!isNaN(start) && !isNaN(end) && start <= end && start >= 0 && end <= 255) {
+      for (let i = start; i <= end; i++) ips.push(`${prefix}${i}`);
     }
-    return ips;
+  }
+  return ips;
 }
 
 const forgivingIPv4Regex = /\b(?:\d{1,3}\.){3}\d{1,3}\b/g;
@@ -192,12 +209,15 @@ const ipv6Regex = /(?:[A-F0-9]{1,4}:){7}[A-F0-9]{1,4}|\[(?:[A-F0-9]{1,4}:){7}[A-
 // --- HTML Page Generators (Unchanged) ---
 
 function generateDomainCheckPageHTML({ domains, temporaryTOKEN }) {
-    const domainsJson = JSON.stringify(domains);
-    const domainsHTML = domains.map(domain => 
+  const domainsJson = JSON.stringify(domains);
+  const domainsHTML = domains
+    .map(
+      domain =>
         `<div><strong>Domain:</strong> <span class="range-tag" onclick="copyToClipboard('${domain}', this)">${domain}</span></div>`
-    ).join('');
+    )
+    .join('');
 
-    return `<!DOCTYPE html>
+  return `<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
@@ -352,21 +372,35 @@ function generateDomainCheckPageHTML({ domains, temporaryTOKEN }) {
 </html>`;
 }
 
-function generateClientSideCheckPageHTML({ title, subtitleLabel, subtitleContent, ipsToCheck, temporaryTOKEN, pageType, contentHash }) {
-    const ipsJson = JSON.stringify(ipsToCheck);
-    let subtitleHTML = '';
-    if (subtitleLabel && subtitleContent) {
-        if (pageType === 'file') {
-             subtitleHTML = `<div class="ranges-list"><strong>${subtitleLabel}</strong> <a href="${subtitleContent}" class="range-tag" target="_blank" rel="noopener noreferrer">${subtitleContent}</a></div>`;
-        } else if (pageType === 'iprange') {
-             const ranges = subtitleContent.split(',').map(r => `<span class="range-tag" onclick="copyToClipboard('${r.trim()}', this)">${r.trim()}</span>`).join('<br>');
-             subtitleHTML = `<div class="ranges-list"><strong>${subtitleLabel}</strong><br>${ranges}</div>`;
-        } else {
-             subtitleHTML = `<div class="ranges-list"><strong>${subtitleLabel}</strong> <span class="range-tag">${subtitleContent}</span></div>`;
-        }
+function generateClientSideCheckPageHTML({
+  title,
+  subtitleLabel,
+  subtitleContent,
+  ipsToCheck,
+  temporaryTOKEN,
+  pageType,
+  contentHash,
+}) {
+  const ipsJson = JSON.stringify(ipsToCheck);
+  let subtitleHTML = '';
+  if (subtitleLabel && subtitleContent) {
+    if (pageType === 'file') {
+      subtitleHTML = `<div class="ranges-list"><strong>${subtitleLabel}</strong> <a href="${subtitleContent}" class="range-tag" target="_blank" rel="noopener noreferrer">${subtitleContent}</a></div>`;
+    } else if (pageType === 'iprange') {
+      const ranges = subtitleContent
+        .split(',')
+        .map(
+          r =>
+            `<span class="range-tag" onclick="copyToClipboard('${r.trim()}', this)">${r.trim()}</span>`
+        )
+        .join('<br>');
+      subtitleHTML = `<div class="ranges-list"><strong>${subtitleLabel}</strong><br>${ranges}</div>`;
+    } else {
+      subtitleHTML = `<div class="ranges-list"><strong>${subtitleLabel}</strong> <span class="range-tag">${subtitleContent}</span></div>`;
     }
+  }
 
-    return `<!DOCTYPE html>
+  return `<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
@@ -918,10 +952,74 @@ const CLIENT_SCRIPT = `
 function generateMainHTML(faviconURL) {
   const year = new Date().getFullYear();
   const countries = {
-    'ALL': 'All Countries', 'AE': 'United Arab Emirates', 'AL': 'Albania', 'AM': 'Armenia', 'AR': 'Argentina', 'AT': 'Austria', 'AU': 'Australia', 'AZ': 'Azerbaijan', 'BE': 'Belgium', 'BG': 'Bulgaria', 'BR': 'Brazil', 'CA': 'Canada', 'CH': 'Switzerland', 'CN': 'China', 'CO': 'Colombia', 'CY': 'Cyprus', 'CZ': 'Czech Republic', 'DE': 'Germany', 'DK': 'Denmark', 'EE': 'Estonia', 'ES': 'Spain', 'FI': 'Finland', 'FR': 'France', 'GB': 'United Kingdom', 'GI': 'Gibraltar', 'HK': 'Hong Kong', 'HU': 'Hungary', 'ID': 'Indonesia', 'IE': 'Ireland', 'IL': 'Israel', 'IN': 'India', 'IR': 'Iran', 'IT': 'Italy', 'JP': 'Japan', 'KR': 'South Korea', 'KZ': 'Kazakhstan', 'LT': 'Lithuania', 'LU': 'Luxembourg', 'LV': 'Latvia', 'MD': 'Moldova', 'MX': 'Mexico', 'MY': 'Malaysia', 'NL': 'Netherlands', 'NZ': 'New Zealand', 'PH': 'Philippines', 'PL': 'Poland', 'PR': 'Puerto Rico', 'PT': 'Portugal', 'QA': 'Qatar', 'RO': 'Romania', 'RS': 'Serbia', 'RU': 'Russia', 'SA': 'Saudi Arabia', 'SC': 'Seychelles', 'SE': 'Sweden', 'SG': 'Singapore', 'SK': 'Slovakia', 'TH': 'Thailand', 'TR': 'Turkey', 'TW': 'Taiwan', 'UA': 'Ukraine', 'US': 'United States', 'UZ': 'Uzbekistan', 'VN': 'Vietnam'
+    ALL: 'All Countries',
+    AE: 'United Arab Emirates',
+    AL: 'Albania',
+    AM: 'Armenia',
+    AR: 'Argentina',
+    AT: 'Austria',
+    AU: 'Australia',
+    AZ: 'Azerbaijan',
+    BE: 'Belgium',
+    BG: 'Bulgaria',
+    BR: 'Brazil',
+    CA: 'Canada',
+    CH: 'Switzerland',
+    CN: 'China',
+    CO: 'Colombia',
+    CY: 'Cyprus',
+    CZ: 'Czech Republic',
+    DE: 'Germany',
+    DK: 'Denmark',
+    EE: 'Estonia',
+    ES: 'Spain',
+    FI: 'Finland',
+    FR: 'France',
+    GB: 'United Kingdom',
+    GI: 'Gibraltar',
+    HK: 'Hong Kong',
+    HU: 'Hungary',
+    ID: 'Indonesia',
+    IE: 'Ireland',
+    IL: 'Israel',
+    IN: 'India',
+    IR: 'Iran',
+    IT: 'Italy',
+    JP: 'Japan',
+    KR: 'South Korea',
+    KZ: 'Kazakhstan',
+    LT: 'Lithuania',
+    LU: 'Luxembourg',
+    LV: 'Latvia',
+    MD: 'Moldova',
+    MX: 'Mexico',
+    MY: 'Malaysia',
+    NL: 'Netherlands',
+    NZ: 'New Zealand',
+    PH: 'Philippines',
+    PL: 'Poland',
+    PR: 'Puerto Rico',
+    PT: 'Portugal',
+    QA: 'Qatar',
+    RO: 'Romania',
+    RS: 'Serbia',
+    RU: 'Russia',
+    SA: 'Saudi Arabia',
+    SC: 'Seychelles',
+    SE: 'Sweden',
+    SG: 'Singapore',
+    SK: 'Slovakia',
+    TH: 'Thailand',
+    TR: 'Turkey',
+    TW: 'Taiwan',
+    UA: 'Ukraine',
+    US: 'United States',
+    UZ: 'Uzbekistan',
+    VN: 'Vietnam',
   };
 
-  const allCountriesButtonImage = 'https://raw.githubusercontent.com/mehdi-hexing/Get-Github-Achievements/main/527112cc-4097-432b-b30c-0b9657451c5f.jpg';
+  const allCountriesButtonImage =
+    'https://raw.githubusercontent.com/mehdi-hexing/Get-Github-Achievements/main/527112cc-4097-432b-b30c-0b9657451c5f.jpg';
   const allCountriesURL = `https://raw.githubusercontent.com/NiREvil/vless/main/sub/country_proxies/02_proxies.csv`;
   const countryFileBaseURL = `https://raw.githubusercontent.com/NiREvil/vless/main/sub/country_proxies/`;
 
@@ -931,11 +1029,11 @@ function generateMainHTML(faviconURL) {
         <p class="country-name">${countries['ALL']}</p>
     </div>
   `;
-  
+
   for (const code in countries) {
-      if (code === 'ALL') continue;
-      const fileUrl = `${countryFileBaseURL}${code.toUpperCase()}.txt`;
-      countryButtonsHTML += `
+    if (code === 'ALL') continue;
+    const fileUrl = `${countryFileBaseURL}${code.toUpperCase()}.txt`;
+    countryButtonsHTML += `
         <div class="country-item">
             <a href="/file/${encodeURIComponent(fileUrl)}" class="country-button" style="background-image: url('https://flagcdn.com/${code.toLowerCase()}.svg');"></a>
             <p class="country-name">${countries[code]}</p>
@@ -1018,146 +1116,208 @@ function generateMainHTML(faviconURL) {
 </html>`;
 }
 
-
 // --- Main Fetch Handler (Unchanged) ---
 export default {
-    async fetch(request, env, ctx) {
-        const url = new URL(request.url);
-        const path = url.pathname;
-        const UA = request.headers.get('User-Agent') || 'null';
-        const hostname = url.hostname;
-        
-        if (path.toLowerCase().startsWith('/domain/')) {
-            const domains_string = decodeURIComponent(path.substring('/domain/'.length));
-            const domains = domains_string.split(',').map(s => s.trim()).filter(Boolean);
-            if (domains.length === 0) {
-                return new Response('No domains provided', { status: 400 });
-            }
-            const timestamp = Math.ceil(new Date().getTime() / (1000 * 60 * 31));
-            const temporaryTOKEN = await doubleHash(hostname + timestamp + UA);
-            return new Response(generateDomainCheckPageHTML({ domains, temporaryTOKEN }), { headers: { 'Content-Type': 'text/html;charset=UTF-8' } });
-        }
-        
-        if (path.toLowerCase().startsWith('/file/') || path.toLowerCase().startsWith('/iprange/') || path.toLowerCase().startsWith('/proxyip/')) {
-            const timestamp = Math.ceil(new Date().getTime() / (1000 * 60 * 31));
-            const temporaryTOKEN = await doubleHash(hostname + timestamp + UA);
-            let ipsToCheck = [];
-            let options = {};
-            let pageType = '';
-            let contentHash = '';
+  async fetch(request, env, ctx) {
+    const url = new URL(request.url);
+    const path = url.pathname;
+    const UA = request.headers.get('User-Agent') || 'null';
+    const hostname = url.hostname;
 
-            if (path.toLowerCase().startsWith('/proxyip/')) {
-                pageType = 'proxyip';
-                const ips_string = decodeURIComponent(path.substring('/proxyip/'.length));
-                ipsToCheck = ips_string.split(',').map(s => s.trim()).filter(Boolean);
-                contentHash = simpleHash(ipsToCheck.join(''));
-                options = {
-                    title: "Proxy IP's Results:",
-                    subtitleLabel: "IPs:",
-                    subtitleContent: ips_string,
-                };
-            } else if (path.toLowerCase().startsWith('/iprange/')) {
-                pageType = 'iprange';
-                const ranges_string = decodeURIComponent(path.substring('/iprange/'.length));
-                ipsToCheck = ranges_string.split(',').flatMap(range => parseIPRangeServer(range.trim()));
-                contentHash = simpleHash(ipsToCheck.join(''));
-                options = {
-                    title: "IP Range's Results:",
-                    subtitleLabel: "Range's:",
-                    subtitleContent: ranges_string,
-                };
-            } else { // /file/ path
-                pageType = 'file';
-                const targetUrl = decodeURIComponent(request.url.substring(request.url.indexOf('/file/') + 6));
-                if (!targetUrl || !targetUrl.startsWith('http')) return new Response('Invalid URL', {status: 400});
-                 try {
-                    const response = await fetch(targetUrl, { headers: {'User-Agent': 'ProxyChecker/1.0'} });
-                    if (!response.ok) throw new Error(`Fetch failed: ${response.statusText}`);
-                    const text = await response.text();
-                    contentHash = simpleHash(text);
-                    const foundIPs = [...new Set([...(text.match(forgivingIPv4Regex) || []), ...(text.match(ipv6Regex) || [])])];
-                    ipsToCheck = foundIPs.filter(ip => {
-                        const parts = ip.split(':');
-                        return parts.length === 1 || !isNaN(parseInt(parts[parts.length - 1]));
-                    });
-                     options = {
-                        title: 'File Test Results:',
-                        subtitleLabel: 'File Link Address:',
-                        subtitleContent: targetUrl,
-                    };
-                } catch(e) {
-                    return new Response(`Error processing file: ${e.message}`, { status: 500 });
-                }
-            }
-            return new Response(generateClientSideCheckPageHTML({ ...options, ipsToCheck, temporaryTOKEN, pageType, contentHash }), { headers: { 'Content-Type': 'text/html;charset=UTF-8' } });
-        }
-        
-        if (path === '/client.js') {
-            return new Response(CLIENT_SCRIPT, { headers: { "Content-Type": "application/javascript;charset=UTF-8" } });
-        }
-
-        if (path.toLowerCase().startsWith('/api/')) {
-            const timestampForToken = Math.ceil(new Date().getTime() / (1000 * 60 * 31));
-            const temporaryTOKEN = await doubleHash(hostname + timestampForToken + UA);
-            const permanentTOKEN = env.TOKEN || temporaryTOKEN;
-            
-            const isTokenValid = () => {
-                if (!env.TOKEN) return true;
-                const providedToken = url.searchParams.get('token');
-                return providedToken === permanentTOKEN || providedToken === temporaryTOKEN;
-            };
-            
-            if (path.toLowerCase() === '/api/get-token') {
-                return new Response(JSON.stringify({ token: temporaryTOKEN }), { headers: { "Content-Type": "application/json" } });
-            }
-
-            if (!isTokenValid()) {
-                return new Response(JSON.stringify({ status: "error", message: "Invalid TOKEN" }), {
-                    status: 403, headers: { "Content-Type": "application/json" }
-                });
-            }
-
-            if (path.toLowerCase() === '/api/check') {
-                const proxyIPInput = url.searchParams.get('proxyip');
-                if (!proxyIPInput) return new Response(JSON.stringify({success: false, error: 'Missing proxyip parameter'}), { status: 400, headers: { "Content-Type": "application/json" }});
-                const result = await checkProxyIP(proxyIPInput);
-                return new Response(JSON.stringify(result), { status: 200, headers: { "Content-Type": "application/json" } });
-            }
-            
-            if (path.toLowerCase() === '/api/resolve') {
-                const domain = url.searchParams.get('domain');
-                if (!domain) return new Response(JSON.stringify({success: false, error: 'Missing domain parameter'}), { status: 400, headers: { "Content-Type": "application/json" }});
-                try {
-                    const ips = await resolveDomain(domain);
-                    return new Response(JSON.stringify({ success: true, domain, ips }), { headers: { "Content-Type": "application/json" } });
-                } catch (error) {
-                    return new Response(JSON.stringify({ success: false, error: error.message }), { status: 500, headers: { "Content-Type": "application/json" } });
-                }
-            }
-
-            if (path.toLowerCase() === '/api/ip-info') {
-                let ip = url.searchParams.get('ip') || request.headers.get('CF-Connecting-IP');
-                if (!ip) return new Response(JSON.stringify({success: false, error: 'IP parameter not provided'}), { status: 400, headers: { "Content-Type": "application/json" }});
-                if (ip.includes('[')) ip = ip.replace(/\[|\]/g, '');
-                const data = await getIpInfo(ip);
-                return new Response(JSON.stringify(data), { headers: { "Content-Type": "application/json" } });
-            }
-            
-            return new Response(JSON.stringify({success: false, error: 'API route not found'}), { status: 404, headers: { "Content-Type": "application/json" } });
-        }
-        
-        const faviconURL = env.ICO || 'https://github.com/user-attachments/assets/31a6ced0-62b8-429f-a98e-082ea5ac1990';
-
-        if (path.toLowerCase() === '/favicon.ico') {
-            return Response.redirect(faviconURL, 302);
-        }
-        
-        if (path === '/') {
-            return new Response(generateMainHTML(faviconURL), {
-                headers: { "content-type": "text/html;charset=UTF-8" }
-            });
-        }
-        
-        return new Response('Not Found', { status: 404 });
+    if (path.toLowerCase().startsWith('/domain/')) {
+      const domains_string = decodeURIComponent(path.substring('/domain/'.length));
+      const domains = domains_string
+        .split(',')
+        .map(s => s.trim())
+        .filter(Boolean);
+      if (domains.length === 0) {
+        return new Response('No domains provided', { status: 400 });
+      }
+      const timestamp = Math.ceil(new Date().getTime() / (1000 * 60 * 31));
+      const temporaryTOKEN = await doubleHash(hostname + timestamp + UA);
+      return new Response(generateDomainCheckPageHTML({ domains, temporaryTOKEN }), {
+        headers: { 'Content-Type': 'text/html;charset=UTF-8' },
+      });
     }
+
+    if (
+      path.toLowerCase().startsWith('/file/') ||
+      path.toLowerCase().startsWith('/iprange/') ||
+      path.toLowerCase().startsWith('/proxyip/')
+    ) {
+      const timestamp = Math.ceil(new Date().getTime() / (1000 * 60 * 31));
+      const temporaryTOKEN = await doubleHash(hostname + timestamp + UA);
+      let ipsToCheck = [];
+      let options = {};
+      let pageType = '';
+      let contentHash = '';
+
+      if (path.toLowerCase().startsWith('/proxyip/')) {
+        pageType = 'proxyip';
+        const ips_string = decodeURIComponent(path.substring('/proxyip/'.length));
+        ipsToCheck = ips_string
+          .split(',')
+          .map(s => s.trim())
+          .filter(Boolean);
+        contentHash = simpleHash(ipsToCheck.join(''));
+        options = {
+          title: "Proxy IP's Results:",
+          subtitleLabel: 'IPs:',
+          subtitleContent: ips_string,
+        };
+      } else if (path.toLowerCase().startsWith('/iprange/')) {
+        pageType = 'iprange';
+        const ranges_string = decodeURIComponent(path.substring('/iprange/'.length));
+        ipsToCheck = ranges_string.split(',').flatMap(range => parseIPRangeServer(range.trim()));
+        contentHash = simpleHash(ipsToCheck.join(''));
+        options = {
+          title: "IP Range's Results:",
+          subtitleLabel: "Range's:",
+          subtitleContent: ranges_string,
+        };
+      } else {
+        // /file/ path
+        pageType = 'file';
+        const targetUrl = decodeURIComponent(
+          request.url.substring(request.url.indexOf('/file/') + 6)
+        );
+        if (!targetUrl || !targetUrl.startsWith('http'))
+          return new Response('Invalid URL', { status: 400 });
+        try {
+          const response = await fetch(targetUrl, {
+            headers: { 'User-Agent': 'ProxyChecker/1.0' },
+          });
+          if (!response.ok) throw new Error(`Fetch failed: ${response.statusText}`);
+          const text = await response.text();
+          contentHash = simpleHash(text);
+          const foundIPs = [
+            ...new Set([
+              ...(text.match(forgivingIPv4Regex) || []),
+              ...(text.match(ipv6Regex) || []),
+            ]),
+          ];
+          ipsToCheck = foundIPs.filter(ip => {
+            const parts = ip.split(':');
+            return parts.length === 1 || !isNaN(parseInt(parts[parts.length - 1]));
+          });
+          options = {
+            title: 'File Test Results:',
+            subtitleLabel: 'File Link Address:',
+            subtitleContent: targetUrl,
+          };
+        } catch (e) {
+          return new Response(`Error processing file: ${e.message}`, { status: 500 });
+        }
+      }
+      return new Response(
+        generateClientSideCheckPageHTML({
+          ...options,
+          ipsToCheck,
+          temporaryTOKEN,
+          pageType,
+          contentHash,
+        }),
+        { headers: { 'Content-Type': 'text/html;charset=UTF-8' } }
+      );
+    }
+
+    if (path === '/client.js') {
+      return new Response(CLIENT_SCRIPT, {
+        headers: { 'Content-Type': 'application/javascript;charset=UTF-8' },
+      });
+    }
+
+    if (path.toLowerCase().startsWith('/api/')) {
+      const timestampForToken = Math.ceil(new Date().getTime() / (1000 * 60 * 31));
+      const temporaryTOKEN = await doubleHash(hostname + timestampForToken + UA);
+      const permanentTOKEN = env.TOKEN || temporaryTOKEN;
+
+      const isTokenValid = () => {
+        if (!env.TOKEN) return true;
+        const providedToken = url.searchParams.get('token');
+        return providedToken === permanentTOKEN || providedToken === temporaryTOKEN;
+      };
+
+      if (path.toLowerCase() === '/api/get-token') {
+        return new Response(JSON.stringify({ token: temporaryTOKEN }), {
+          headers: { 'Content-Type': 'application/json' },
+        });
+      }
+
+      if (!isTokenValid()) {
+        return new Response(JSON.stringify({ status: 'error', message: 'Invalid TOKEN' }), {
+          status: 403,
+          headers: { 'Content-Type': 'application/json' },
+        });
+      }
+
+      if (path.toLowerCase() === '/api/check') {
+        const proxyIPInput = url.searchParams.get('proxyip');
+        if (!proxyIPInput)
+          return new Response(
+            JSON.stringify({ success: false, error: 'Missing proxyip parameter' }),
+            { status: 400, headers: { 'Content-Type': 'application/json' } }
+          );
+        const result = await checkProxyIP(proxyIPInput);
+        return new Response(JSON.stringify(result), {
+          status: 200,
+          headers: { 'Content-Type': 'application/json' },
+        });
+      }
+
+      if (path.toLowerCase() === '/api/resolve') {
+        const domain = url.searchParams.get('domain');
+        if (!domain)
+          return new Response(
+            JSON.stringify({ success: false, error: 'Missing domain parameter' }),
+            { status: 400, headers: { 'Content-Type': 'application/json' } }
+          );
+        try {
+          const ips = await resolveDomain(domain);
+          return new Response(JSON.stringify({ success: true, domain, ips }), {
+            headers: { 'Content-Type': 'application/json' },
+          });
+        } catch (error) {
+          return new Response(JSON.stringify({ success: false, error: error.message }), {
+            status: 500,
+            headers: { 'Content-Type': 'application/json' },
+          });
+        }
+      }
+
+      if (path.toLowerCase() === '/api/ip-info') {
+        let ip = url.searchParams.get('ip') || request.headers.get('CF-Connecting-IP');
+        if (!ip)
+          return new Response(
+            JSON.stringify({ success: false, error: 'IP parameter not provided' }),
+            { status: 400, headers: { 'Content-Type': 'application/json' } }
+          );
+        if (ip.includes('[')) ip = ip.replace(/\[|\]/g, '');
+        const data = await getIpInfo(ip);
+        return new Response(JSON.stringify(data), {
+          headers: { 'Content-Type': 'application/json' },
+        });
+      }
+
+      return new Response(JSON.stringify({ success: false, error: 'API route not found' }), {
+        status: 404,
+        headers: { 'Content-Type': 'application/json' },
+      });
+    }
+
+    const faviconURL =
+      env.ICO || 'https://github.com/user-attachments/assets/31a6ced0-62b8-429f-a98e-082ea5ac1990';
+
+    if (path.toLowerCase() === '/favicon.ico') {
+      return Response.redirect(faviconURL, 302);
+    }
+
+    if (path === '/') {
+      return new Response(generateMainHTML(faviconURL), {
+        headers: { 'content-type': 'text/html;charset=UTF-8' },
+      });
+    }
+
+    return new Response('Not Found', { status: 404 });
+  },
 };
