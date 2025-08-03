@@ -23,14 +23,14 @@ function buildTLSHandshake() {
  * Performs a single validation attempt for a proxy IP.
  */
 function validateProxyIP(proxyHost, proxyPort, timeout = 3000) {
-  return new Promise(resolve => {
+  return new Promise((resolve) => {
     const socket = new net.Socket();
     let hasResolved = false;
     const startTime = performance.now();
 
     socket.setTimeout(timeout);
     socket.on('connect', () => socket.write(buildTLSHandshake()));
-    socket.on('data', data => {
+    socket.on('data', (data) => {
       if (hasResolved) return;
       hasResolved = true;
       if (data && data.length > 0 && data[0] === 0x16) {
@@ -44,7 +44,7 @@ function validateProxyIP(proxyHost, proxyPort, timeout = 3000) {
       }
       socket.destroy();
     });
-    socket.on('error', error => {
+    socket.on('error', (error) => {
       if (hasResolved) return;
       hasResolved = true;
       resolve({ success: false, message: error.message });
@@ -91,54 +91,58 @@ async function main() {
     console.log(`Reading proxies from: ${proxyFilePath}`);
     const rawContent = fs.readFileSync(proxyFilePath, 'utf-8');
 
-    // --- NEW ROBUST PARSING LOGIC ---
     const ipPortCombinations = [];
     const lines = rawContent.split(/\r?\n/);
 
     for (const line of lines) {
-      if (!line || line.startsWith('#')) continue; // Skip empty lines and comments
-
-      const parts = line.trim().split(/[, ]+/); // Split by comma OR space
+      if (!line || line.startsWith('#') || line.startsWith('IP Address')) continue;
+      const parts = line.trim().split(/[, ]+/);
       if (parts.length >= 2) {
         const ip = parts[0];
         const port = parts[1];
-
-        // Basic validation
         if (/^(?:\d{1,3}\.){3}\d{1,3}$/.test(ip) && /^\d+$/.test(port)) {
           ipPortCombinations.push(`${ip}:${port}`);
         }
       }
     }
-
+    
     const ipsToCheck = [...new Set(ipPortCombinations)];
-    // --- END NEW PARSING LOGIC ---
+    const workingProxies = [];
+    const batchSize = 200; // Process 200 proxies at a time to avoid resource limits
 
     if (ipsToCheck.length === 0) {
       console.log('No valid IP/Port combinations found in the file.');
+      generateMarkdown(workingProxies); // Generate empty file so commit action works
       return;
     }
 
-    console.log(`Testing ${ipsToCheck.length} unique proxies...`);
+    console.log(`Testing ${ipsToCheck.length} unique proxies in batches of ${batchSize}...`);
 
-    const promises = ipsToCheck.map(ipPort => {
-      const [host, port] = ipPort.split(':');
-      return testProxyWithRetries(host, parseInt(port, 10));
-    });
+    for (let i = 0; i < ipsToCheck.length; i += batchSize) {
+      const batch = ipsToCheck.slice(i, i + batchSize);
+      console.log(`--- Processing batch ${Math.floor(i / batchSize) + 1} of ${Math.ceil(ipsToCheck.length / batchSize)} ---`);
 
-    const results = await Promise.all(promises);
-    const workingProxies = [];
-    results.forEach((result, index) => {
-      if (result.success) {
-        workingProxies.push({
-          ip: ipsToCheck[index],
-          responseTime: result.responseTime,
-          message: result.message,
-        });
-      }
-    });
+      const promises = batch.map(ipPort => {
+        const [host, port] = ipPort.split(':');
+        return testProxyWithRetries(host, parseInt(port, 10));
+      });
+
+      const results = await Promise.allSettled(promises);
+
+      results.forEach((result, index) => {
+        if (result.status === 'fulfilled' && result.value.success) {
+          workingProxies.push({
+            ip: batch[index],
+            responseTime: result.value.responseTime,
+            message: result.value.message
+          });
+        }
+      });
+    }
 
     console.log(`Found ${workingProxies.length} working proxies.`);
     generateMarkdown(workingProxies);
+
   } catch (error) {
     if (error.code === 'ENOENT') {
       console.error(`Error: File not found at '${error.path}'.`);
@@ -165,9 +169,9 @@ function generateMarkdown(proxies) {
       markdownContent += `| \`${proxy.ip}\` | ${proxy.responseTime} | ${proxy.message} |\n`;
     });
     markdownContent += `\n### Copy-Paste List\n`;
-    markdownContent += '```\n';
+    markdownContent += "```\n";
     markdownContent += proxies.map(p => p.ip).join('\n');
-    markdownContent += '\n```\n';
+    markdownContent += "\n```\n";
   } else {
     markdownContent += `No working proxies were found in this run.\n`;
   }
