@@ -1,18 +1,17 @@
+// test-proxies.js
+
 import fs from 'fs';
 import path from 'path';
 import net from 'net';
 import { performance } from 'perf_hooks';
 import { fileURLToPath } from 'url';
 
-// --- ESM `__dirname` variable ---
+// This block is needed in ESM to replicate the `__dirname` variable
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
-// --------------------------------------------------------------------
 
 /**
  * Builds the TLS Client Hello packet.
- * Freedom to Dream
- * @returns {Uint8Array} The byte array for the TLS handshake.
  */
 function buildTLSHandshake() {
   const hexStr =
@@ -22,20 +21,16 @@ function buildTLSHandshake() {
 
 /**
  * Performs a single validation attempt for a proxy IP.
- * @param {string} proxyHost - The IP address of the proxy.
- * @param {number} proxyPort - The port of the proxy.
- * @param {number} timeout - Connection timeout in milliseconds.
- * @returns {Promise<{success: boolean, message: string, responseTime?: number}>}
  */
 function validateProxyIP(proxyHost, proxyPort, timeout = 3000) {
-  return new Promise(resolve => {
+  return new Promise((resolve) => {
     const socket = new net.Socket();
     let hasResolved = false;
     const startTime = performance.now();
 
     socket.setTimeout(timeout);
     socket.on('connect', () => socket.write(buildTLSHandshake()));
-    socket.on('data', data => {
+    socket.on('data', (data) => {
       if (hasResolved) return;
       hasResolved = true;
       if (data && data.length > 0 && data[0] === 0x16) {
@@ -49,7 +44,7 @@ function validateProxyIP(proxyHost, proxyPort, timeout = 3000) {
       }
       socket.destroy();
     });
-    socket.on('error', error => {
+    socket.on('error', (error) => {
       if (hasResolved) return;
       hasResolved = true;
       resolve({ success: false, message: error.message });
@@ -68,9 +63,6 @@ function validateProxyIP(proxyHost, proxyPort, timeout = 3000) {
 
 /**
  * Wraps the validation logic in a retry loop.
- * @param {string} host - The IP address of the proxy.
- * @param {number} port - The port of the proxy.
- * @returns {Promise<object>}
  */
 async function testProxyWithRetries(host, port) {
   const maxRetries = 4;
@@ -83,7 +75,6 @@ async function testProxyWithRetries(host, port) {
       return result;
     }
     lastError = `Attempt ${attempt + 1} failed: ${result.message}`;
-    // Optional: add a small delay between retries
     if (attempt < maxRetries - 1) {
       await new Promise(res => setTimeout(res, 200));
     }
@@ -96,16 +87,34 @@ async function testProxyWithRetries(host, port) {
  */
 async function main() {
   try {
-    // --- IMPORTANT: SET YOUR PROXY FILE PATH HERE ---
     const proxyFilePath = path.join(__dirname, 'sub/country_proxies/03_proxies.txt');
-    // const proxyFilePath = path.join(__dirname, 'sub/country_proxies/02_proxies.csv');
-
     console.log(`Reading proxies from: ${proxyFilePath}`);
     const rawContent = fs.readFileSync(proxyFilePath, 'utf-8');
-    const ipsToCheck = [...new Set(rawContent.match(/\b(?:\d{1,3}\.){3}\d{1,3}:\d+\b/g) || [])];
+
+    // --- NEW ROBUST PARSING LOGIC ---
+    const ipPortCombinations = [];
+    const lines = rawContent.split(/\r?\n/);
+
+    for (const line of lines) {
+      if (!line || line.startsWith('#')) continue; // Skip empty lines and comments
+
+      const parts = line.trim().split(/[, ]+/); // Split by comma OR space
+      if (parts.length >= 2) {
+        const ip = parts[0];
+        const port = parts[1];
+        
+        // Basic validation
+        if (/^(?:\d{1,3}\.){3}\d{1,3}$/.test(ip) && /^\d+$/.test(port)) {
+          ipPortCombinations.push(`${ip}:${port}`);
+        }
+      }
+    }
+    
+    const ipsToCheck = [...new Set(ipPortCombinations)];
+    // --- END NEW PARSING LOGIC ---
 
     if (ipsToCheck.length === 0) {
-      console.log('No valid IP:Port combinations found to test.');
+      console.log('No valid IP/Port combinations found in the file.');
       return;
     }
 
@@ -113,11 +122,7 @@ async function main() {
 
     const promises = ipsToCheck.map(ipPort => {
       const [host, port] = ipPort.split(':');
-      if (host && port) {
-        // Call the new retry function
-        return testProxyWithRetries(host, parseInt(port, 10));
-      }
-      return Promise.resolve({ success: false, message: 'Invalid format' });
+      return testProxyWithRetries(host, parseInt(port, 10));
     });
 
     const results = await Promise.all(promises);
@@ -127,17 +132,17 @@ async function main() {
         workingProxies.push({
           ip: ipsToCheck[index],
           responseTime: result.responseTime,
-          message: result.message,
+          message: result.message
         });
       }
     });
 
     console.log(`Found ${workingProxies.length} working proxies.`);
     generateMarkdown(workingProxies);
+
   } catch (error) {
     if (error.code === 'ENOENT') {
       console.error(`Error: File not found at '${error.path}'.`);
-      console.error('Please ensure the path is correct and the repository is checked out.');
     } else {
       console.error('An unexpected error occurred:', error);
     }
@@ -147,7 +152,6 @@ async function main() {
 
 /**
  * Generates a markdown file with the list of successful proxies.
- * @param {Array<object>} proxies - The list of working proxies.
  */
 function generateMarkdown(proxies) {
   let markdownContent = `# ✅ Working Proxies\n\n`;
@@ -157,17 +161,14 @@ function generateMarkdown(proxies) {
   if (proxies.length > 0) {
     markdownContent += `| Proxy IP             | Response Time (ms) | Notes                             |\n`;
     markdownContent += `|----------------------|--------------------|-----------------------------------|\n`;
-
     proxies.sort((a, b) => a.responseTime - b.responseTime);
-
     proxies.forEach(proxy => {
       markdownContent += `| \`${proxy.ip}\` | ${proxy.responseTime} | ${proxy.message} |\n`;
     });
-
     markdownContent += `\n### Copy-Paste List\n`;
-    markdownContent += '```\n';
+    markdownContent += "```\n";
     markdownContent += proxies.map(p => p.ip).join('\n');
-    markdownContent += '\n```\n';
+    markdownContent += "\n```\n";
   } else {
     markdownContent += `No working proxies were found in this run.\n`;
   }
@@ -176,4 +177,5 @@ function generateMarkdown(proxies) {
   console.log('Successfully generated WORKING_PROXIES.md file.');
 }
 
+// Start the process
 main();
