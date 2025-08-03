@@ -1,7 +1,13 @@
-const fs = require('fs');
-const path = require('path');
-const net = require('net');
-const { performance } = require('perf_hooks');
+import fs from 'fs';
+import path from 'path';
+import net from 'net';
+import { performance } from 'perf_hooks';
+import { fileURLToPath } from 'url';
+
+// --- ESM `__dirname` variable ---
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
+// --------------------------------------------------------------------
 
 /**
  * Builds the TLS Client Hello packet.
