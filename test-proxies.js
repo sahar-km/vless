@@ -23,14 +23,14 @@ function buildTLSHandshake() {
  * Performs a single validation attempt for a proxy IP.
  */
 function validateProxyIP(proxyHost, proxyPort, timeout = 3000) {
-  return new Promise((resolve) => {
+  return new Promise(resolve => {
     const socket = new net.Socket();
     let hasResolved = false;
     const startTime = performance.now();
 
     socket.setTimeout(timeout);
     socket.on('connect', () => socket.write(buildTLSHandshake()));
-    socket.on('data', (data) => {
+    socket.on('data', data => {
       if (hasResolved) return;
       hasResolved = true;
       if (data && data.length > 0 && data[0] === 0x16) {
@@ -44,7 +44,7 @@ function validateProxyIP(proxyHost, proxyPort, timeout = 3000) {
       }
       socket.destroy();
     });
-    socket.on('error', (error) => {
+    socket.on('error', error => {
       if (hasResolved) return;
       hasResolved = true;
       resolve({ success: false, message: error.message });
@@ -102,14 +102,14 @@ async function main() {
       if (parts.length >= 2) {
         const ip = parts[0];
         const port = parts[1];
-        
+
         // Basic validation
         if (/^(?:\d{1,3}\.){3}\d{1,3}$/.test(ip) && /^\d+$/.test(port)) {
           ipPortCombinations.push(`${ip}:${port}`);
         }
       }
     }
-    
+
     const ipsToCheck = [...new Set(ipPortCombinations)];
     // --- END NEW PARSING LOGIC ---
 
@@ -132,14 +132,13 @@ async function main() {
         workingProxies.push({
           ip: ipsToCheck[index],
           responseTime: result.responseTime,
-          message: result.message
+          message: result.message,
         });
       }
     });
 
     console.log(`Found ${workingProxies.length} working proxies.`);
     generateMarkdown(workingProxies);
-
   } catch (error) {
     if (error.code === 'ENOENT') {
       console.error(`Error: File not found at '${error.path}'.`);
@@ -166,9 +165,9 @@ function generateMarkdown(proxies) {
       markdownContent += `| \`${proxy.ip}\` | ${proxy.responseTime} | ${proxy.message} |\n`;
     });
     markdownContent += `\n### Copy-Paste List\n`;
-    markdownContent += "```\n";
+    markdownContent += '```\n';
     markdownContent += proxies.map(p => p.ip).join('\n');
-    markdownContent += "\n```\n";
+    markdownContent += '\n```\n';
   } else {
     markdownContent += `No working proxies were found in this run.\n`;
   }
