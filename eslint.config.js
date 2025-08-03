@@ -20,6 +20,7 @@ export default [
       '.github/**',
       'edge/waste/**',
       'edge/unite.js',
+      'test-proxies.js',
       '**/clash-12.**',
       'sub/ProxyIP.md',
       'node_modules/**',
