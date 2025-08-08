@@ -1,62 +1,65 @@
 # ✅ Working Proxies (Port 443)
 
-*Last updated on: Thu, 07 Aug 2025 06:21:04 GMT*
-*Total working proxies found: 55*
+*Last updated on: Fri, 08 Aug 2025 06:21:10 GMT*
+*Total working proxies found: 58*
 
 | IP Address | Location | ISP / Organization |
 |------------|----------|--------------------|
-| `103.113.69.46` | Vilnius, Lithuania | AS44477 PQ HOSTING PLUS S.R.L. |
-| `109.120.150.175` | Amsterdam, The Netherlands | AS210644 AEZA INTERNATIONAL LTD |
-| `116.202.31.174` | Falkenstein, Germany | AS24940 Hetzner Online GmbH |
-| `142.132.140.130` | Falkenstein, Germany | AS24940 Hetzner Online GmbH |
-| `147.45.73.218` | Stockholm, Sweden | AS210644 AEZA INTERNATIONAL LTD |
-| `147.45.77.214` | Stockholm, Sweden | AS210644 AEZA INTERNATIONAL LTD |
-| `162.19.247.245` | Limburg an der Lahn, Germany | AS16276 OVH SAS |
-| `176.124.220.179` | Helsinki, Finland | AS210644 AEZA INTERNATIONAL LTD |
-| `185.105.117.222` | Moscow, Russia | AS209641 I-SERVERS LTD |
-| `185.188.181.187` | Helsinki, Finland | AS207569 I-SERVERS LTD |
-| `185.23.238.76` | Dronten, The Netherlands | AS50053 Individual Entrepreneur Anton Levin |
-| `185.8.129.187` | Izmir, Türkiye | AS3188 Alastyr Telekomunikasyon A.S. |
-| `192.248.189.181` | Frankfurt am Main, Germany | AS20473 The Constant Company, LLC |
-| `193.124.22.20` | Riga, Latvia | AS26383 Baxet Group Inc. |
-| `193.168.143.152` | Bucharest, Romania | AS39622 ZERGRUSH SRL |
-| `194.146.123.241` | London, United Kingdom | AS212552 BitCommand LLC |
-| `195.135.255.199` | Riga, Latvia | AS42532 SIA VEESP |
-| `195.200.26.225` | Amsterdam, The Netherlands | AS216071 SERVERS TECH FZCO |
-| `195.238.126.52` | Vilnius, Lithuania | AS56630 Melbikomas UAB |
-| `217.110.20.141` | Hamburg, Germany | AS8220 COLT Technology Services Group Limited |
-| `217.144.189.124` | Amsterdam, The Netherlands | AS210644 AEZA INTERNATIONAL LTD |
-| `217.144.189.96` | Amsterdam, The Netherlands | AS210644 AEZA INTERNATIONAL LTD |
-| `3.75.170.179` | Frankfurt am Main, Germany | AS16509 Amazon.com, Inc. |
-| `31.172.70.222` | Frankfurt am Main, Germany | AS44051 Fornex Hosting S.L. |
-| `37.1.194.7` | Frankfurt am Main, Germany | AS28753 Leaseweb Deutschland GmbH |
-| `37.1.217.231` | Meppel, The Netherlands | AS58061 Scalaxy B.V. |
-| `37.252.5.75` | Tallinn, Estonia | AS34702 Aktsiaselts WaveCom |
-| `38.180.48.228` | Prague, Czechia | AS9009 M247 Europe SRL |
-| `45.138.73.83` | Helsinki, Finland | AS200740 FIRST SERVER LIMITED |
-| `45.15.23.92` | Bucharest, Romania | AS9009 M247 Europe SRL |
-| `45.159.188.249` | Amsterdam, The Netherlands | AS14576 Hosting Solution Ltd. |
-| `45.81.227.122` | Dronten, The Netherlands | AS204601 Zomro B.V. |
-| `45.82.255.141` | Warsaw, Poland | AS44477 PQ HOSTING PLUS S.R.L. |
-| `46.17.102.93` | Amsterdam, The Netherlands | AS57043 HOSTKEY B.V. |
-| `46.226.160.150` | Stockholm, Sweden | AS210644 AEZA INTERNATIONAL LTD |
-| `5.252.118.203` | Amsterdam, The Netherlands | AS211522 Hypercore Ltd |
-| `51.38.44.17` | Roubaix, France | AS16276 OVH SAS |
-| `64.225.68.226` | Amsterdam, The Netherlands | AS14061 DigitalOcean, LLC |
-| `77.232.142.45` | Moscow, Russia | AS210644 AEZA INTERNATIONAL LTD |
-| `77.91.77.116` | Frankfurt am Main, Germany | AS211522 Hypercore Ltd |
-| `81.95.4.189` | Rehau, Germany | AS201011 Core-Backbone GmbH |
-| `83.217.211.239` | Dronten, Netherlands | AS41745 Baykov Ilya Sergeevich |
-| `85.192.60.188` | Amsterdam, The Netherlands | AS210644 AEZA INTERNATIONAL LTD |
-| `86.107.197.161` | Dronten, The Netherlands | AS202448 MVPS LTD |
-| `89.110.113.74` | Amsterdam, The Netherlands | AS216071 SERVERS TECH FZCO |
-| `89.110.65.201` | Amsterdam, The Netherlands | AS216071 SERVERS TECH FZCO |
-| `89.22.225.144` | Stockholm, Sweden | AS210644 AEZA INTERNATIONAL LTD |
-| `91.108.241.188` | Helsinki, Finland | AS210644 AEZA INTERNATIONAL LTD |
-| `91.149.254.138` | Helsinki, Finland | AS26383 Baxet Group Inc. |
-| `91.239.148.34` | Gdansk, Poland | AS199058 SERVA ONE LTD |
-| `91.239.148.53` | Gdansk, Poland | AS199058 SERVA ONE LTD |
-| `91.245.225.69` | Bern, Switzerland | AS215346 Big Data Host LLC |
-| `93.183.124.199` | Amsterdam, The Netherlands | AS216071 SERVERS TECH FZCO |
-| `93.183.69.31` | Amsterdam, The Netherlands | AS43581 ZTV CORP LLC |
-| `94.177.8.62` | Wien, Austria | AS40994 Hohl IT e.U. |
+| `104.168.58.31` | Buffalo, United States | AS36352 HostPapa |
+| `107.172.167.194` | Ashburn, United States | AS36352 HostPapa |
+| `107.173.54.243` | Buffalo, United States | AS36352 HostPapa |
+| `107.174.63.237` | Buffalo, United States | AS36352 HostPapa |
+| `146.103.33.38` | Meppel, The Netherlands | AS199058 SERVA ONE LTD |
+| `147.75.230.160` | Bengaluru, India | AS11179 Aryaka Networks, Inc. |
+| `147.75.230.207` | Bengaluru, India | AS11179 Aryaka Networks, Inc. |
+| `147.75.230.33` | Bengaluru, India | AS11179 Aryaka Networks, Inc. |
+| `163.5.207.31` | Meppel, The Netherlands | AS199058 SERVA ONE LTD |
+| `170.205.38.77` | Los Angeles, United States | AS63473 HostHatch, LLC |
+| `172.245.156.220` | Buffalo, United States | AS36352 HostPapa |
+| `18.236.13.188` | Portland, United States | AS16509 Amazon.com, Inc. |
+| `193.233.207.35` | Dallas, United States | AS398343 Baxet Group Inc. |
+| `198.46.143.134` | Buffalo, United States | AS36352 HostPapa |
+| `2.59.183.114` | Meppel, The Netherlands | AS199058 SERVA ONE LTD |
+| `2.59.183.174` | Meppel, The Netherlands | AS199058 SERVA ONE LTD |
+| `2.59.183.181` | Meppel, The Netherlands | AS199058 SERVA ONE LTD |
+| `2.59.183.197` | Meppel, The Netherlands | AS199058 SERVA ONE LTD |
+| `2.59.183.198` | Meppel, The Netherlands | AS199058 SERVA ONE LTD |
+| `2.59.183.210` | Meppel, The Netherlands | AS199058 SERVA ONE LTD |
+| `2.59.183.219` | Meppel, The Netherlands | AS199058 SERVA ONE LTD |
+| `2.59.183.56` | Meppel, The Netherlands | AS199058 SERVA ONE LTD |
+| `204.110.222.104` | Ashburn, United States | AS14618 Amazon.com, Inc. |
+| `207.231.109.22` | Jamestown, United States | AS40676 Psychz Networks |
+| `213.148.10.221` | Almaty, Kazakhstan | AS48988 HAICOM LIMITED |
+| `213.255.209.207` | Toronto, Canada | AS54913 Kamatera, Inc. |
+| `216.10.243.159` | Mumbai, India | AS394695 PDR |
+| `23.94.211.148` | Seattle, United States | AS36352 HostPapa |
+| `23.94.92.19` | Marietta, United States | AS36352 HostPapa |
+| `34.208.221.169` | Portland, United States | AS16509 Amazon.com, Inc. |
+| `34.218.130.79` | Portland, United States | AS16509 Amazon.com, Inc. |
+| `35.167.93.200` | Portland, United States | AS16509 Amazon.com, Inc. |
+| `44.224.24.91` | Portland, United States | AS16509 Amazon.com, Inc. |
+| `44.228.63.60` | Portland, United States | AS16509 Amazon.com, Inc. |
+| `45.42.214.153` | Secaucus, United States | AS212477 RoyaleHosting BV |
+| `45.79.168.17` | Cedar Knolls, United States | AS63949 Akamai Connected Cloud |
+| `45.86.229.28` | Madrid, Spain | AS62005 BlueVPS OU |
+| `5.8.63.23` | Ashburn, United States | AS19437 SECURED SERVERS LLC |
+| `52.10.78.7` | Portland, United States | AS16509 Amazon.com, Inc. |
+| `52.35.114.64` | Portland, United States | AS16509 Amazon.com, Inc. |
+| `52.41.218.4` | Portland, United States | AS16509 Amazon.com, Inc. |
+| `62.146.172.119` | Seattle, United States | AS40021 Contabo Inc. |
+| `63.205.203.251` | Santa Clara, United States | AS7018 AT&T Enterprises, LLC |
+| `64.21.191.164` | Squamish, Canada | AS14217 N6 Cloud inc. |
+| `67.226.220.10` | Ashburn, United States | AS14618 Amazon.com, Inc. |
+| `81.22.132.113` | Meppel, The Netherlands | AS199058 SERVA ONE LTD |
+| `81.22.132.136` | Meppel, The Netherlands | AS199058 SERVA ONE LTD |
+| `81.22.132.183` | Meppel, The Netherlands | AS199058 SERVA ONE LTD |
+| `81.22.132.219` | Meppel, The Netherlands | AS199058 SERVA ONE LTD |
+| `81.22.132.243` | Meppel, The Netherlands | AS199058 SERVA ONE LTD |
+| `81.22.132.245` | Meppel, The Netherlands | AS199058 SERVA ONE LTD |
+| `81.22.132.254` | Meppel, The Netherlands | AS199058 SERVA ONE LTD |
+| `81.22.132.3` | Meppel, The Netherlands | AS199058 SERVA ONE LTD |
+| `81.22.132.44` | Meppel, The Netherlands | AS199058 SERVA ONE LTD |
+| `81.91.214.85` | Ostrava, Czechia | AS39817 OvaNet, a.s. |
+| `89.42.142.79` | Meppel, The Netherlands | AS199058 SERVA ONE LTD |
+| `91.149.239.198` | Los Angeles, United States | AS26383 Baxet Group Inc. |
+| `91.90.194.87` | Dronten, The Netherlands | AS21100 GREEN FLOID LLC |
