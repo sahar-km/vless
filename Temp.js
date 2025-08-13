@@ -2,14 +2,15 @@ import { connect } from 'cloudflare:sockets';
 let temporaryTOKEN, permanentTOKEN;
 
 // Scamalytics API Configuration
-const SCAMALYTICS_USERNAME = "nimasecure999";
-const SCAMALYTICS_API_KEY = "ce75d58f98849753077a270e6013a036d6f4a6c562fd74c960960ae7a7087b40";
-const SCAMALYTICS_API_BASE_URL = "https://api12.scamalytics.com/v3/";
+const SCAMALYTICS_USERNAME = 'nimasecure999';
+const SCAMALYTICS_API_KEY = 'ce75d58f98849753077a270e6013a036d6f4a6c562fd74c960960ae7a7087b40';
+const SCAMALYTICS_API_BASE_URL = 'https://api12.scamalytics.com/v3/';
 
 export default {
   async fetch(request, env, ctx) {
     const websiteIcon =
-      env.ICO || 'https://raw.githubusercontent.com/NiREvil/windows-activation/refs/heads/main/docs/public/favicon.ico';
+      env.ICO ||
+      'https://raw.githubusercontent.com/NiREvil/windows-activation/refs/heads/main/docs/public/favicon.ico';
     const url = new URL(request.url);
     const UA = request.headers.get('User-Agent') || 'null';
     const path = url.pathname;
@@ -18,7 +19,7 @@ export default {
     const timestamp = Math.ceil(currentDate.getTime() / (1000 * 60 * 31));
     temporaryTOKEN = await doubleHash(url.hostname + timestamp + UA);
     permanentTOKEN = env.TOKEN || temporaryTOKEN;
-    
+
     // Get Scamalytics credentials from environment or use defaults
     const actualScamalyticsUsername = env.SCAMALYTICS_USERNAME || SCAMALYTICS_USERNAME;
     const actualScamalyticsApiKey = env.SCAMALYTICS_API_KEY || SCAMALYTICS_API_KEY;
@@ -88,7 +89,7 @@ export default {
 
       const ipToLookup = url.searchParams.get('ip');
       if (!ipToLookup) {
-        return new Response(JSON.stringify({ error: "Missing IP parameter" }), { 
+        return new Response(JSON.stringify({ error: 'Missing IP parameter' }), {
           status: 400,
           headers: {
             'Content-Type': 'application/json',
@@ -97,70 +98,82 @@ export default {
         });
       }
 
-      if (actualScamalyticsUsername === "nimasecure999" && actualScamalyticsApiKey === "ce75d58f98849753077a270e6013a036d6f4a6c562fd74c960960ae7a7087b40") {
+      if (
+        actualScamalyticsUsername === 'nimasecure999' &&
+        actualScamalyticsApiKey ===
+          'ce75d58f98849753077a270e6013a036d6f4a6c562fd74c960960ae7a7087b40'
+      ) {
         // Using default credentials, which is fine
-      } else if (actualScamalyticsUsername === "" || actualScamalyticsApiKey === "") {
-        return new Response(JSON.stringify({ error: "Scamalytics API credentials not configured on server." }), { 
-          status: 500,
-          headers: {
-            'Content-Type': 'application/json',
-            'Access-Control-Allow-Origin': '*',
+      } else if (actualScamalyticsUsername === '' || actualScamalyticsApiKey === '') {
+        return new Response(
+          JSON.stringify({ error: 'Scamalytics API credentials not configured on server.' }),
+          {
+            status: 500,
+            headers: {
+              'Content-Type': 'application/json',
+              'Access-Control-Allow-Origin': '*',
+            },
           },
-        });
+        );
       }
-      
+
       const cleanIP = ipToLookup.replace(/[\[\]]/g, '');
       const scamalyticsUrl = `${SCAMALYTICS_API_BASE_URL}${actualScamalyticsUsername}/?key=${actualScamalyticsApiKey}&ip=${cleanIP}`;
-      
+
       console.log('Scamalytics URL:', scamalyticsUrl);
 
       try {
         const scamalyticsResponse = await fetch(scamalyticsUrl, {
           method: 'GET',
           headers: {
-            'User-Agent': 'Mozilla/5.0 (compatible; ProxyIPScanner/1.0)'
-          }
+            'User-Agent': 'Mozilla/5.0 (compatible; ProxyIPScanner/1.0)',
+          },
         });
-        
+
         console.log('Scamalytics Response Status:', scamalyticsResponse.status);
-        
+
         if (!scamalyticsResponse.ok) {
           throw new Error(`HTTP ${scamalyticsResponse.status}: ${scamalyticsResponse.statusText}`);
         }
-        
+
         const responseText = await scamalyticsResponse.text();
         console.log('Scamalytics Raw Response:', responseText.substring(0, 200));
-        
+
         let responseBody;
         try {
           responseBody = JSON.parse(responseText);
         } catch (parseError) {
           console.error('JSON Parse Error:', parseError);
-          return new Response(JSON.stringify({ 
-            error: "Invalid JSON response from Scamalytics API", 
-            details: `Response was not valid JSON: ${responseText.substring(0, 100)}...` 
-          }), { 
-            status: 502,
-            headers: { "Content-Type": "application/json", "Access-Control-Allow-Origin": "*" }
-          });
+          return new Response(
+            JSON.stringify({
+              error: 'Invalid JSON response from Scamalytics API',
+              details: `Response was not valid JSON: ${responseText.substring(0, 100)}...`,
+            }),
+            {
+              status: 502,
+              headers: { 'Content-Type': 'application/json', 'Access-Control-Allow-Origin': '*' },
+            },
+          );
         }
-    
+
         return new Response(JSON.stringify(responseBody), {
           headers: {
-            "Content-Type": "application/json",
-            "Access-Control-Allow-Origin": "*"
-          }
+            'Content-Type': 'application/json',
+            'Access-Control-Allow-Origin': '*',
+          },
         });
-        
       } catch (error) {
         console.error('Scamalytics API Error:', error);
-        return new Response(JSON.stringify({ 
-          error: "Failed to fetch from Scamalytics API", 
-          details: error.message 
-        }), { 
-          status: 502,
-          headers: { "Content-Type": "application/json", "Access-Control-Allow-Origin": "*" }
-        });
+        return new Response(
+          JSON.stringify({
+            error: 'Failed to fetch from Scamalytics API',
+            details: error.message,
+          }),
+          {
+            status: 502,
+            headers: { 'Content-Type': 'application/json', 'Access-Control-Allow-Origin': '*' },
+          },
+        );
       }
     } else if (path.toLowerCase() === '/resolve') {
       if (
