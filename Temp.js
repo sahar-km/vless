@@ -112,8 +112,8 @@ export default {
       const cleanIP = ipToLookup.replace(/[\[\]]/g, '');
       const scamalyticsUrl = `${SCAMALYTICS_API_BASE_URL}${actualScamalyticsUsername}/?key=${actualScamalyticsApiKey}&ip=${cleanIP}`;
       
-      console.log('Scamalytics URL:', scamalyticsUrl); // برای debug
-      
+      console.log('Scamalytics URL:', scamalyticsUrl);
+
       try {
         const scamalyticsResponse = await fetch(scamalyticsUrl, {
           method: 'GET',
@@ -144,6 +144,24 @@ export default {
             headers: { "Content-Type": "application/json", "Access-Control-Allow-Origin": "*" }
           });
         }
+    
+        return new Response(JSON.stringify(responseBody), {
+          headers: {
+            "Content-Type": "application/json",
+            "Access-Control-Allow-Origin": "*"
+          }
+        });
+        
+      } catch (error) {
+        console.error('Scamalytics API Error:', error);
+        return new Response(JSON.stringify({ 
+          error: "Failed to fetch from Scamalytics API", 
+          details: error.message 
+        }), { 
+          status: 502,
+          headers: { "Content-Type": "application/json", "Access-Control-Allow-Origin": "*" }
+        });
+      }
     } else if (path.toLowerCase() === '/resolve') {
       if (
         !url.searchParams.has('token') ||
