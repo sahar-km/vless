@@ -1,16 +1,9 @@
 import { connect } from 'cloudflare:sockets';
 let temporaryTOKEN, permanentTOKEN;
 
-// Scamalytics API Configuration
-const SCAMALYTICS_USERNAME = 'nimasecure999';
-const SCAMALYTICS_API_KEY = 'ce75d58f98849753077a270e6013a036d6f4a6c562fd74c960960ae7a7087b40';
-const SCAMALYTICS_API_BASE_URL = 'https://api12.scamalytics.com/v3/';
-
 export default {
   async fetch(request, env, ctx) {
-    const websiteIcon =
-      env.ICO ||
-      'https://raw.githubusercontent.com/NiREvil/windows-activation/refs/heads/main/docs/public/favicon.ico';
+    const websiteIcon = env.ICO
     const url = new URL(request.url);
     const UA = request.headers.get('User-Agent') || 'null';
     const path = url.pathname;
@@ -20,9 +13,10 @@ export default {
     temporaryTOKEN = await doubleHash(url.hostname + timestamp + UA);
     permanentTOKEN = env.TOKEN || temporaryTOKEN;
 
-    // Get Scamalytics credentials from environment or use defaults
-    const actualScamalyticsUsername = env.SCAMALYTICS_USERNAME || SCAMALYTICS_USERNAME;
-    const actualScamalyticsApiKey = env.SCAMALYTICS_API_KEY || SCAMALYTICS_API_KEY;
+    // Get Scamalytics credentials from environment variables
+    const scamalyticsUsername = env.SCAMALYTICS_USERNAME;
+    const scamalyticsApiKey = env.SCAMALYTICS_API_KEY;
+    const scamalyticsApiBaseUrl = env.SCAMALYTICS_API_BASE_URL || 'https://api12.scamalytics.com/v3/';
 
     if (path.toLowerCase() === '/check') {
       if (!url.searchParams.has('proxyip'))
@@ -98,15 +92,13 @@ export default {
         });
       }
 
-      if (
-        actualScamalyticsUsername === 'nimasecure999' &&
-        actualScamalyticsApiKey ===
-          'ce75d58f98849753077a270e6013a036d6f4a6c562fd74c960960ae7a7087b40'
-      ) {
-        // Using default credentials, which is fine
-      } else if (actualScamalyticsUsername === '' || actualScamalyticsApiKey === '') {
+      // Check if Scamalytics credentials are configured
+      if (!scamalyticsUsername || !scamalyticsApiKey) {
         return new Response(
-          JSON.stringify({ error: 'Scamalytics API credentials not configured on server.' }),
+          JSON.stringify({ 
+            error: 'Scamalytics API credentials not configured on server.',
+            message: 'Please set SCAMALYTICS_USERNAME and SCAMALYTICS_API_KEY environment variables.'
+          }),
           {
             status: 500,
             headers: {
@@ -118,7 +110,7 @@ export default {
       }
 
       const cleanIP = ipToLookup.replace(/[\[\]]/g, '');
-      const scamalyticsUrl = `${SCAMALYTICS_API_BASE_URL}${actualScamalyticsUsername}/?key=${actualScamalyticsApiKey}&ip=${cleanIP}`;
+      const scamalyticsUrl = `${scamalyticsApiBaseUrl}${scamalyticsUsername}/?key=${scamalyticsApiKey}&ip=${cleanIP}`;
 
       console.log('Scamalytics URL:', scamalyticsUrl);
 
@@ -484,17 +476,17 @@ async function nginxWelcomePage() {
     <!DOCTYPE html>
     <html>
     <head>
-    <title>Welcome to nginx!</title>
+    <title>Welcome to nginx</title>
     <style>
         body {
             width: 35em;
             margin: 0 auto;
-            font-family: Tahoma, Verdana, Arial, sans-serif;
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
         }
     </style>
     </head>
     <body>
-    <h1>Welcome to nginx!</h1>
+    <h1>Welcome to nginx</h1>
     <p>If you see this page, the nginx web server is successfully installed and
     working. Further configuration is required.</p>
     <p>For online documentation and support please refer to
@@ -510,474 +502,649 @@ async function nginxWelcomePage() {
 
 async function generateHTMLPage(hostname, websiteIcon, token) {
   const html = `<!DOCTYPE html>
-<html lang="en">
+<html lang="en" dir="ltr">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>ProxyIP Scanner with Risk Analysis</title>
+  <title>ProxyIP Checker- Advanced Risk Analysis</title>
   <link rel="icon" href="${websiteIcon}" type="image/x-icon">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;900&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
   <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
   <style>
+  
+  @font-face {
+      font-family: "Styrene B LC";
+      src: url("https://pub-7a3b428c76aa411181a0f4dd7fa9064b.r2.dev/StyreneBLC-Regular.woff2") format("woff2");
+      font-weight: 400; font-style: normal; font-display: swap;
+    }
+
+    @font-face {
+      font-family: "Styrene B LC";
+      src: url("https://pub-7a3b428c76aa411181a0f4dd7fa9064b.r2.dev/StyreneBLC-Medium.woff2") format("woff2");
+      font-weight: 500; font-style: normal; font-display: swap;
+    }
+    
     :root {
-      --bg-primary: oklch(0.10 0.01 240);
-      --bg-secondary: oklch(0.15 0.01 240);
-      --text-primary: oklch(0.95 0.005 240);
-      --text-light: oklch(0.65 0.01 240);
-      --border-color: oklch(0.25 0.01 240);
-      --accent-orange: oklch(0.70 0.19 45);
-      --accent-orange-dark: oklch(0.65 0.18 43);
-      
-      --primary-color: var(--accent-orange);
-      --primary-dark: var(--accent-orange-dark);
-      
-      --status-success: oklch(0.80 0.20 150);
-      --status-success-icon: oklch(0.80 0.20 150);
-      --status-success-border: oklch(0.70 0.18 150);
-      --status-success-bg: oklch(0.28 0.07 150);
-      --status-success-text: oklch(0.92 0.02 150);
-      
-      --status-warning: oklch(0.85 0.22 85);
-      --status-warning-icon: oklch(0.85 0.22 85);
-      --status-warning-border: oklch(0.75 0.20 85);
-      --status-warning-bg: oklch(0.30 0.08 85);
-      --status-warning-text: oklch(0.92 0.02 85);
-      
-      --status-error: oklch(0.70 0.25 28);
-      --status-error-icon: oklch(0.70 0.25 28);
-      --status-error-border: oklch(0.60 0.23 28);
-      --status-error-bg: oklch(0.25 0.09 28);
-      --status-error-text: oklch(0.92 0.02 28);
+      --bg-primary: #0a0a0a;
+      --bg-secondary: #1a1a1a;
+      --bg-tertiary: #2a2a2a;
+      --text-primary: #ffffff;
+      --text-secondary: #b0b0b0;
+      --text-muted: #666666;
+      --accent-orange: #ff6b35;
+      --accent-orange-dark: #e55a2b;
+      --accent-orange-light: #ff8c5a;
+      --border-color: #333333;
+      --border-light: #444444;
+      --success-color: #10b981;
+      --success-bg: rgba(16, 185, 129, 0.1);
+      --success-border: rgba(16, 185, 129, 0.3);
+      --error-color: #ef4444;
+      --error-bg: rgba(239, 68, 68, 0.1);
+      --error-border: rgba(239, 68, 68, 0.3);
+      --warning-color: #f59e0b;
+      --warning-bg: rgba(245, 158, 11, 0.1);
+      --warning-border: rgba(245, 158, 11, 0.3);
+      --info-color: #3b82f6;
+      --info-bg: rgba(59, 130, 246, 0.1);
+      --info-border: rgba(59, 130, 246, 0.3);
+      --shadow-sm: 0 2px 4px rgba(0, 0, 0, 0.1);
+      --shadow-md: 0 4px 12px rgba(0, 0, 0, 0.15);
+      --shadow-lg: 0 8px 25px rgba(0, 0, 0, 0.25);
+      --shadow-xl: 0 20px 40px rgba(0, 0, 0, 0.4);
+      --radius-sm: 8px;
+      --radius-md: 12px;
+      --radius-lg: 16px;
+      --radius-xl: 20px;
 
-      --status-info: oklch(0.65 0.18 250);
-      
-      --border-radius: 12px;
-      --border-radius-sm: 8px;
-    }
-
-    .badge { 
-      display: inline-flex; 
-      align-items: center; 
-      justify-content: center; 
-      padding: 3px 8px; 
-      border-radius: 12px; 
-      font-size: 11px; 
-      font-weight: 500; 
-      text-transform: uppercase; 
-      letter-spacing: 0.5px; 
-    }
-    .badge-yes { 
-      background-color: rgba(112, 181, 112, 0.15); 
-      color: var(--status-success); 
-      border: 1px solid rgba(112, 181, 112, 0.3); 
-    }
-    .badge-no { 
-      background-color: rgba(224, 93, 68, 0.15); 
-      color: var(--status-error); 
-      border: 1px solid rgba(224, 93, 68, 0.3); 
-    }
-    .badge-neutral { 
-      background-color: rgba(79, 144, 196, 0.15); 
-      color: var(--status-info); 
-      border: 1px solid rgba(79, 144, 196, 0.3); 
-    }
-    .badge-warning { 
-      background-color: rgba(224, 188, 68, 0.15); 
-      color: var(--status-warning); 
-      border: 1px solid rgba(224, 188, 68, 0.3); 
+      --sans: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+      --mono-sans: 'Styrene B LC';
     }
 
-    body { 
-      font-family: 'Inter', sans-serif; 
-      background: var(--bg-primary);
-      color: var(--text-primary); 
-      line-height: 1.6; 
-      margin:0; 
-      padding:0; 
-      min-height: 100vh; 
-      display: flex; 
-      flex-direction: column; 
-      align-items: center;
-    }
-    .container { 
-      max-width: 800px; 
-      width: 100%; 
-      margin: 20px auto; 
-      padding: 20px; 
+    * {
+      margin: 0;
+      padding: 0;
       box-sizing: border-box;
     }
-    .header { 
-      text-align: center; 
-      margin-bottom: 30px;
-    }
-    .main-title { 
-      font-size: 2.5rem; 
-      font-weight: 900; 
+
+    body {
+      font-family: var(--sans);
+      background: linear-gradient(135deg, var(--bg-primary) 0%, #1a1a1a 100%);
       color: var(--text-primary);
+      line-height: 1.6;
+      min-height: 100vh;
+      overflow-x: hidden;
     }
-    .accent-orange-text {
-      color: var(--accent-orange);
+
+    .container {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 2rem;
     }
-    .card { 
-      background: var(--bg-secondary); 
-      border-radius: var(--border-radius); 
-      padding: 25px;
-      box-shadow: 0 8px 20px rgba(0,0,0,0.25); 
-      margin-bottom: 25px; 
+
+    .header {
+      text-align: center;
+      margin-bottom: 3rem;
+      position: relative;
     }
-    .form-section { 
-      display: flex; 
-      flex-direction: column;
-      align-items: center; 
+
+    .header::before {
+      content: '';
+      position: absolute;
+      top: -50px;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 200px;
+      height: 200px;
+      background: radial-gradient(circle, var(--accent-orange) 0%, transparent 70%);
+      opacity: 0.1;
+      border-radius: 50%;
+      z-index: -1;
     }
-    .form-label { 
-      display: block; 
-      font-weight: 500; 
-      margin-bottom: 8px; 
-      color: var(--text-light); 
-      width: 100%; 
-      max-width: 400px;
-      text-align: left;
+
+    .main-title {
+      font-size: clamp(2.5rem, 5vw, 4rem);
+      font-weight: 900;
+      background: linear-gradient(135deg, var(--accent-orange) 0%, var(--accent-orange-light) 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+      margin-bottom: 1rem;
+      text-shadow: 0 0 30px rgba(255, 107, 53, 0.3);
     }
-    .input-wrapper { 
-      width: 100%; 
-      max-width: 400px; 
-      margin-bottom: 15px;
+
+    .subtitle {
+      font-family: var(--mono-sans);
+      font-size: 1.25rem;
+      color: var(--text-secondary);
+      font-weight: 400;
+      margin-bottom: 0.5rem;
     }
-    .form-input { 
-      width: 100%; 
-      padding: 12px; 
-      border: 1px solid var(--border-color); 
-      border-radius: var(--border-radius-sm); 
-      font-size: 0.95rem; 
-      box-sizing: border-box;
-      background-color: oklch(0.12 0.01 240);
-      color: var(--text-primary);
-    }
-    .form-input::placeholder {
-      color: oklch(0.4 0.01 240);
-    }
-    .btn-primary { 
-      background: linear-gradient(135deg, var(--primary-color), var(--primary-dark)); 
-      color: white; 
-      padding: 12px 25px;
-      border: none; 
-      border-radius: var(--border-radius-sm); 
-      font-size: 1rem; 
-      font-weight: 500; 
-      cursor: pointer; 
-      width: 100%; 
-      max-width: 400px; 
-      box-sizing: border-box;
-      transition: background 0.3s ease;
-    }
-    .btn-primary:hover {
-      background: linear-gradient(135deg, var(--primary-dark), var(--primary-color)); 
-    }
-    .btn-primary:disabled { 
-      background: oklch(0.3 0.01 240); 
-      cursor: not-allowed;
-    }
-    .btn-secondary { 
-      background-color: var(--bg-primary); 
-      color: var(--text-light); 
-      padding: 8px 15px; 
+
+    .main-card {
+      background: linear-gradient(145deg, var(--bg-secondary) 0%, #1f1f1f 100%);
+      border-radius: var(--radius-xl);
+      padding: 3rem;
+      box-shadow: var(--shadow-xl);
       border: 1px solid var(--border-color);
-      border-radius: var(--border-radius-sm); 
-      font-size: 0.9rem; 
-      cursor: pointer; 
-      margin-top: 15px; 
-      transition: background-color 0.3s ease, color 0.3s ease;
+      backdrop-filter: blur(10px);
+      position: relative;
+      overflow: hidden;
     }
-    .btn-secondary:hover {
-      background-color: var(--border-color);
+
+    .main-card::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      height: 1px;
+      background: linear-gradient(90deg, transparent, var(--accent-orange), transparent);
+      opacity: 0.5;
+    }
+
+    .form-section {
+      display: grid;
+      gap: 2rem;
+      margin-bottom: 2rem;
+    }
+
+    .input-group {
+      position: relative;
+    }
+
+    .input-label {
+      display: block;
+      font-weight: 600;
+      color: var(--text-primary);
+      margin-bottom: 0.75rem;
+      font-size: 1.1rem;
+    }
+
+    .input-wrapper {
+      position: relative;
+    }
+
+    .form-input {
+      width: 100%;
+      padding: 1rem 1.25rem;
+      background: var(--bg-tertiary);
+      border: 2px solid var(--border-color);
+      border-radius: var(--radius-md);
+      color: var(--text-primary);
+      font-size: 1rem;
+      transition: all 0.3s ease;
+      outline: none;
+    }
+
+    .form-input:focus {
+      border-color: var(--accent-orange);
+      box-shadow: 0 0 0 3px rgba(255, 107, 53, 0.1);
+      transform: translateY(-1px);
+    }
+
+    .form-input::placeholder {
+      color: var(--text-muted);
+    }
+
+    .btn-primary {
+      background: linear-gradient(135deg, var(--accent-orange) 0%, var(--accent-orange-dark) 100%);
+      color: white;
+      border: none;
+      padding: 1.25rem 2rem;
+      border-radius: var(--radius-md);
+      font-size: 1.1rem;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      position: relative;
+      overflow: hidden;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      box-shadow: var(--shadow-md);
+    }
+
+    .btn-primary:hover {
+      transform: translateY(-2px);
+      box-shadow: var(--shadow-lg);
+    }
+
+    .btn-primary:active {
+      transform: translateY(0);
+    }
+
+    .btn-primary:disabled {
+      opacity: 0.6;
+      cursor: not-allowed;
+      transform: none;
+    }
+
+    .btn-primary::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: -100%;
+      width: 100%;
+      height: 100%;
+      background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+      transition: left 0.5s;
+    }
+
+    .btn-primary:hover::before {
+      left: 100%;
+    }
+
+    .loading-spinner {
+      width: 20px;
+      height: 20px;
+      border: 2px solid rgba(255, 255, 255, 0.3);
+      border-top: 2px solid white;
+      border-radius: 50%;
+      animation: spin 1s linear infinite;
+      margin-left: 0.5rem;
+      display: none;
+    }
+
+    @keyframes spin {
+      0% { transform: rotate(0deg); }
+      100% { transform: rotate(360deg); }
+    }
+
+    .results-section {
+      margin-top: 3rem;
+    }
+
+    .result-card {
+      font-family: var(--mono-sans);
+      background: var(--bg-secondary);
+      border-radius: var(--radius-lg);
+      padding: 2rem;
+      margin-bottom: 1.5rem;
+      border-left: 4px solid var(--border-color);
+      box-shadow: var(--shadow-md);
+      transition: all 0.3s ease;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .result-card::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 4px;
+      height: 100%;
+      background: var(--border-color);
+      transition: all 0.3s ease;
+    }
+
+    .result-card.success {
+      border-left-color: var(--success-color);
+      background: linear-gradient(145deg, var(--success-bg), var(--bg-secondary));
+    }
+
+    .result-card.success::before {
+      background: var(--success-color);
+    }
+
+    .result-card.error {
+      border-left-color: var(--error-color);
+      background: linear-gradient(145deg, var(--error-bg), var(--bg-secondary));
+    }
+
+    .result-card.error::before {
+      background: var(--error-color);
+    }
+
+    .result-card.warning {
+      border-left-color: var(--warning-color);
+      background: linear-gradient(145deg, var(--warning-bg), var(--bg-secondary));
+    }
+
+    .result-card.warning::before {
+      background: var(--warning-color);
+    }
+
+    .result-header {
+      display: flex;
+      align-items: center;
+      margin-bottom: 1.5rem;
+      gap: 0.75rem;
+    }
+
+    .result-icon {
+      width: 2.5rem;
+      height: 2.5rem;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.25rem;
+      font-weight: bold;
+    }
+
+    .result-icon.success {
+      background: var(--success-color);
+      color: white;
+    }
+
+    .result-icon.error {
+      background: var(--error-color);
+      color: white;
+    }
+
+    .result-icon.warning {
+      background: var(--warning-color);
+      color: white;
+    }
+
+    .result-title {
+      font-size: 1.5rem;
+      font-weight: 700;
       color: var(--text-primary);
     }
-    .loading-spinner { 
-      width: 16px; 
-      height: 16px;
-      border: 2px solid rgba(255,255,255,0.3); 
-      border-top-color: white; 
-      border-radius: 50%; 
-      animation: spin 1s linear infinite; 
-      display: none; 
-      margin-left: 8px;
+
+    .result-content {
+      display: grid;
+      gap: 1rem;
     }
-    @keyframes spin { to { transform: rotate(360deg); } }
-    .result-section { 
-      margin-top: 25px;
+
+    .result-item {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 0.75rem;
+      background: rgba(255, 255, 255, 0.02);
+      border-radius: var(--radius-sm);
+      border: 1px solid var(--border-light);
     }
-    .result-card { 
-      padding: 18px; 
-      border-radius: var(--border-radius-sm); 
-      margin-bottom: 12px;
+
+    .result-label {
+      font-weight: 600;
+      color: var(--text-secondary);
     }
-    .result-card h3 {
-      margin-top: 0;
-      margin-bottom: 10px;
+
+    .result-value {
+      font-weight: 500;
       color: var(--text-primary);
       display: flex;
       align-items: center;
-    }
-    .status-icon-prefix {
-      margin-right: 0.5em;
-      font-size: 1.1em;
-    }
-    .result-success { 
-      background-color: var(--status-success-bg); 
-      border-left: 4px solid var(--status-success-border); 
-      color: var(--status-success-text);
-    }
-    .result-success .status-icon-prefix { color: var(--status-success-icon); }
-
-    .result-error { 
-      background-color: var(--status-error-bg); 
-      border-left: 4px solid var(--status-error-border); 
-      color: var(--status-error-text);
-    }
-    .result-error .status-icon-prefix { color: var(--status-error-icon); }
-    
-    .result-warning { 
-      background-color: var(--status-warning-bg); 
-      border-left: 4px solid var(--status-warning-border);
-      color: var(--status-warning-text);
-    }
-    .result-warning .status-icon-prefix { color: var(--status-warning-icon); }
-
-    .result-card p {
-      color: var(--status-success-text);
-    }
-    .result-error p { color: var(--status-error-text); }
-    .result-warning p { color: var(--status-warning-text); }
-    .result-card p strong {
-        color: var(--text-primary);
+      gap: 0.5rem;
     }
 
-    .copy-btn { 
-      background: var(--bg-primary); 
-      border: 1px solid var(--border-color); 
-      color: var(--text-light);
-      padding: 4px 8px; 
-      border-radius: 4px;
-      font-size: 0.85em; 
-      cursor: pointer; 
-      margin-left: 8px;
-      transition: background-color 0.2s ease;
+    .badge {
+      display: inline-flex;
+      align-items: center;
+      padding: 0.25rem 0.75rem;
+      border-radius: 9999px;
+      font-size: 0.875rem;
+      font-weight: 500;
+      text-transform: uppercase;
+      letter-spacing: 0.025em;
     }
+
+    .badge.success {
+      background: var(--success-bg);
+      color: var(--success-color);
+      border: 1px solid var(--success-border);
+    }
+
+    .badge.error {
+      background: var(--error-bg);
+      color: var(--error-color);
+      border: 1px solid var(--error-border);
+    }
+
+    .badge.warning {
+      background: var(--warning-bg);
+      color: var(--warning-color);
+      border: 1px solid var(--warning-border);
+    }
+
+    .badge.info {
+      background: var(--info-bg);
+      color: var(--info-color);
+      border: 1px solid var(--info-border);
+    }
+
+    .copy-btn {
+      background: var(--bg-tertiary);
+      border: 1px solid var(--border-color);
+      color: var(--text-secondary);
+      padding: 0.25rem 0.5rem;
+      border-radius: var(--radius-sm);
+      font-size: 0.75rem;
+      cursor: pointer;
+      transition: all 0.2s ease;
+    }
+
     .copy-btn:hover {
-      background-color: var(--border-color);
+      background: var(--accent-orange);
+      color: white;
+      border-color: var(--accent-orange);
+    }
+
+    .toast {
+      position: fixed;
+      bottom: 2rem;
+      right: 2rem;
+      background: var(--bg-secondary);
       color: var(--text-primary);
+      padding: 1rem 1.5rem;
+      border-radius: var(--radius-md);
+      box-shadow: var(--shadow-lg);
+      border: 1px solid var(--border-color);
+      z-index: 1000;
+      opacity: 0;
+      transform: translateY(100px);
+      transition: all 0.3s ease;
     }
-    .toast { 
-      position: fixed; 
-      bottom: 20px; 
-      right: 20px;
-      background: oklch(0.2 0.02 250); 
-      color: var(--text-primary); 
-      padding: 12px 20px; 
-      border-radius:var(--border-radius-sm); 
-      z-index:1000; 
-      opacity:0; 
-      transition: opacity 0.3s ease;
-      box-sizing: border-box;
-      box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+
+    .toast.show {
+      opacity: 1;
+      transform: translateY(0);
     }
-    .toast.show { opacity:1; }
-    #rangeResultChartContainer { 
-      margin-top: 15px; 
-      padding:10px; 
-      background-color: var(--bg-secondary); 
-      border-radius: var(--border-radius-sm);
+
+    .api-docs {
+      margin-top: 3rem;
+      background: var(--bg-secondary);
+      border-radius: var(--radius-lg);
+      padding: 2rem;
+      border: 1px solid var(--border-color);
     }
-    .api-docs { 
-      margin-top: 30px; 
-      padding: 25px; 
-      background: var(--bg-secondary); 
-      border-radius: var(--border-radius);
+
+    .api-docs h3 {
+      color: var(--accent-orange);
+      margin-bottom: 1rem;
+      font-size: 1.5rem;
     }
-     .api-docs h3 {
-        color: var(--text-primary);
-     }
-     .api-docs p code {
-        display: inline-block;
-        background-color: oklch(0.1 0.01 240);
-        color: var(--text-light);
-        padding: 3px 6px;
-        border-radius: 4px;
-        font-family: monospace;
-        font-size: 0.9em;
+
+    .api-docs code {
+      font-family: var(--mono-sans);
+      background: var(--bg-tertiary);
+      color: var(--accent-orange-light);
+      padding: 0.25rem 0.5rem;
+      border-radius: var(--radius-sm);
+      font-family: 'Monaco', 'Menlo', monospace;
+      font-size: 0.875rem;
     }
-    .footer { 
-      text-align: center; 
-      padding: 20px;
-      margin-top: 30px; 
-      color: var(--text-light); 
-      font-size: 0.85em; 
-      border-top: 1px solid var(--border-color); 
+
+    .footer {
+      font-family: var(--mono-sans);
+      text-align: center;
+      margin-top: 3rem;
+      padding: 2rem;
+      color: var(--text-muted);
+      border-top: 1px solid var(--border-color);
     }
+
     .footer a {
       color: var(--accent-orange);
       text-decoration: none;
     }
+
     .footer a:hover {
       text-decoration: underline;
     }
-    .flex-align-center { 
-      display: flex;
-      align-items: center; 
-      justify-content: center; 
-    }
-    .ip-item { 
-        padding:8px 5px;
-        border-bottom:1px solid var(--border-color); 
-        display:flex; 
-        justify-content:space-between; 
-        align-items:center;
-        flex-wrap: wrap;
-    }
-    .ip-item:last-child {
-        border-bottom: none;
-    }
-    .ip-item > div:first-child { 
-        flex-grow: 1;
-        margin-right: 10px;
-    }
-     .ip-item .status-icon {
-        flex-shrink: 0;
-        font-size:1.2em;
-    }
-    .ip-grid {
-      border:1px solid var(--border-color) !important;
-      background-color: var(--bg-primary);
-      border-radius: var(--border-radius-sm);
-    }
-    #ip-info- { 
-      color: var(--text-light) !important;
-    }
 
-    .risk-info {
-      display: flex;
-      align-items: center;
-      gap: 8px;
-      margin-top: 5px;
-    }
-
-    .country-flag {
-      width: 16px;
-      height: auto;
-      margin-right: 4px;
-    }
-
-    @media (max-width: 600px) {
+    @media (max-width: 768px) {
       .container {
-        padding: 10px;
-        margin: 10px auto;
+        padding: 1rem;
       }
-      .header {
-        margin-bottom: 15px;
+      
+      .main-card {
+        padding: 2rem;
       }
+      
       .main-title {
-        font-size: 1.8rem;
+        font-size: 2.5rem;
       }
-      .card, .api-docs {
-        padding: 15px;
-        margin-bottom: 20px;
-      }
-      .form-label {
-        font-size: 0.9rem;
-        margin-bottom: 6px;
-      }
-      .form-input {
-        padding: 10px;
-        font-size: 0.9rem;
-      }
-      .btn-primary {
-        padding: 10px 15px;
-        font-size: 0.95rem;
-      }
-      .btn-secondary {
-         padding: 7px 12px;
-         font-size: 0.8rem;
-      }
-      .api-docs p code {
-        word-break: break-all;
-      }
-      .toast {
-        left: 10px;
-        right: 10px;
-        bottom: 10px;
-        width: auto;
-        max-width: calc(100% - 20px);
-        text-align: center;
-      }
-      .ip-grid {
-         font-size: 0.9em;
-      }
-      .ip-item {
+      
+      .result-item {
         flex-direction: column;
         align-items: flex-start;
+        gap: 0.5rem;
       }
-      .ip-item > div:first-child {
-        margin-bottom: 5px;
-        margin-right: 0;
+      
+      .toast {
+        left: 1rem;
+        right: 1rem;
+        bottom: 1rem;
       }
-       .ip-item .copy-btn {
-        margin-left: 0;
-        margin-right: 5px;
+    }
+
+    .grid-2 {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 1rem;
+    }
+
+    @media (max-width: 640px) {
+      .grid-2 {
+        grid-template-columns: 1fr;
       }
+    }
+
+    .flex-center {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 0.5rem;
+    }
+
+    .range-results {
+      margin-top: 2rem;
+    }
+
+    .chart-container {
+      background: var(--bg-tertiary);
+      border-radius: var(--radius-md);
+      padding: 1.5rem;
+      margin-top: 1rem;
+    }
+
+    .ip-grid {
+      display: grid;
+      gap: 0.5rem;
+      max-height: 300px;
+      overflow-y: auto;
+      padding: 1rem;
+      background: var(--bg-tertiary);
+      border-radius: var(--radius-md);
+      border: 1px solid var(--border-color);
+    }
+
+    .ip-item {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 0.75rem;
+      background: var(--bg-secondary);
+      border-radius: var(--radius-sm);
+      border: 1px solid var(--border-light);
+      transition: all 0.2s ease;
+    }
+
+    .ip-item:hover {
+      background: rgba(255, 107, 53, 0.05);
+      border-color: var(--accent-orange);
+    }
+
+    .status-indicator {
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      margin-right: 0.5rem;
+    }
+
+    .status-indicator.success {
+      background: var(--success-color);
+      box-shadow: 0 0 8px var(--success-color);
+    }
+
+    .status-indicator.error {
+      background: var(--error-color);
+      box-shadow: 0 0 8px var(--error-color);
+    }
+
+    .status-indicator.warning {
+      background: var(--warning-color);
+      box-shadow: 0 0 8px var(--warning-color);
     }
   </style>
 </head>
 <body>
   <div class="container">
     <header class="header">
-      <h1 class="main-title">proxyIP <span class="accent-orange-text">scanner</span></h1>
-      <p style="color: var(--text-light); font-size: 1rem;">Advanced IP Verification with Risk Analysis</p>
+      <h1 class="main-title">REvil ProxyIP Checker</h1>
+      <p class="subtitle">Advanced ProxyIP Verification & Risk Analysis</p>
     </header>
 
-    <div class="card">
+    <div class="main-card">
       <div class="form-section">
-        <label for="proxyip" class="form-label">Enter single IP / Domain:</label>
-        <div class="input-wrapper">
-          <input type="text" id="proxyip" class="form-input" placeholder="127.0.0.1:443 or nima.nscl.ir" autocomplete="off">
-        </div>
-        
-        <label for="proxyipRange" class="form-label">Enter IP range:</label>
-        <div class="input-wrapper">
-          <input type="text" id="proxyipRange" class="form-input" placeholder="127.0.0.0/24 OR 127.0.0.1-255" autocomplete="off">
+        <div class="grid-2">
+          <div class="input-group">
+            <label for="proxyip" class="input-label">🎯 Single IP — Domain</label>
+            <div class="input-wrapper">
+              <input type="text" id="proxyip" class="form-input" placeholder="127.0.0.1:443 or nima.nscl.ir" autocomplete="off">
+            </div>
+          </div>
+          
+          <div class="input-group">
+            <label for="proxyipRange" class="input-label">📊 IP Range</label>
+            <div class="input-wrapper">
+              <input type="text" id="proxyipRange" class="form-input" placeholder="127.0.0.0/24 OR 127.0.0.1-255" autocomplete="off">
+            </div>
+          </div>
         </div>
 
         <button id="checkBtn" class="btn-primary" onclick="checkInputs()">
-          <span class="flex-align-center">
-            <span class="btn-text">Analyze & Check</span>
+          <span class="flex-center">
+            <span class="btn-text">🕸️ Start Analysis</span>
             <span class="loading-spinner"></span>
           </span>
         </button>
       </div>
       
-      <div id="result" class="result-section"></div>
-      <div id="rangeResultCard" class="result-card result-section" style="display:none;">
-         <h3><span id="rangeResultIcon" class="status-icon-prefix"></span>Successful IPs in Range:</h3>
-         <div id="rangeResultChartContainer" style="width:100%; max-height:400px; margin: 15px auto; overflow-x: auto;">
-            <canvas id="rangeSuccessChart"></canvas>
-         </div>
-         <div id="rangeResultSummary" style="margin-bottom: 10px;"></div>
-         <button id="copyRangeBtn" class="btn-secondary" onclick="copySuccessfulRangeIPs()" style="display:none;">Copy Successful IPs</button>
-      </div>
+      <div id="result" class="results-section"></div>
+      <div id="rangeResult" class="range-results" style="display:none;"></div>
     </div>
     
     <div class="api-docs">
-       <h3>API Documentation</h3>
-       <p><code>GET /check?proxyip=YOUR_PROXY_IP&token=YOUR_TOKEN_IF_SET</code></p>
-       <p><code>GET /resolve?domain=YOUR_DOMAIN&token=YOUR_TOKEN_IF_SET</code></p>
-       <p><code>GET /ip-info?ip=TARGET_IP&token=YOUR_TOKEN_IF_SET</code></p>
-       <p><code>GET /scamalytics-lookup?ip=TARGET_IP&token=YOUR_TOKEN_IF_SET</code></p>
+       <h3 style="margin-bottom:15px; text-align:center;">>🔗 API Documentation</h3>
+       <p><code>GET /check?proxyip=PROXY_IP1,PROXY_IP2,PROXY_IP3</code></p>
+       <p><code>GET /check?iprange=TARGET_IP_RANGES</code></p>
+       <p><code>GET /resolve?domain=YOUR_DOMAIN</code></p>
+       <p><code>GET /ip-info?ip=TARGET_IP</code></p>
+       <p><code>GET /scamalytics-lookup?ip=TARGET_IP&token=YOUR_TOKEN</code></p>
+       <hr style="border:0; border-top: 1px solid var(--border-color); margin: 20px 0;"/>
     </div>
-     <footer class="footer">
-       <p>© ${new Date().getFullYear()} <strong>ProxyIP Scanner - All Rights Reserved</strong></p>
-     </footer>
+     
+    <footer class="footer">
+       <p>© ${new Date().getFullYear()} <strong>Diana</strong> — proxy ip checker</p>
+    </footer>
    </div>
 
    <div id="toast" class="toast"></div>
@@ -992,7 +1159,7 @@ async function generateHTMLPage(hostname, websiteIcon, token) {
 
     function calculateTimestamp() {
       const currentDate = new Date();
-      return Math.ceil(currentDate.getTime() / (1000 * 60 * 13));
+      return Math.ceil(currentDate.getTime() / (1000 * 60 * 31));
     }
     
     document.addEventListener('DOMContentLoaded', function() {
@@ -1053,7 +1220,12 @@ async function generateHTMLPage(hostname, websiteIcon, token) {
       }).catch(err => { showToast('Copy failed. Please copy manually.'); });
     }
     
-    function createCopyButton(text) { return \`<span class="copy-btn" data-copy="\${text}">\${text}</span>\`; }
+    function createCopyButton(text) { 
+      return \`<span class="result-value">
+        <span>\${text}</span>
+        <button class="copy-btn" data-copy="\${text}">Copy</button>
+      </span>\`; 
+    }
 
     function isValidProxyIPFormat(input) {
         const domainRegex = /^[a-zA-Z0-9]([a-zA-Z0-9\\-]{0,61}[a-zA-Z0-9])?(\\.[a-zA-Z0-9]([a-zA-Z0-9\\-]{0,61}[a-zA-Z0-9])?)*$/;
@@ -1063,7 +1235,8 @@ async function generateHTMLPage(hostname, websiteIcon, token) {
         const tpPortRegex = /^.+\\.tp\\d+\\./;
         return domainRegex.test(input) || ipv4Regex.test(input) || ipv6Regex.test(input) || withPortRegex.test(input) || tpPortRegex.test(input);
     }
-     function isIPAddress(input) {
+
+    function isIPAddress(input) {
       const ipv4Regex = /^(?:(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\\.){3}(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)$/;
       const ipv6Regex = /^\\[?([0-9a-fA-F]{0,4}:){1,7}[0-9a-fA-F]{0,4}\\]?$/;
       const ipv6WithPortRegex = /^\\[[0-9a-fA-F:]+\\]:\\d+$/;
@@ -1125,16 +1298,22 @@ async function generateHTMLPage(hostname, websiteIcon, token) {
         const response = await fetch(workerLookupUrl);
     
         if (!response.ok) {
-          console.error('Scamalytics request failed:', response.status, response.statusText);
-          return null;
+           console.error('Scamalytics request failed via Worker:', response.status, response.statusText);
+           return null;
         }
         
         const data = await response.json();
+
         if (data.status === 'error') {
-          console.error('Scamalytics API error:', data.error);
+          console.error('Scamalytics API error (from worker):', data.message || data.error);
           return null;
         }
         
+        if (data.scamalytics && data.scamalytics.status === 'error') {
+            console.error('Scamalytics API error (from Scamalytics):', data.scamalytics.error);
+            return null;
+        }
+
         return data;
       } catch (error) {
         console.error('Error fetching from Scamalytics via Worker:', error);
@@ -1143,37 +1322,40 @@ async function generateHTMLPage(hostname, websiteIcon, token) {
     }
 
     function formatScamalyticsRiskInfo(data) {
-      if (!data || data.status === 'error') {
-        return '<span class="badge badge-neutral">Risk Unknown</span>';
+      if (!data || !data.scamalytics || data.scamalytics.status !== 'ok') {
+        return '<span class="badge info">Risk Unknown</span>';
       }
 
-      const score = data.score;
-      const risk = data.risk;
+      const sa = data.scamalytics;
+      const score = sa.scamalytics_score;
+      const risk = sa.scamalytics_risk;
       
       let riskText = "Unknown";
-      let badgeClass = "badge-neutral";
+      let badgeClass = "info";
 
       if (risk !== undefined && score !== undefined && risk !== null && score !== null) {
-        riskText = \`\${score} - \${risk.charAt(0).toUpperCase() + risk.slice(1)}\`;
+        const riskCapitalized = risk.charAt(0).toUpperCase() + risk.slice(1);
+        riskText = \`\${score} - \${riskCapitalized}\`;
+
         switch (risk.toLowerCase()) { 
-          case "low": badgeClass = "badge-yes"; break;
-          case "medium": badgeClass = "badge-warning"; break;
-          case "high": badgeClass = "badge-no"; break;
-          case "very high": badgeClass = "badge-no"; break;
+          case "low": badgeClass = "success"; break;
+          case "medium": badgeClass = "warning"; break;
+          case "high": case "very high": badgeClass = "error"; break;
           default: 
-            badgeClass = "badge-neutral";
-            riskText = \`Score \${score} - \${risk || 'Status Unknown'}\`;
+            badgeClass = "info";
+            riskText = \`Score \${score} - \${riskCapitalized || 'Status Unknown'}\`;
             break;
         }
       } else if (score !== undefined && score !== null) {
         riskText = \`Score \${score} - N/A\`; 
       } else if (risk) {
-        riskText = risk.charAt(0).toUpperCase() + risk.slice(1);
+        const riskCapitalized = risk.charAt(0).toUpperCase() + risk.slice(1);
+        riskText = riskCapitalized;
         switch (risk.toLowerCase()) {
-          case "low": badgeClass = "badge-yes"; break;
-          case "medium": badgeClass = "badge-warning"; break;
-          case "high": case "very high": badgeClass = "badge-no"; break;
-          default: badgeClass = "badge-neutral"; riskText = "Status Unknown"; break;
+          case "low": badgeClass = "success"; break;
+          case "medium": badgeClass = "warning"; break;
+          case "high": case "very high": badgeClass = "error"; break;
+          default: badgeClass = "info"; riskText = "Status Unknown"; break;
         }
       }
       
@@ -1185,10 +1367,7 @@ async function generateHTMLPage(hostname, websiteIcon, token) {
       const singleIpInputEl = document.getElementById('proxyip');
       const rangeIpInputEl = document.getElementById('proxyipRange');
       const resultDiv = document.getElementById('result');
-      const rangeResultCard = document.getElementById('rangeResultCard');
-      const rangeResultSummary = document.getElementById('rangeResultSummary');
-      const copyRangeBtn = document.getElementById('copyRangeBtn');
-      const rangeResultIconEl = document.getElementById('rangeResultIcon');
+      const rangeResultDiv = document.getElementById('rangeResult');
 
       const checkBtn = document.getElementById('checkBtn');
       const btnText = checkBtn.querySelector('.btn-text');
@@ -1237,12 +1416,8 @@ async function generateHTMLPage(hostname, websiteIcon, token) {
       spinner.style.display = 'inline-block';
       
       resultDiv.innerHTML = '';
-      resultDiv.classList.remove('show');
-      rangeResultCard.style.display = 'none';
-      rangeResultCard.className = 'result-card result-section';
-      if(rangeResultIconEl) rangeResultIconEl.textContent = '';
-      rangeResultSummary.innerHTML = '';
-      copyRangeBtn.style.display = 'none';
+      rangeResultDiv.innerHTML = '';
+      rangeResultDiv.style.display = 'none';
       currentSuccessfulRangeIPs = [];
       if (rangeChartInstance) {
           rangeChartInstance.destroy();
@@ -1262,9 +1437,25 @@ async function generateHTMLPage(hostname, websiteIcon, token) {
             const ipsInRange = parseIPRange(rangeIpToTest);
             if (ipsInRange.length > 0) {
                 showToast(\`Starting test for \${ipsInRange.length} IPs in range... This may take a while.\`);
-                rangeResultCard.style.display = 'block';
-                rangeResultCard.classList.add('result-warning');
-                if(rangeResultIconEl) rangeResultIconEl.innerHTML = '⟳';
+                rangeResultDiv.style.display = 'block';
+                rangeResultDiv.innerHTML = \`
+                  <div class="result-card warning">
+                    <div class="result-header">
+                      <div class="result-icon warning">⟳</div>
+                      <h3 class="result-title">Testing IP Range...</h3>
+                    </div>
+                    <div class="result-content">
+                      <div class="result-item">
+                        <span class="result-label">Progress</span>
+                        <span class="result-value" id="rangeProgress">0/\${ipsInRange.length}</span>
+                      </div>
+                      <div class="result-item">
+                        <span class="result-label">Successful IPs</span>
+                        <span class="result-value" id="rangeSuccess">0</span>
+                      </div>
+                    </div>
+                  </div>
+                \`;
 
                 let successCount = 0;
                 let checkedCount = 0;
@@ -1290,138 +1481,99 @@ async function generateHTMLPage(hostname, websiteIcon, token) {
                             })
                     );
                     await Promise.all(batchPromises);
-                    rangeResultSummary.innerHTML = \`Tested: \${checkedCount}/\${ipsInRange.length} | Successful: \${successCount}\`;
                     
-                    if (currentSuccessfulRangeIPs.length > 0) {
-                         updateRangeSuccessChart(currentSuccessfulRangeIPs);
-                         copyRangeBtn.style.display = 'inline-block';
-                    } else {
-                         copyRangeBtn.style.display = 'none';
-                    }
+                    document.getElementById('rangeProgress').textContent = \`\${checkedCount}/\${ipsInRange.length}\`;
+                    document.getElementById('rangeSuccess').textContent = successCount;
+                    
                     if (i + batchSize < ipsInRange.length) {
                         await new Promise(resolve => setTimeout(resolve, 200));
                     }
                 }
-                rangeResultSummary.innerHTML = \`Range test complete. \${successCount} of \${ipsInRange.length} IPs were successful.\`;
-                rangeResultCard.classList.remove('result-warning');
-                if (successCount === ipsInRange.length && ipsInRange.length > 0) {
-                    rangeResultCard.classList.add('result-success');
-                    if(rangeResultIconEl) rangeResultIconEl.innerHTML = '<span class="status-icon-prefix success">✔</span>';
-                } else if (successCount > 0) {
-                    rangeResultCard.classList.add('result-warning');
-                     if(rangeResultIconEl) rangeResultIconEl.innerHTML = '<span class="status-icon-prefix warning">⚠</span>';
-                } else {
-                    rangeResultCard.classList.add('result-error');
-                    if(rangeResultIconEl) rangeResultIconEl.innerHTML = '<span class="status-icon-prefix error">✖</span>';
-                    showToast('No successful IPs found in the range.');
-                }
+                
+                // Update final results
+                const finalResultClass = successCount === ipsInRange.length ? 'success' : 
+                                       successCount > 0 ? 'warning' : 'error';
+                const finalIcon = successCount === ipsInRange.length ? '✓' : 
+                                successCount > 0 ? '⚠' : '✗';
+                
+                rangeResultDiv.innerHTML = \`
+                  <div class="result-card \${finalResultClass}">
+                    <div class="result-header">
+                      <div class="result-icon \${finalResultClass}">\${finalIcon}</div>
+                      <h3 class="result-title">Range Test Complete</h3>
+                    </div>
+                    <div class="result-content">
+                      <div class="result-item">
+                        <span class="result-label">Total IPs Tested</span>
+                        <span class="result-value">\${ipsInRange.length}</span>
+                      </div>
+                      <div class="result-item">
+                        <span class="result-label">Successful IPs</span>
+                        <span class="result-value">\${successCount}</span>
+                      </div>
+                      <div class="result-item">
+                        <span class="result-label">Success Rate</span>
+                        <span class="result-value">\${((successCount/ipsInRange.length)*100).toFixed(1)}%</span>
+                      </div>
+                    </div>
+                    \${currentSuccessfulRangeIPs.length > 0 ? \`
+                      <div class="ip-grid">
+                        \${currentSuccessfulRangeIPs.map(ip => \`
+                          <div class="ip-item">
+                            <div style="display: flex; align-items: center;">
+                              <div class="status-indicator success"></div>
+                              <span>\${ip}</span>
+                            </div>
+                            <button class="copy-btn" data-copy="\${ip}">Copy</button>
+                          </div>
+                        \`).join('')}
+                      </div>
+                      <button class="btn-primary" onclick="copySuccessfulRangeIPs()" style="margin-top: 1rem;">
+                        Copy All Successful IPs
+                      </button>
+                    \` : ''}
+                  </div>
+                \`;
             } else if (rangeIpToTest) { 
                  showToast('Invalid IP Range format or empty range.');
-                 rangeResultCard.style.display = 'block';
-                 rangeResultCard.classList.add('result-error');
-                 if(rangeResultIconEl) rangeResultIconEl.innerHTML = '<span class="status-icon-prefix error">✖</span>';
-                 rangeResultSummary.innerHTML = 'Invalid IP Range format provided.';
+                 rangeResultDiv.style.display = 'block';
+                 rangeResultDiv.innerHTML = \`
+                   <div class="result-card error">
+                     <div class="result-header">
+                       <div class="result-icon error">✗</div>
+                       <h3 class="result-title">Invalid Range Format</h3>
+                     </div>
+                     <div class="result-content">
+                       <p>Please use format: 192.168.1.0/24 or 192.168.1.1-255</p>
+                     </div>
+                   </div>
+                 \`;
             }
         }
 
       } catch (err) {
-        const errorMsg = \`<div class="result-card result-error"><h3><span class="status-icon-prefix error">✖</span> General Error</h3><p>\${err.message}</p></div>\`;
+        const errorMsg = \`
+          <div class="result-card error">
+            <div class="result-header">
+              <div class="result-icon error">✗</div>
+              <h3 class="result-title">General Error</h3>
+            </div>
+            <div class="result-content">
+              <p>\${err.message}</p>
+            </div>
+          </div>
+        \`;
         if(resultDiv.innerHTML === '') resultDiv.innerHTML = errorMsg;
         else {
-            rangeResultSummary.innerHTML = \`<p>Error during range test: \${err.message}</p>\`;
-            rangeResultCard.className = 'result-card result-section result-error';
-            if(rangeResultIconEl) rangeResultIconEl.innerHTML = '<span class="status-icon-prefix error">✖</span>';
+            rangeResultDiv.innerHTML = errorMsg;
+            rangeResultDiv.style.display = 'block';
         }
-        if (resultDiv.innerHTML !== '') resultDiv.classList.add('show');
-        if (rangeIpToTest) rangeResultCard.style.display = 'block';
       } finally {
         isChecking = false;
         checkBtn.disabled = false;
         btnText.style.display = 'inline-block';
         spinner.style.display = 'none';
       }
-    }
-    
-    function updateRangeSuccessChart(successfulIPs) {
-        const ctx = document.getElementById('rangeSuccessChart').getContext('2d');
-        if (rangeChartInstance) {
-            rangeChartInstance.destroy();
-        }
-        
-        const labels = successfulIPs;
-        const dataPoints = successfulIPs.map(() => 1); 
-        
-        const textColor = getComputedStyle(document.documentElement).getPropertyValue('--text-light').trim() || '#adb5bd';
-        const gridBorderColor = getComputedStyle(document.documentElement).getPropertyValue('--border-color').trim() || '#3c3e45';
-        const accentColor = getComputedStyle(document.documentElement).getPropertyValue('--accent-orange').trim() || '#F97316';
-        const accentColorBg = accentColor + '99';
-
-        rangeChartInstance = new Chart(ctx, {
-            type: 'bar',
-            data: {
-                labels: labels,
-                datasets: [{
-                    label: 'Successful IPs',
-                    data: dataPoints,
-                    backgroundColor: accentColorBg, 
-                    borderColor: accentColor,
-                    borderWidth: 1
-                }]
-            },
-            options: {
-                indexAxis: 'y',
-                responsive: true,
-                maintainAspectRatio: false,
-                scales: {
-                    x: {
-                        beginAtZero: true,
-                        ticks: {
-                            stepSize: 1,
-                            callback: function(value) { if (value === 1) return 'Success'; return ''; },
-                            color: textColor
-                        },
-                        title: { display: false },
-                        grid: { color: gridBorderColor }
-                    },
-                    y: {
-                         ticks: {
-                            autoSkip: false, 
-                            color: textColor
-                         },
-                         title: {
-                             display: true,
-                             text: 'IP Addresses',
-                             color: textColor
-                         },
-                         grid: { color: gridBorderColor }
-                    }
-                },
-                plugins: {
-                    legend: {
-                        display: false,
-                        labels: { color: textColor }
-                    },
-                    tooltip: {
-                        titleColor: getComputedStyle(document.documentElement).getPropertyValue('--text-primary').trim(),
-                        bodyColor: textColor,
-                        backgroundColor: getComputedStyle(document.documentElement).getPropertyValue('--bg-secondary').trim(),
-                        borderColor: gridBorderColor,
-                        borderWidth: 1,
-                        callbacks: {
-                            label: function(context) {
-                                return \`IP: \${context.label} - Status: Successful\`;
-                            },
-                             title: function() { return ''; }
-                        }
-                    }
-                }
-            }
-        });
-        const canvas = document.getElementById('rangeSuccessChart');
-        const barHeight = 25;
-        const newHeight = Math.max(200, labels.length * barHeight);
-        canvas.style.height = \`\${newHeight}px\`;
-        if(rangeChartInstance) rangeChartInstance.resize();
     }
     
     function copySuccessfulRangeIPs() {
@@ -1446,35 +1598,61 @@ async function generateHTMLPage(hostname, websiteIcon, token) {
         fetchScamalyticsRiskInfo(proxyip.split(':')[0])
       ]);
 
-      if (checkData.success) {
-        const ipInfoHTML = formatIPInfo(ipInfo);
-        const riskInfoHTML = formatScamalyticsRiskInfo(riskInfo);
-        resultDiv.innerHTML = \` 
-          <div class="result-card result-success">
-            <h3><span class="status-icon-prefix">✔</span> ProxyIP Valid</h3>
-            <p><strong>ProxyIP Address:</strong> \${createCopyButton(checkData.proxyIP)} \${ipInfoHTML}</p>
-            <div class="risk-info">
-              <strong>Security Risk:</strong> \${riskInfoHTML}
-            </div>
-            <p><strong>Port:</strong> \${createCopyButton(checkData.portRemote.toString())}</p>
-            <p><strong>Check Time:</strong> \${new Date(checkData.timestamp).toLocaleString()}</p>
+      const resultClass = checkData.success ? 'success' : 'error';
+      const resultIcon = checkData.success ? '✓' : '✗';
+      const resultTitle = checkData.success ? 'ProxyIP Valid' : 'ProxyIP Invalid';
+
+      const ipInfoHTML = formatIPInfo(ipInfo);
+      const riskInfoHTML = formatScamalyticsRiskInfo(riskInfo);
+
+      resultDiv.innerHTML = \`
+        <div class="result-card \${resultClass}">
+          <div class="result-header">
+            <div class="result-icon \${resultClass}">\${resultIcon}</div>
+            <h3 class="result-title">\${resultTitle}</h3>
           </div>
-        \`;
-      } else {
-        const riskInfoHTML = formatScamalyticsRiskInfo(await fetchScamalyticsRiskInfo(proxyip.split(':')[0]));
-        resultDiv.innerHTML = \`
-          <div class="result-card result-error">
-            <h3><span class="status-icon-prefix">✖</span> ProxyIP Invalid</h3>
-            <p><strong>IP Address:</strong> \${createCopyButton(proxyip)}</p>
-            <div class="risk-info">
-              <strong>Security Risk:</strong> \${riskInfoHTML}
+          <div class="result-content">
+            <div class="result-item">
+              <span class="result-label">IP Address</span>
+              \${createCopyButton(checkData.proxyIP)}
             </div>
-            \${checkData.error ? \`<p><strong>Error:</strong> \${checkData.error}</p>\` : ''}
-            <p><strong>Check Time:</strong> \${new Date(checkData.timestamp).toLocaleString()}</p>
+            <div class="result-item">
+              <span class="result-label">Port</span>
+              \${createCopyButton(checkData.portRemote.toString())}
+            </div>
+            <div class="result-item">
+              <span class="result-label">Security Risk</span>
+              <span class="result-value">\${riskInfoHTML}</span>
+            </div>
+            \${ipInfoHTML ? \`
+              <div class="result-item">
+                <span class="result-label">Location</span>
+                <span class="result-value">\${ipInfoHTML}</span>
+              </div>
+            \` : ''}
+            \${checkData.statusCode ? \`
+              <div class="result-item">
+                <span class="result-label">Status Code</span>
+                <span class="result-value">\${checkData.statusCode}</span>
+              </div>
+            \` : ''}
+            <div class="result-item">
+              <span class="result-label">Response Size</span>
+              <span class="result-value">\${checkData.responseSize} bytes</span>
+            </div>
+            <div class="result-item">
+              <span class="result-label">Check Time</span>
+              <span class="result-value">\${new Date(checkData.timestamp).toLocaleString()}</span>
+            </div>
+            \${checkData.error ? \`
+              <div class="result-item">
+                <span class="result-label">Error</span>
+                <span class="result-value" style="color: var(--error-color);">\${checkData.error}</span>
+              </div>
+            \` : ''}
           </div>
-        \`;
-      }
-      resultDiv.classList.add('show');
+        </div>
+      \`;
     }
 
     async function checkAndDisplayDomain(domain, resultDiv) {
@@ -1497,8 +1675,24 @@ async function generateHTMLPage(hostname, websiteIcon, token) {
          }
       }
       
-      resultDiv.innerHTML = \`<div class="result-card result-warning"><h3><span class="status-icon-prefix">⟳</span> Resolving Domain...</h3><p>Processing \${createCopyButton(cleanDomain)}...</p></div>\`;
-      resultDiv.classList.add('show');
+      resultDiv.innerHTML = \`
+        <div class="result-card warning">
+          <div class="result-header">
+            <div class="result-icon warning">⟳</div>
+            <h3 class="result-title">Resolving Domain...</h3>
+          </div>
+          <div class="result-content">
+            <div class="result-item">
+              <span class="result-label">Domain</span>
+              \${createCopyButton(cleanDomain)}
+            </div>
+            <div class="result-item">
+              <span class="result-label">Status</span>
+              <span class="result-value">Processing...</span>
+            </div>
+          </div>
+        </div>
+      \`;
 
       const resolveResponse = await fetch(\`./resolve?domain=\${encodeURIComponent(cleanDomain)}&token=\${TEMP_TOKEN}\`);
       const resolveData = await resolveResponse.json();
