@@ -18,7 +18,6 @@ export default {
     const scamalyticsApiKey = 'ce75d58f98849753077a270e6013a036d6f4a6c562fd74c960960ae7a7087b40';
     const scamalyticsApiBaseUrl = 'https://api12.scamalytics.com/v3/';
 
-
     if (path.toLowerCase() === '/check') {
       if (!url.searchParams.has('proxyip'))
         return new Response('Missing proxyip parameter', { status: 400 });
