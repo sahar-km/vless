@@ -607,19 +607,19 @@ async function generateHTMLPage(hostname, websiteIcon, token) {
     }
 
     .main-title {
-      font-size: clamp(2.5rem, 5vw, 4rem);
-      font-weight: 900;
+      font-size: clamp(2.5rem, 5vw, 3rem);
+      font-weight: 701;
       background: linear-gradient(135deg, var(--accent-orange) 0%, var(--accent-orange-light) 100%);
       -webkit-background-clip: text;
       -webkit-text-fill-color: transparent;
       background-clip: text;
-      margin-bottom: 1rem;
+      margin-bottom: 0.5rem;
       text-shadow: 0 0 30px rgba(255, 107, 53, 0.3);
     }
 
     .subtitle {
       font-family: var(--mono-sans);
-      font-size: 1.25rem;
+      font-size: 1rem;
       color: var(--text-secondary);
       font-weight: 400;
       margin-bottom: 0.5rem;
@@ -672,11 +672,12 @@ async function generateHTMLPage(hostname, websiteIcon, token) {
     .form-input {
       width: 100%;
       padding: 1rem 1.25rem;
+      font-family: var(--mono-sans);
+      font-size: 1rem;
       background: var(--bg-tertiary);
       border: 2px solid var(--border-color);
       border-radius: var(--radius-md);
       color: var(--text-primary);
-      font-size: 1rem;
       transition: all 0.3s ease;
       outline: none;
     }
@@ -693,9 +694,9 @@ async function generateHTMLPage(hostname, websiteIcon, token) {
 
     .btn-primary {
       background: linear-gradient(135deg, var(--accent-orange) 0%, var(--accent-orange-dark) 100%);
-      color: white;
+      color: rgb(255, 255, 255);
       border: none;
-      padding: 1.25rem 2rem;
+      padding: 0.9rem 2rem;
       border-radius: var(--radius-md);
       font-size: 1.1rem;
       font-weight: 600;
@@ -736,6 +737,18 @@ async function generateHTMLPage(hostname, websiteIcon, token) {
 
     .btn-primary:hover::before {
       left: 100%;
+    }
+    
+    .glassmorphism {
+      background: rgba(17, 25, 40, 0.75);
+      backdrop-filter: blur(12px);
+      border-radius: 12px;
+      border: 1px solid rgba(255, 255, 255, 0.125);
+    }
+
+    .shine {
+      position: relative;
+      overflow: hidden;
     }
 
     .loading-spinner {
@@ -964,13 +977,12 @@ async function generateHTMLPage(hostname, websiteIcon, token) {
     }
 
     .api-docs code {
-      font-family: var(--mono-sans);
       background: var(--bg-tertiary);
       color: var(--accent-orange-light);
       padding: 0.25rem 0.5rem;
       border-radius: var(--radius-sm);
       font-family: 'Monaco', 'Menlo', monospace;
-      font-size: 0.875rem;
+      font-size: 0.9rem;
     }
 
     .footer {
@@ -1028,6 +1040,52 @@ async function generateHTMLPage(hostname, websiteIcon, token) {
         grid-template-columns: 1fr;
       }
     }
+    
+    @media (max-width: 480px) {
+      
+    .main-card {
+      padding: 1.5rem;
+    }
+      
+    .main-title {
+      font-size: 2.2rem;
+    }
+      
+    .subtitle {
+      font-size: 0.8rem;
+      font-weight: 400;
+    }
+      
+    .btn-primary {
+      font-size: 1rem;
+    }
+        
+    .api-docs {
+      margin-top: 2rem;
+      outline: none;
+      padding: 1rem;
+    }
+
+    .api-docs h3 {
+      margin-bottom: 1.5rem;
+      font-size: 1.5rem;
+    }
+      
+    .api-docs code {
+      font-size: 0.8rem;
+    }
+      
+    .input-label {
+      font-weight: 600;
+      margin-bottom: 0rem;
+      font-size: 1rem;
+    }
+      
+    .form-input {
+      width: 100%;
+      padding: 0.8rem 1rem;
+      }
+  }
 
     .flex-center {
       display: flex;
@@ -1100,7 +1158,7 @@ async function generateHTMLPage(hostname, websiteIcon, token) {
 <body>
   <div class="container">
     <header class="header">
-      <h1 class="main-title">REvil ProxyIP Checker</h1>
+      <h1 class="main-title">ProxyIP Checker</h1>
       <p class="subtitle">Advanced ProxyIP Verification & Risk Analysis</p>
     </header>
 
@@ -1108,7 +1166,8 @@ async function generateHTMLPage(hostname, websiteIcon, token) {
       <div class="form-section">
         <div class="grid-2">
           <div class="input-group">
-            <label for="proxyip" class="input-label">🎯 Single IP — Domain</label>
+            <i class="fas fa-terminal text-purple-400 mr-2"></i>
+            <label for="proxyip" class="input-label">🎯 Single IP / Domain</label>
             <div class="input-wrapper">
               <input type="text" id="proxyip" class="form-input" placeholder="127.0.0.1:443 or nima.nscl.ir" autocomplete="off">
             </div>
@@ -1135,12 +1194,12 @@ async function generateHTMLPage(hostname, websiteIcon, token) {
     </div>
     
     <div class="api-docs">
-       <h3 style="margin-bottom:15px; text-align:center;">>🔗 API Documentation</h3>
+       <h3 style="margin-bottom:15px; text-align:left;">🔗 API Documentation</h3>
        <p><code>GET /check?proxyip=PROXY_IP1,PROXY_IP2,PROXY_IP3</code></p>
        <p><code>GET /check?iprange=TARGET_IP_RANGES</code></p>
        <p><code>GET /resolve?domain=YOUR_DOMAIN</code></p>
        <p><code>GET /ip-info?ip=TARGET_IP</code></p>
-       <p><code>GET /scamalytics-lookup?ip=TARGET_IP&token=YOUR_TOKEN</code></p>
+       <p><code>GET /scamalytics-lookup?ip=TARGET_IP</code></p>
        <hr style="border:0; border-top: 1px solid var(--border-color); margin: 20px 0;"/>
     </div>
      
