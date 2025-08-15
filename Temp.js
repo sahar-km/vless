@@ -3,7 +3,7 @@ let temporaryTOKEN, permanentTOKEN;
 
 export default {
   async fetch(request, env, ctx) {
-    const websiteIcon = env.ICO
+    const websiteIcon = env.ICO;
     const url = new URL(request.url);
     const UA = request.headers.get('User-Agent') || 'null';
     const path = url.pathname;
@@ -16,7 +16,8 @@ export default {
     // Get Scamalytics credentials from environment variables
     const scamalyticsUsername = env.SCAMALYTICS_USERNAME;
     const scamalyticsApiKey = env.SCAMALYTICS_API_KEY;
-    const scamalyticsApiBaseUrl = env.SCAMALYTICS_API_BASE_URL || 'https://api12.scamalytics.com/v3/';
+    const scamalyticsApiBaseUrl =
+      env.SCAMALYTICS_API_BASE_URL || 'https://api12.scamalytics.com/v3/';
 
     if (path.toLowerCase() === '/check') {
       if (!url.searchParams.has('proxyip'))
@@ -95,9 +96,10 @@ export default {
       // Check if Scamalytics credentials are configured
       if (!scamalyticsUsername || !scamalyticsApiKey) {
         return new Response(
-          JSON.stringify({ 
+          JSON.stringify({
             error: 'Scamalytics API credentials not configured on server.',
-            message: 'Please set SCAMALYTICS_USERNAME and SCAMALYTICS_API_KEY environment variables.'
+            message:
+              'Please set SCAMALYTICS_USERNAME and SCAMALYTICS_API_KEY environment variables.',
           }),
           {
             status: 500,

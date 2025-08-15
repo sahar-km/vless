@@ -13,7 +13,6 @@
 > **Next update:** Sun, 17 Aug 2025 01:59:30 GMT
 >
 > <br/>
->
 
 </br>
 
@@ -29,8 +28,8 @@
 ## 🔌 Ports Distribution
 
 | Port | Count | Percentage |
-|------|-------|------------|
-| 443  | 45     | 100.0%     |
+| ---- | ----- | ---------- |
+| 443  | 45    | 100.0%     |
 
 <br/>
 
@@ -40,103 +39,103 @@
 
 ### 🇳🇱 The Netherlands (20 proxies)
 
-| Proxy IP | City | ISP / Organization | Method |
-|----------|------|--------------------|--------|
-| `103.137.249.117` | Amsterdam | AS216154 CLODO CLOUD SERVICE CO. L.L.C | TCP |
-| `109.234.39.40` | Amsterdam | AS216071 SERVERS TECH FZCO | TCP |
-| `178.208.76.84` | Amsterdam | AS216139 Iron Hosting Centre LTD | TCP |
-| `185.223.93.86` | Amsterdam | AS14576 Hosting Solution Ltd. | TCP |
-| `193.3.168.163` | Oude Meer | AS211381 Podaon SIA | TCP |
-| `194.26.232.203` | Oude Meer | AS211381 Podaon SIA | TCP |
-| `194.87.186.123` | Amsterdam | AS215346 Big Data Host LLC | TCP |
-| `195.133.17.189` | Amsterdam | AS50053 Individual Entrepreneur Anton Levin | TCP |
-| `195.200.17.63` | Amsterdam | AS216071 SERVERS TECH FZCO | TCP |
-| `207.174.30.58` | Amsterdam | AS26383 Baxet Group Inc. | TCP |
-| `207.174.30.74` | Amsterdam | AS26383 Baxet Group Inc. | TCP |
-| `212.192.215.7` | Amsterdam | AS26383 Baxet Group Inc. | TCP |
-| `31.172.74.123` | Rotterdam | AS16003 Fornex Hosting S.L. | TCP |
-| `31.172.78.69` | Rotterdam | AS16003 Fornex Hosting S.L. | TCP |
-| `45.88.76.184` | Oude Meer | AS211381 Podaon SIA | TCP |
-| `77.238.226.230` | Amsterdam | AS216071 SERVERS TECH FZCO | TCP |
-| `80.85.246.245` | Amsterdam | AS216071 SERVERS TECH FZCO | TCP |
-| `87.239.250.252` | Amsterdam | AS200740 FIRST SERVER LIMITED | TCP |
-| `89.110.66.68` | Amsterdam | AS216071 SERVERS TECH FZCO | TCP |
-| `95.142.41.132` | Amsterdam | AS216139 Iron Hosting Centre LTD | TCP |
+| Proxy IP          | City      | ISP / Organization                          | Method |
+| ----------------- | --------- | ------------------------------------------- | ------ |
+| `103.137.249.117` | Amsterdam | AS216154 CLODO CLOUD SERVICE CO. L.L.C      | TCP    |
+| `109.234.39.40`   | Amsterdam | AS216071 SERVERS TECH FZCO                  | TCP    |
+| `178.208.76.84`   | Amsterdam | AS216139 Iron Hosting Centre LTD            | TCP    |
+| `185.223.93.86`   | Amsterdam | AS14576 Hosting Solution Ltd.               | TCP    |
+| `193.3.168.163`   | Oude Meer | AS211381 Podaon SIA                         | TCP    |
+| `194.26.232.203`  | Oude Meer | AS211381 Podaon SIA                         | TCP    |
+| `194.87.186.123`  | Amsterdam | AS215346 Big Data Host LLC                  | TCP    |
+| `195.133.17.189`  | Amsterdam | AS50053 Individual Entrepreneur Anton Levin | TCP    |
+| `195.200.17.63`   | Amsterdam | AS216071 SERVERS TECH FZCO                  | TCP    |
+| `207.174.30.58`   | Amsterdam | AS26383 Baxet Group Inc.                    | TCP    |
+| `207.174.30.74`   | Amsterdam | AS26383 Baxet Group Inc.                    | TCP    |
+| `212.192.215.7`   | Amsterdam | AS26383 Baxet Group Inc.                    | TCP    |
+| `31.172.74.123`   | Rotterdam | AS16003 Fornex Hosting S.L.                 | TCP    |
+| `31.172.78.69`    | Rotterdam | AS16003 Fornex Hosting S.L.                 | TCP    |
+| `45.88.76.184`    | Oude Meer | AS211381 Podaon SIA                         | TCP    |
+| `77.238.226.230`  | Amsterdam | AS216071 SERVERS TECH FZCO                  | TCP    |
+| `80.85.246.245`   | Amsterdam | AS216071 SERVERS TECH FZCO                  | TCP    |
+| `87.239.250.252`  | Amsterdam | AS200740 FIRST SERVER LIMITED               | TCP    |
+| `89.110.66.68`    | Amsterdam | AS216071 SERVERS TECH FZCO                  | TCP    |
+| `95.142.41.132`   | Amsterdam | AS216139 Iron Hosting Centre LTD            | TCP    |
 
 ### 🇩🇪 Germany (10 proxies)
 
-| Proxy IP | City | ISP / Organization | Method |
-|----------|------|--------------------|--------|
-| `185.103.100.101` | Frankfurt am Main | AS215590 DpkgSoft International Limited | TCP |
-| `192.248.189.181` | Frankfurt am Main | AS20473 The Constant Company, LLC | TCP |
-| `193.124.92.170` | Frankfurt am Main | AS215346 Big Data Host LLC | TCP |
-| `217.160.216.30` | Frankfurt am Main | AS8560 IONOS SE | TCP |
-| `31.172.72.83` | Frankfurt am Main | AS44051 Fornex Hosting S.L. | TCP |
-| `37.1.194.7` | Frankfurt am Main | AS28753 Leaseweb Deutschland GmbH | TCP |
-| `45.147.228.249` | Frankfurt am Main | AS30823 aurologic GmbH | TCP |
-| `51.195.91.96` | Limburg an der Lahn | AS16276 OVH SAS | TCP |
-| `77.105.147.253` | Frankfurt am Main | AS211522 Hypercore Ltd | TCP |
-| `87.251.87.36` | Frankfurt am Main | AS216127 INTERNATIONAL HOSTING COMPANY LIMITED | TCP |
+| Proxy IP          | City                | ISP / Organization                             | Method |
+| ----------------- | ------------------- | ---------------------------------------------- | ------ |
+| `185.103.100.101` | Frankfurt am Main   | AS215590 DpkgSoft International Limited        | TCP    |
+| `192.248.189.181` | Frankfurt am Main   | AS20473 The Constant Company, LLC              | TCP    |
+| `193.124.92.170`  | Frankfurt am Main   | AS215346 Big Data Host LLC                     | TCP    |
+| `217.160.216.30`  | Frankfurt am Main   | AS8560 IONOS SE                                | TCP    |
+| `31.172.72.83`    | Frankfurt am Main   | AS44051 Fornex Hosting S.L.                    | TCP    |
+| `37.1.194.7`      | Frankfurt am Main   | AS28753 Leaseweb Deutschland GmbH              | TCP    |
+| `45.147.228.249`  | Frankfurt am Main   | AS30823 aurologic GmbH                         | TCP    |
+| `51.195.91.96`    | Limburg an der Lahn | AS16276 OVH SAS                                | TCP    |
+| `77.105.147.253`  | Frankfurt am Main   | AS211522 Hypercore Ltd                         | TCP    |
+| `87.251.87.36`    | Frankfurt am Main   | AS216127 INTERNATIONAL HOSTING COMPANY LIMITED | TCP    |
 
 ### 🇸🇪 Sweden (4 proxies)
 
-| Proxy IP | City | ISP / Organization | Method |
-|----------|------|--------------------|--------|
-| `147.45.73.239` | Stockholm | AS210644 AEZA INTERNATIONAL LTD | TCP |
-| `147.45.76.69` | Stockholm | AS210644 AEZA INTERNATIONAL LTD | TCP |
-| `147.45.77.214` | Stockholm | AS210644 AEZA INTERNATIONAL LTD | TCP |
-| `46.226.161.71` | Stockholm | AS210644 AEZA INTERNATIONAL LTD | TCP |
+| Proxy IP        | City      | ISP / Organization              | Method |
+| --------------- | --------- | ------------------------------- | ------ |
+| `147.45.73.239` | Stockholm | AS210644 AEZA INTERNATIONAL LTD | TCP    |
+| `147.45.76.69`  | Stockholm | AS210644 AEZA INTERNATIONAL LTD | TCP    |
+| `147.45.77.214` | Stockholm | AS210644 AEZA INTERNATIONAL LTD | TCP    |
+| `46.226.161.71` | Stockholm | AS210644 AEZA INTERNATIONAL LTD | TCP    |
 
 ### 🇫🇮 Finland (2 proxies)
 
-| Proxy IP | City | ISP / Organization | Method |
-|----------|------|--------------------|--------|
-| `185.125.228.214` | Helsinki | AS207569 I-SERVERS LTD | TCP |
-| `185.231.206.22` | Helsinki | AS44477 PQ HOSTING PLUS S.R.L. | TCP |
+| Proxy IP          | City     | ISP / Organization             | Method |
+| ----------------- | -------- | ------------------------------ | ------ |
+| `185.125.228.214` | Helsinki | AS207569 I-SERVERS LTD         | TCP    |
+| `185.231.206.22`  | Helsinki | AS44477 PQ HOSTING PLUS S.R.L. | TCP    |
 
 ### 🇨🇭 Switzerland (2 proxies)
 
-| Proxy IP | City | ISP / Organization | Method |
-|----------|------|--------------------|--------|
-| `45.85.93.21` | Geneva | AS199058 SERVA ONE LTD | TCP |
-| `91.245.225.69` | Bern | AS215346 Big Data Host LLC | TCP |
+| Proxy IP        | City   | ISP / Organization         | Method |
+| --------------- | ------ | -------------------------- | ------ |
+| `45.85.93.21`   | Geneva | AS199058 SERVA ONE LTD     | TCP    |
+| `91.245.225.69` | Bern   | AS215346 Big Data Host LLC | TCP    |
 
 ### 🇬🇧 United Kingdom (2 proxies)
 
-| Proxy IP | City | ISP / Organization | Method |
-|----------|------|--------------------|--------|
-| `213.165.88.177` | Eaton Bray | AS8560 IONOS SE | TCP |
-| `95.164.37.32` | Coventry | AS44477 PQ HOSTING PLUS S.R.L. | TCP |
+| Proxy IP         | City       | ISP / Organization             | Method |
+| ---------------- | ---------- | ------------------------------ | ------ |
+| `213.165.88.177` | Eaton Bray | AS8560 IONOS SE                | TCP    |
+| `95.164.37.32`   | Coventry   | AS44477 PQ HOSTING PLUS S.R.L. | TCP    |
 
 ### 🇦🇹 Austria (1 proxies)
 
-| Proxy IP | City | ISP / Organization | Method |
-|----------|------|--------------------|--------|
-| `94.177.8.10` | Wien | AS40994 Hohl IT e.U. | TCP |
+| Proxy IP      | City | ISP / Organization   | Method |
+| ------------- | ---- | -------------------- | ------ |
+| `94.177.8.10` | Wien | AS40994 Hohl IT e.U. | TCP    |
 
 ### 🌍 Latvia (1 proxies)
 
-| Proxy IP | City | ISP / Organization | Method |
-|----------|------|--------------------|--------|
-| `185.135.86.207` | Riga | AS56630 Melbikomas UAB | TCP |
+| Proxy IP         | City | ISP / Organization     | Method |
+| ---------------- | ---- | ---------------------- | ------ |
+| `185.135.86.207` | Riga | AS56630 Melbikomas UAB | TCP    |
 
 ### 🇳🇱 Netherlands (1 proxies)
 
-| Proxy IP | City | ISP / Organization | Method |
-|----------|------|--------------------|--------|
-| `45.133.118.153` | Amsterdam | AS210429 Hizakura B.V. | TCP |
+| Proxy IP         | City      | ISP / Organization     | Method |
+| ---------------- | --------- | ---------------------- | ------ |
+| `45.133.118.153` | Amsterdam | AS210429 Hizakura B.V. | TCP    |
 
 ### 🇵🇱 Poland (1 proxies)
 
-| Proxy IP | City | ISP / Organization | Method |
-|----------|------|--------------------|--------|
-| `38.180.51.120` | Gdansk | AS200088 Artnet Sp. z o.o. | TCP |
+| Proxy IP        | City   | ISP / Organization         | Method |
+| --------------- | ------ | -------------------------- | ------ |
+| `38.180.51.120` | Gdansk | AS200088 Artnet Sp. z o.o. | TCP    |
 
 ### 🇺🇸 United States (1 proxies)
 
-| Proxy IP | City | ISP / Organization | Method |
-|----------|------|--------------------|--------|
-| `35.197.23.75` | The Dalles | AS396982 Google LLC | TCP |
+| Proxy IP       | City       | ISP / Organization  | Method |
+| -------------- | ---------- | ------------------- | ------ |
+| `35.197.23.75` | The Dalles | AS396982 Google LLC | TCP    |
 
 <br/>
 
