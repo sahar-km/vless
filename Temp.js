@@ -14,10 +14,10 @@ export default {
     permanentTOKEN = env.TOKEN || temporaryTOKEN;
 
     // Get Scamalytics credentials from environment variables
-    const scamalyticsUsername = env.SCAMALYTICS_USERNAME;
-    const scamalyticsApiKey = env.SCAMALYTICS_API_KEY;
-    const scamalyticsApiBaseUrl =
-      env.SCAMALYTICS_API_BASE_URL || 'https://api12.scamalytics.com/v3/';
+    const scamalyticsUsername = 'nimasecure999';
+    const scamalyticsApiKey = 'ce75d58f98849753077a270e6013a036d6f4a6c562fd74c960960ae7a7087b40';
+    const scamalyticsApiBaseUrl = 'https://api12.scamalytics.com/v3/';
+
 
     if (path.toLowerCase() === '/check') {
       if (!url.searchParams.has('proxyip'))
