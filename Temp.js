@@ -504,849 +504,868 @@ async function nginxWelcomePage() {
 
 async function generateHTMLPage(hostname, websiteIcon, token) {
   const html = `
-<!DOCTYPE html>
-<html lang="en" dir="ltr">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>ProxyIP Checker- Advanced Risk Analysis</title>
-    <link rel="icon" href="${websiteIcon}" type="image/x-icon" />
-    <link rel="preconnect" href="https://fonts.googleapis.com" />
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-    <link
-      href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap"
-      rel="stylesheet"
-    />
-    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-    <style>
-      @font-face {
-        font-family: "Styrene B LC";
-        src: url("https://pub-7a3b428c76aa411181a0f4dd7fa9064b.r2.dev/StyreneBLC-Regular.woff2")
-          format("woff2");
-        font-weight: 400;
-        font-style: normal;
-        font-display: swap;
-      }
-
-      @font-face {
-        font-family: "Styrene B LC";
-        src: url("https://pub-7a3b428c76aa411181a0f4dd7fa9064b.r2.dev/StyreneBLC-Medium.woff2")
-          format("woff2");
-        font-weight: 500;
-        font-style: normal;
-        font-display: swap;
-      }
-
-      :root {
-        --bg-primary: #0a0a0a;
-        --bg-secondary: #1a1a1a;
-        --bg-tertiary: #2a2a2a;
-        --text-primary: #ffffff;
-        --text-secondary: #b0b0b0;
-        --text-muted: #666666;
-        --accent-orange: #ff6b35;
-        --accent-orange-dark: #e55a2b;
-        --accent-orange-light: #ff8c5a;
-        --border-color: #333333;
-        --border-light: #444444;
-        --success-color: #10b981;
-        --success-bg: rgba(16, 185, 129, 0.1);
-        --success-border: rgba(16, 185, 129, 0.3);
-        --error-color: #ef4444;
-        --error-bg: rgba(239, 68, 68, 0.1);
-        --error-border: rgba(239, 68, 68, 0.3);
-        --warning-color: #f59e0b;
-        --warning-bg: rgba(245, 158, 11, 0.1);
-        --warning-border: rgba(245, 158, 11, 0.3);
-        --info-color: #3b82f6;
-        --info-bg: rgba(59, 130, 246, 0.1);
-        --info-border: rgba(59, 130, 246, 0.3);
-        --shadow-sm: 0 2px 4px rgba(0, 0, 0, 0.1);
-        --shadow-md: 0 4px 12px rgba(0, 0, 0, 0.15);
-        --shadow-lg: 0 8px 25px rgba(0, 0, 0, 0.25);
-        --shadow-xl: 0 20px 40px rgba(0, 0, 0, 0.4);
-        --radius-sm: 8px;
-        --radius-md: 12px;
-        --radius-lg: 16px;
-        --radius-xl: 20px;
-
-        --sans: "Inter", -apple-system, BlinkMacSystemFont, sans-serif;
-        --mono-sans: "Styrene B LC", monospace;
-      }
-
-      * {
-        margin: 0;
-        padding: 0;
-        box-sizing: border-box;
-      }
-
-      body {
-        font-family: var(--sans);
-        background: linear-gradient(135deg, var(--bg-primary) 0%, #1a1a1a 100%);
-        color: var(--text-primary);
-        line-height: 1.6;
-        min-height: 100vh;
-        overflow-x: hidden;
-      }
-
-      .container {
-        max-width: 1200px;
-        margin: 0 auto;
-        padding: 2rem;
-      }
-
-      .header {
-        text-align: center;
-        margin-bottom: 3rem;
-        position: relative;
-        display: flex; /* MODIFIED */
-        justify-content: center; /* MODIFIED */
-        align-items: center; /* MODIFIED */
-        gap: 0.75rem; /* MODIFIED */
-      }
-
-      /* NEW: Terminal Icon Style */
-      .header-icon {
-        font-family: var(--mono-sans);
-        font-size: clamp(2rem, 4vw, 2.5rem);
-        font-weight: 700;
-        color: var(--accent-orange-light);
-        background: var(--bg-tertiary);
-        padding: 0.25rem 0.75rem;
-        border-radius: var(--radius-sm);
-        border: 1px solid var(--border-color);
-        line-height: 1;
-      }
-
-      .header::before {
-        content: "";
-        position: absolute;
-        top: -50px;
-        left: 50%;
-        transform: translateX(-50%);
-        width: 200px;
-        height: 200px;
-        background: radial-gradient(
-          circle,
-          var(--accent-orange) 0%,
-          transparent 70%
-        );
-        opacity: 0.1;
-        border-radius: 50%;
-        z-index: -1;
-      }
-
-      .main-title {
-        font-size: clamp(2.5rem, 5vw, 3rem);
-        font-weight: 701;
-        background: linear-gradient(
-          135deg,
-          var(--accent-orange) 0%,
-          var(--accent-orange-light) 100%
-        );
-        -webkit-background-clip: text;
-        -webkit-text-fill-color: transparent;
-        background-clip: text;
-        margin-bottom: 0; /* MODIFIED */
-        text-shadow: 0 0 30px rgba(255, 107, 53, 0.3);
-      }
-
-      .subtitle {
-        font-family: var(--mono-sans);
-        font-size: 1rem;
-        color: var(--text-secondary);
-        font-weight: 400;
-        /* margin-bottom: 0.5rem; */ /* MODIFIED: Handled by header gap */
-        text-align: center;
-        width: 100%; /* To make it span full width below title */
-      }
-      
-      /* MODIFIED: Wrapper for title and subtitle */
-      .title-group {
-        display: flex;
-        flex-direction: column;
-        align-items: center;
-      }
-
-
-      .main-card {
-        background: linear-gradient(145deg, var(--bg-secondary) 0%, #1f1f1f 100%);
-        border-radius: var(--radius-xl);
-        padding: 3rem;
-        box-shadow: var(--shadow-xl);
-        border: 1px solid var(--border-color);
-        backdrop-filter: blur(10px);
-        position: relative;
-        overflow: hidden;
-      }
-
-      .main-card::before {
-        content: "";
-        position: absolute;
-        top: 0;
-        left: 0;
-        right: 0;
-        height: 1px;
-        background: linear-gradient(
-          90deg,
-          transparent,
-          var(--accent-orange),
-          transparent
-        );
-        opacity: 0.5;
-      }
-
-      .form-section {
-        display: grid;
-        gap: 2rem;
-        margin-bottom: 2rem;
-      }
-
-      .input-group {
-        position: relative;
-      }
-
-      .input-label {
-        display: flex; /* MODIFIED */
-        align-items: center; /* MODIFIED */
-        gap: 0.5rem; /* MODIFIED */
-        font-weight: 600;
-        color: var(--text-primary);
-        margin-bottom: 0.75rem;
-        font-size: 1.1rem;
-      }
-
-      /* NEW: Style for SVG icons */
-      .input-label svg {
-        width: 20px;
-        height: 20px;
-        color: var(--accent-orange-light);
-      }
-
-      .input-wrapper {
-        position: relative;
-      }
-
-      .form-input {
-        width: 100%;
-        padding: 1rem 1.25rem;
-        font-family: var(--mono-sans);
-        font-size: 1rem;
-        background: var(--bg-tertiary);
-        border: 2px solid var(--border-color);
-        border-radius: var(--radius-md);
-        color: var(--text-primary);
-        transition: all 0.3s ease;
-        outline: none;
-      }
-
-      .form-input:focus {
-        border-color: var(--accent-orange);
-        box-shadow: 0 0 0 3px rgba(255, 107, 53, 0.1);
-        transform: translateY(-1px);
-      }
-
-      .form-input::placeholder {
-        color: var(--text-muted);
-      }
-
-      .btn-primary {
-        background: linear-gradient(
-          135deg,
-          var(--accent-orange) 0%,
-          var(--accent-orange-dark) 100%
-        );
-        color: rgb(255, 255, 255);
-        border: none;
-        padding: 0.9rem 2rem;
-        border-radius: var(--radius-md);
-        font-size: 1.1rem;
-        font-weight: 600;
-        cursor: pointer;
-        transition: all 0.3s ease;
-        position: relative;
-        overflow: hidden;
-        text-transform: uppercase;
-        letter-spacing: 0.5px;
-        box-shadow: var(--shadow-md);
-      }
-
-      .btn-primary:hover {
-        transform: translateY(-2px);
-        box-shadow: var(--shadow-lg);
-      }
-
-      .btn-primary:active {
-        transform: translateY(0);
-      }
-
-      .btn-primary:disabled {
-        opacity: 0.6;
-        cursor: not-allowed;
-        transform: none;
-      }
-
-      .btn-primary::before {
-        content: "";
-        position: absolute;
-        top: 0;
-        left: -100%;
-        width: 100%;
-        height: 100%;
-        background: linear-gradient(
-          90deg,
-          transparent,
-          rgba(255, 255, 255, 0.2),
-          transparent
-        );
-        transition: left 0.5s;
-      }
-
-      .btn-primary:hover::before {
-        left: 100%;
-      }
-
-      .loading-spinner {
-        width: 20px;
-        height: 20px;
-        border: 2px solid rgba(255, 255, 255, 0.3);
-        border-top: 2px solid white;
-        border-radius: 50%;
-        animation: spin 1s linear infinite;
-        margin-left: 0.5rem;
-        display: none;
-      }
-
-      @keyframes spin {
-        0% {
-          transform: rotate(0deg);
+  <!DOCTYPE html>
+  <html lang="en" dir="ltr">
+    <head>
+      <meta charset="UTF-8" />
+      <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+      <title>ProxyIP Checker- Advanced Risk Analysis</title>
+      <link rel="icon" href="${websiteIcon}" type="image/x-icon" />
+      <link rel="preconnect" href="https://fonts.googleapis.com" />
+      <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+      <link
+        href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap"
+        rel="stylesheet"
+      />
+      <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+      <style>
+        @font-face {
+          font-family: "Styrene B LC";
+          src: url("https://pub-7a3b428c76aa411181a0f4dd7fa9064b.r2.dev/StyreneBLC-Regular.woff2")
+            format("woff2");
+          font-weight: 400;
+          font-style: normal;
+          font-display: swap;
         }
-        100% {
-          transform: rotate(360deg);
+  
+        @font-face {
+          font-family: "Styrene B LC";
+          src: url("https://pub-7a3b428c76aa411181a0f4dd7fa9064b.r2.dev/StyreneBLC-Medium.woff2")
+            format("woff2");
+          font-weight: 500;
+          font-style: normal;
+          font-display: swap;
         }
-      }
-
-      .results-section {
-        margin-top: 3rem;
-      }
-
-      .result-card {
-        font-family: var(--mono-sans);
-        background: var(--bg-secondary);
-        border-radius: var(--radius-lg);
-        padding: 2rem;
-        margin-bottom: 1.5rem;
-        border-left: 4px solid var(--border-color);
-        box-shadow: var(--shadow-md);
-        transition: all 0.3s ease;
-        position: relative;
-        overflow: hidden;
-      }
-
-      .result-card::before {
-        content: "";
-        position: absolute;
-        top: 0;
-        left: 0;
-        width: 4px;
-        height: 100%;
-        background: var(--border-color);
-        transition: all 0.3s ease;
-      }
-
-      .result-card.success {
-        border-left-color: var(--success-color);
-        background: linear-gradient(
-          145deg,
-          var(--success-bg),
-          var(--bg-secondary)
-        );
-      }
-      .result-card.success::before {
-        background: var(--success-color);
-      }
-      .result-card.error {
-        border-left-color: var(--error-color);
-        background: linear-gradient(
-          145deg,
-          var(--error-bg),
-          var(--bg-secondary)
-        );
-      }
-      .result-card.error::before {
-        background: var(--error-color);
-      }
-      .result-card.warning {
-        border-left-color: var(--warning-color);
-        background: linear-gradient(
-          145deg,
-          var(--warning-bg),
-          var(--bg-secondary)
-        );
-      }
-      .result-card.warning::before {
-        background: var(--warning-color);
-      }
-
-      .result-header {
-        display: flex;
-        align-items: center;
-        margin-bottom: 1.5rem;
-        gap: 0.75rem;
-      }
-
-      .result-title {
-        font-size: 1.5rem;
-        font-weight: 700;
-        color: var(--text-primary);
-      }
-
-      .result-content {
-        display: grid;
-        gap: 1rem;
-      }
-
-      /* MODIFIED: Improved result item styling */
-      .result-item {
-        display: flex;
-        justify-content: space-between;
-        align-items: center;
-        padding: 1rem;
-        background: rgba(255, 255, 255, 0.02);
-        border-radius: var(--radius-md);
-        border: 1px solid var(--border-light);
-        transition: background 0.2s;
-      }
-      .result-item:hover {
-        background: rgba(255, 255, 255, 0.05);
-      }
-      .result-label {
-        font-weight: 500;
-        color: var(--text-secondary);
-      }
-      .result-value {
-        font-weight: 600;
-        color: var(--text-primary);
-        display: flex;
-        align-items: center;
-        gap: 0.5rem;
-      }
-      /* END MODIFICATION */
-
-
-      .badge {
-        display: inline-flex;
-        align-items: center;
-        padding: 0.25rem 0.75rem;
-        border-radius: 9999px;
-        font-size: 0.875rem;
-        font-weight: 500;
-        text-transform: uppercase;
-        letter-spacing: 0.025em;
-      }
-      .badge.success {
-        background: var(--success-bg);
-        color: var(--success-color);
-        border: 1px solid var(--success-border);
-      }
-      .badge.error {
-        background: var(--error-bg);
-        color: var(--error-color);
-        border: 1px solid var(--error-border);
-      }
-      .badge.warning {
-        background: var(--warning-bg);
-        color: var(--warning-color);
-        border: 1px solid var(--warning-border);
-      }
-      .badge.info {
-        background: var(--info-bg);
-        color: var(--info-color);
-        border: 1px solid var(--info-border);
-      }
-
-      .copy-btn {
-        background: var(--bg-tertiary);
-        border: 1px solid var(--border-color);
-        color: var(--text-secondary);
-        padding: 0.25rem 0.5rem;
-        border-radius: var(--radius-sm);
-        font-size: 0.75rem;
-        cursor: pointer;
-        transition: all 0.2s ease;
-      }
-      .copy-btn:hover {
-        background: var(--accent-orange);
-        color: white;
-        border-color: var(--accent-orange);
-      }
-
-      .toast {
-        position: fixed;
-        bottom: 2rem;
-        right: 2rem;
-        background: var(--bg-secondary);
-        color: var(--text-primary);
-        padding: 1rem 1.5rem;
-        border-radius: var(--radius-md);
-        box-shadow: var(--shadow-lg);
-        border: 1px solid var(--border-color);
-        z-index: 1000;
-        opacity: 0;
-        transform: translateY(100px);
-        transition: all 0.3s ease;
-      }
-      .toast.show {
-        opacity: 1;
-        transform: translateY(0);
-      }
-      
-      /* MODIFIED: API Docs section completely restyled */
-      .api-docs {
-        margin-top: 3rem;
-        background: var(--bg-secondary);
-        border-radius: var(--radius-lg);
-        padding: 2.5rem;
-        border: 1px solid var(--border-color);
-      }
-
-      .api-docs-header {
-        display: flex;
-        align-items: center;
-        gap: 0.75rem;
-        margin-bottom: 2rem;
-      }
-      
-      .api-docs-header h3 {
-        color: var(--text-primary);
-        font-size: 1.75rem;
-        font-weight: 700;
-      }
-      
-      .api-docs-header svg {
-        width: 28px;
-        height: 28px;
-        color: var(--accent-orange);
-      }
-
-      .api-endpoints {
-        display: grid;
-        gap: 1rem;
-      }
-
-      .api-endpoint {
-        display: flex;
-        align-items: center;
-        gap: 1rem;
-        background-color: var(--bg-tertiary);
-        padding: 1rem 1.5rem;
-        border-radius: var(--radius-md);
-        border: 1px solid var(--border-light);
-        transition: all 0.2s ease;
-      }
-      .api-endpoint:hover {
-        border-color: var(--accent-orange);
-        transform: translateY(-2px);
-      }
-
-      .api-method {
-        font-family: var(--mono-sans);
-        font-weight: 700;
-        padding: 0.25rem 0.75rem;
-        border-radius: var(--radius-sm);
-        font-size: 0.9rem;
-        background-color: var(--success-bg);
-        color: var(--success-color);
-        border: 1px solid var(--success-border);
-      }
-
-      .api-endpoint code {
-        font-family: var(--mono-sans);
-        font-size: 1rem;
-        color: var(--text-secondary);
-        flex-grow: 1;
-      }
-
-      .api-endpoint code span {
-        color: var(--accent-orange-light);
-      }
-
-      .api-description {
-        font-size: 0.9rem;
-        color: var(--text-muted);
-        margin-left: auto;
-        white-space: nowrap;
-      }
-      /* END MODIFICATION */
-
-
-      .footer {
-        font-family: var(--mono-sans);
-        text-align: center;
-        margin-top: 3rem;
-        padding: 2rem;
-        color: var(--text-muted);
-        border-top: 1px solid var(--border-color);
-      }
-      .footer a {
-        color: var(--accent-orange);
-        text-decoration: none;
-      }
-      .footer a:hover {
-        text-decoration: underline;
-      }
-
-      @media (max-width: 768px) {
+  
+        :root {
+          --bg-primary: #0a0a0a;
+          --bg-secondary: #1a1a1a;
+          --bg-tertiary: #2a2a2a;
+          --text-primary: #ffffff;
+          --text-secondary: #b0b0b0;
+          --text-muted: #666666;
+          --accent-orange: #ff6b35;
+          --accent-orange-dark: #e55a2b;
+          --accent-orange-light: #ff8c5a;
+          --border-color: #333333;
+          --border-light: #444444;
+          --success-color: #10b981;
+          --success-bg: rgba(16, 185, 129, 0.1);
+          --success-border: rgba(16, 185, 129, 0.3);
+          --error-color: #ef4444;
+          --error-bg: rgba(239, 68, 68, 0.1);
+          --error-border: rgba(239, 68, 68, 0.3);
+          --warning-color: #f59e0b;
+          --warning-bg: rgba(245, 158, 11, 0.1);
+          --warning-border: rgba(245, 158, 11, 0.3);
+          --info-color: #3b82f6;
+          --info-bg: rgba(59, 130, 246, 0.1);
+          --info-border: rgba(59, 130, 246, 0.3);
+          --shadow-sm: 0 2px 4px rgba(0, 0, 0, 0.1);
+          --shadow-md: 0 4px 12px rgba(0, 0, 0, 0.15);
+          --shadow-lg: 0 8px 25px rgba(0, 0, 0, 0.25);
+          --shadow-xl: 0 20px 40px rgba(0, 0, 0, 0.4);
+          --radius-sm: 8px;
+          --radius-md: 12px;
+          --radius-lg: 16px;
+          --radius-xl: 20px;
+  
+          --sans: "Inter", -apple-system, BlinkMacSystemFont, sans-serif;
+          --mono-sans: "Styrene B LC", monospace;
+        }
+  
+        * {
+          margin: 0;
+          padding: 0;
+          box-sizing: border-box;
+        }
+  
+        body {
+          font-family: var(--sans);
+          background: linear-gradient(135deg, var(--bg-primary) 0%, #1a1a1a 100%);
+          color: var(--text-primary);
+          line-height: 1.6;
+          min-height: 100vh;
+          overflow-x: hidden;
+        }
+  
         .container {
-          padding: 1rem;
-        }
-        .main-card {
+          max-width: 1200px;
+          margin: 0 auto;
           padding: 2rem;
         }
+  
         .header {
-          flex-direction: column; /* Stack icon and title on small screens */
-          gap: 1rem;
-        }
-        .result-item {
-          flex-direction: column;
-          align-items: flex-start;
-          gap: 0.5rem;
-        }
-        .api-endpoint {
-          flex-direction: column;
-          align-items: flex-start;
+          text-align: center;
+          margin-bottom: 3rem;
+          position: relative;
+          display: flex;
+          justify-content: center;
+          align-items: center;
           gap: 0.75rem;
         }
-        .api-description {
-            margin-left: 0;
-            margin-top: 0.5rem;
+  
+        .header-icon {
+          font-size: clamp(1rem, 4vw, 0.6rem);
+          font-weight: 700;
+          color: var(--text-primary);
+          line-height: 1;
         }
-        .toast {
-          left: 1rem;
-          right: 1rem;
-          bottom: 1rem;
-        }
-      }
 
-      .grid-2 {
-        display: grid;
-        grid-template-columns: 1fr 1fr;
-        gap: 1.5rem; /* Increased gap */
-      }
-
-      @media (max-width: 640px) {
-        .grid-2 {
-          grid-template-columns: 1fr;
+        .header-icon.spinning {
+          display: inline-block;
+          animation: spin 1s linear infinite;
         }
-      }
-
-      @media (max-width: 480px) {
-        .main-card {
-          padding: 1.5rem;
+  
+        .header::before {
+          content: "";
+          position: absolute;
+          top: -50px;
+          left: 50%;
+          transform: translateX(-50%);
+          width: 200px;
+          height: 200px;
+          background: radial-gradient(
+            circle,
+            var(--accent-orange) 0%,
+            transparent 70%
+          );
+          opacity: 0.1;
+          border-radius: 50%;
+          z-index: -1;
         }
+  
         .main-title {
-          font-size: 2.2rem;
+          font-size: clamp(3rem, 5vw, 5rem);
+          font-weight: 700;
+          background: linear-gradient(
+            135deg,
+            var(--accent-orange) 0%,
+            var(--accent-orange-light) 100%
+          );
+          -webkit-background-clip: text;
+          -webkit-text-fill-color: transparent;
+          background-clip: text;
+          margin-bottom: 0;
+          text-shadow: 0 0 30px rgba(255, 107, 53, 0.3);
         }
+  
         .subtitle {
-          font-size: 0.9rem;
+          font-family: var(--mono-sans);
+          font-size: 1.2rem;
+          color: var(--text-secondary);
+          font-weight: 400;
+          text-align: center;
+          width: 100%;
         }
-        .btn-primary {
-          font-size: 1rem;
+        
+        .title-group {
+          display: flex;
+          flex-direction: column;
+          align-items: center;
         }
-        .api-docs {
-          padding: 1.5rem;
+  
+  
+        .main-card {
+          background: linear-gradient(145deg, var(--bg-secondary) 0%, #1f1f1f 100%);
+          border-radius: var(--radius-xl);
+          padding: 3rem;
+          box-shadow: var(--shadow-xl);
+          border: 1px solid var(--border-color);
+          backdrop-filter: blur(10px);
+          position: relative;
+          overflow: hidden;
         }
-        .api-docs-header h3 {
-          font-size: 1.5rem;
+  
+        .main-card::before {
+          content: "";
+          position: absolute;
+          top: 0;
+          left: 0;
+          right: 0;
+          height: 1px;
+          background: linear-gradient(
+            90deg,
+            transparent,
+            var(--accent-orange),
+            transparent
+          );
+          opacity: 0.5;
         }
-        .api-endpoint code {
-          font-size: 0.9rem;
+  
+        .form-section {
+          display: grid;
+          gap: 2rem;
+          margin-bottom: 2rem;
         }
+  
+        .input-group {
+          position: relative;
+        }
+  
         .input-label {
-          font-size: 1rem;
+          display: flex;
+          align-items: center;
+          gap: 0.5rem;
+          font-weight: 600;
+          color: var(--text-primary);
+          margin-bottom: 0.75rem;
+          font-size: 1.1rem;
         }
+  
+        .input-label svg {
+          width: 20px;
+          height: 20px;
+          color: var(--accent-orange-light);
+        }
+  
+        .input-wrapper {
+          position: relative;
+        }
+  
         .form-input {
-          padding: 0.8rem 1rem;
+          width: 100%;
+          padding: 1rem 1.25rem;
+          font-family: var(--mono-sans);
+          font-size: 1rem;
+          background: var(--bg-tertiary);
+          border: 2px solid var(--border-color);
+          border-radius: var(--radius-md);
+          color: var(--text-primary);
+          transition: all 0.3s ease;
+          outline: none;
         }
-      }
-
-      .flex-center {
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        gap: 0.75rem; /* Increased gap */
-      }
-      .flex-center svg {
-        width: 22px; /* Set icon size in button */
-        height: 22px;
-      }
-
-      .range-results {
-        margin-top: 2rem;
-      }
-      .chart-container {
-        background: var(--bg-tertiary);
-        border-radius: var(--radius-md);
-        padding: 1.5rem;
-        margin-top: 1rem;
-      }
-      .ip-grid {
-        display: grid;
-        gap: 0.5rem;
-        max-height: 300px;
-        overflow-y: auto;
-        padding: 1rem;
-        background: var(--bg-tertiary);
-        border-radius: var(--radius-md);
-        border: 1px solid var(--border-color);
-      }
-      .ip-item {
-        display: flex;
-        justify-content: space-between;
-        align-items: center;
-        padding: 0.75rem;
-        background: var(--bg-secondary);
-        border-radius: var(--radius-sm);
-        border: 1px solid var(--border-light);
-        transition: all 0.2s ease;
-      }
-      .ip-item:hover {
-        background: rgba(255, 107, 53, 0.05);
-        border-color: var(--accent-orange);
-      }
-      .status-indicator {
-        width: 8px;
-        height: 8px;
-        border-radius: 50%;
-        margin-right: 0.5rem;
-      }
-      .status-indicator.success {
-        background: var(--success-color);
-        box-shadow: 0 0 8px var(--success-color);
-      }
-      .status-indicator.error {
-        background: var(--error-color);
-        box-shadow: 0 0 8px var(--error-color);
-      }
-      .status-indicator.warning {
-        background: var(--warning-color);
-        box-shadow: 0 0 8px var(--warning-color);
-      }
-    </style>
-  </head>
-  <body>
-    <div class="container">
-      <header class="header">
-        <span class="header-icon">&gt;_</span>
-        <div class="title-group">
-            <h1 class="main-title">ProxyIP Checker</h1>
-            <p class="subtitle">Advanced ProxyIP Verification & Risk Analysis</p>
-        </div>
-      </header>
-
-      <div class="main-card">
-        <div class="form-section">
-          <div class="grid-2">
-            <div class="input-group">
-              <label for="proxyip" class="input-label">
-                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
-                  <path stroke-linecap="round" stroke-linejoin="round" d="M15.042 21.672L13.684 16.6m0 0l-2.51 2.225.569-9.47 5.227 7.917-3.286-.672zm-7.518-.267A8.25 8.25 0 1120.25 10.5M8.288 14.212A5.25 5.25 0 1117.25 10.5" />
-                </svg>
-                Single IP / Domain
-              </label>
-              <div class="input-wrapper">
-                <input
-                  type="text"
-                  id="proxyip"
-                  class="form-input"
-                  placeholder="127.0.0.1:443 or nima.nscl.ir"
-                  autocomplete="off"
-                />
+  
+        .form-input:focus {
+          border-color: var(--accent-orange);
+          box-shadow: 0 0 0 3px rgba(255, 107, 53, 0.1);
+          transform: translateY(-1px);
+        }
+  
+        .form-input::placeholder {
+          color: var(--text-muted);
+        }
+  
+        .btn-primary {
+          background: linear-gradient(
+            135deg,
+            var(--accent-orange) 0%,
+            var(--accent-orange-dark) 100%
+          );
+          color: rgb(255, 255, 255);
+          border: none;
+          padding: 0.8rem 1.4rem;
+          border-radius: var(--radius-md);
+          font-size: 1.1rem;
+          font-weight: 600;
+          cursor: pointer;
+          transition: all 0.3s ease;
+          position: relative;
+          overflow: hidden;
+          align-items: baseline;
+          text-transform: uppercase;
+          letter-spacing: 0.5px;
+          box-shadow: var(--shadow-md);
+        }
+  
+        .btn-primary:hover {
+          transform: translateY(-2px);
+          box-shadow: var(--shadow-lg);
+        }
+  
+        .btn-primary:active {
+          transform: translateY(0);
+        }
+  
+        .btn-primary:disabled {
+          opacity: 0.6;
+          cursor: not-allowed;
+          transform: none;
+        }
+  
+        .btn-primary::before {
+          content: "";
+          position: absolute;
+          top: 0;
+          left: -100%;
+          width: 100%;
+          height: 100%;
+          background: linear-gradient(
+            90deg,
+            transparent,
+            rgba(255, 255, 255, 0.2),
+            transparent
+          );
+          transition: left 0.5s;
+        }
+  
+        .btn-primary:hover::before {
+          left: 100%;
+        }
+  
+        .loading-spinner {
+          width: 20px;
+          height: 20px;
+          border: 2px solid rgba(255, 255, 255, 0.3);
+          border-top: 2px solid white;
+          border-radius: 50%;
+          animation: spin 1s linear infinite;
+          margin-left: 0.5rem;
+          display: none;
+        }
+  
+        @keyframes spin {
+          0% {
+            transform: rotate(0deg);
+          }
+          100% {
+            transform: rotate(360deg);
+          }
+        }
+  
+        .results-section {
+          margin-top: 3rem;
+        }
+  
+        .result-card {
+          font-family: var(--mono-sans);
+          background: var(--bg-secondary);
+          border-radius: var(--radius-lg);
+          padding: 2rem;
+          margin-bottom: 1.5rem;
+          border-left: 4px solid var(--border-color);
+          box-shadow: var(--shadow-md);
+          transition: all 0.3s ease;
+          position: relative;
+          overflow: hidden;
+        }
+  
+        .result-card::before {
+          content: "";
+          position: absolute;
+          top: 0;
+          left: 0;
+          width: 4px;
+          height: 100%;
+          background: var(--border-color);
+          transition: all 0.3s ease;
+        }
+  
+        .result-card.success {
+          border-left-color: var(--success-color);
+          background: linear-gradient(
+            145deg,
+            var(--success-bg),
+            var(--bg-secondary)
+          );
+        }
+        .result-card.success::before {
+          background: var(--success-color);
+        }
+        .result-card.error {
+          border-left-color: var(--error-color);
+          background: linear-gradient(
+            145deg,
+            var(--error-bg),
+            var(--bg-secondary)
+          );
+        }
+        .result-card.error::before {
+          background: var(--error-color);
+        }
+        .result-card.warning {
+          border-left-color: var(--warning-color);
+          background: linear-gradient(
+            145deg,
+            var(--warning-bg),
+            var(--bg-secondary)
+          );
+        }
+        .result-card.warning::before {
+          background: var(--warning-color);
+        }
+  
+        .result-header {
+          display: flex;
+          align-items: center;
+          margin-bottom: 1.5rem;
+          gap: 0.75rem;
+        }
+  
+        .result-title {
+          font-size: 1.5rem;
+          font-weight: 700;
+          color: var(--text-primary);
+        }
+  
+        .result-content {
+          display: grid;
+          gap: 1rem;
+        }
+  
+        .result-item {
+          display: flex;
+          justify-content: space-between;
+          align-items: center;
+          padding: 1rem;
+          background: rgba(255, 255, 255, 0.02);
+          border-radius: var(--radius-md);
+          border: 1px solid var(--border-light);
+          transition: background 0.2s;
+        }
+        .result-item:hover {
+          background: rgba(255, 255, 255, 0.05);
+        }
+        .result-label {
+          font-weight: 500;
+          color: var(--text-secondary);
+        }
+        .result-value {
+          font-weight: 600;
+          color: var(--text-primary);
+          display: flex;
+          align-items: center;
+          gap: 0.5rem;
+        }
+  
+  
+        .badge {
+          display: inline-flex;
+          align-items: center;
+          padding: 0.25rem 0.75rem;
+          border-radius: 9999px;
+          font-size: 0.875rem;
+          font-weight: 500;
+          text-transform: uppercase;
+          letter-spacing: 0.025em;
+        }
+        .badge.success {
+          background: var(--success-bg);
+          color: var(--success-color);
+          border: 1px solid var(--success-border);
+        }
+        .badge.error {
+          background: var(--error-bg);
+          color: var(--error-color);
+          border: 1px solid var(--error-border);
+        }
+        .badge.warning {
+          background: var(--warning-bg);
+          color: var(--warning-color);
+          border: 1px solid var(--warning-border);
+        }
+        .badge.info {
+          background: var(--info-bg);
+          color: var(--info-color);
+          border: 1px solid var(--info-border);
+        }
+  
+        .copy-btn {
+          background: var(--bg-tertiary);
+          border: 1px solid var(--border-color);
+          color: var(--text-secondary);
+          padding: 0.25rem 0.5rem;
+          border-radius: var(--radius-sm);
+          font-size: 0.75rem;
+          cursor: pointer;
+          transition: all 0.2s ease;
+        }
+        .copy-btn:hover {
+          background: var(--accent-orange);
+          color: white;
+          border-color: var(--accent-orange);
+        }
+  
+        .toast {
+          position: fixed;
+          bottom: 2rem;
+          right: 2rem;
+          background: var(--bg-secondary);
+          color: var(--text-primary);
+          padding: 1rem 1.5rem;
+          border-radius: var(--radius-md);
+          box-shadow: var(--shadow-lg);
+          border: 1px solid var(--border-color);
+          z-index: 1000;
+          opacity: 0;
+          transform: translateY(100px);
+          transition: all 0.3s ease;
+        }
+        .toast.show {
+          opacity: 1;
+          transform: translateY(0);
+        }
+        
+        .api-docs {
+          margin-top: 3rem;
+          background: var(--bg-secondary);
+          border-radius: var(--radius-lg);
+          padding: 1.5rem;
+          border: 1px solid var(--border-color);
+        }
+  
+        .api-docs-header {
+          display: flex;
+          align-items: center;
+          gap: 0.75rem;
+          margin-bottom: 2rem;
+        }
+        
+        .api-docs-header h3 {
+          color: var(--text-primary);
+          font-size: 1.75rem;
+          font-weight: 700;
+        }
+        
+        .api-docs-header svg {
+          width: 28px;
+          height: 28px;
+          color: var(--accent-orange);
+        }
+  
+        .api-endpoints {
+          display: grid;
+          gap: 1rem;
+        }
+  
+        .api-endpoint {
+          display: flex;
+          align-items: center;
+          gap: 1rem;
+          background-color: var(--bg-tertiary);
+          padding: 1rem 1.2rem;
+          border-radius: var(--radius-md);
+          border: 1px solid var(--border-light);
+          transition: all 0.2s ease;
+        }
+        .api-endpoint:hover {
+          border-color: var(--accent-orange);
+          transform: translateY(-2px);
+        }
+  
+        .api-method {
+          font-family: var(--mono-sans);
+          font-weight: 700;
+          padding: 0.25rem 0.75rem;
+          border-radius: var(--radius-sm);
+          font-size: 0.9rem;
+          background-color: var(--success-bg);
+          color: var(--success-color);
+          border: 1px solid var(--success-border);
+        }
+  
+        .api-endpoint code {
+          font-family: var(--mono-sans);
+          font-size: 1rem;
+          color: var(--text-secondary);
+          flex-grow: 1;
+        }
+  
+        .api-endpoint code span {
+          color: var(--accent-orange-light);
+        }
+  
+        .api-description {
+          font-size: 0.9rem;
+          color: var(--text-muted);
+          margin-left: auto;
+          white-space: nowrap;
+        }
+  
+        .footer {
+          font-family: var(--mono-sans);
+          text-align: center;
+          margin-top: 3rem;
+          padding: 2rem;
+          color: var(--text-muted);
+          border-top: 1px solid var(--border-color);
+        }
+        .footer a {
+          color: var(--accent-orange);
+          text-decoration: none;
+        }
+        .footer a:hover {
+          text-decoration: underline;
+        }
+  
+        @media (max-width: 768px) {
+          .container {
+            padding: 1rem;
+          }
+          .main-card {
+            padding: 2rem;
+          }
+          .header {
+            flex-direction: column;
+            gap: 1rem;
+          }
+          .result-item {
+            flex-direction: column;
+            align-items: flex-start;
+            gap: 0.5rem;
+          }
+          .api-endpoint {
+            flex-direction: column;
+            align-items: flex-start;
+            gap: 0.25rem;
+          }
+          .api-description {
+              margin-left: 0;
+              margin-top: 0.2rem;
+          }
+          .toast {
+            left: 1rem;
+            right: 1rem;
+            bottom: 1rem;
+          }
+        }
+  
+        .grid-2 {
+          display: grid;
+          grid-template-columns: 1fr 1fr;
+          gap: 1.5rem; /* Increased gap */
+        }
+  
+        @media (max-width: 640px) {
+          .grid-2 {
+            grid-template-columns: 1fr;
+          }
+        }
+  
+        @media (max-width: 480px) {
+          .main-card {
+            padding: 1.2rem;
+          }
+          .main-title {
+            font-size: 1.8rem;
+          }
+          .subtitle {
+            font-size: 0.8rem;
+          }
+          .btn-primary {
+            font-size: 1rem;
+          }
+          .api-endpoint {
+            gap: 0.1rem;
+          }
+          .api-method {
+            font-weight: 600;
+            padding: 0.15rem 0.5rem;
+            font-size: 0.8rem;
+          }
+          .api-description {
+            font-size: 0.9rem;
+            margin-left: 0;
+            margin-top: 0rem;
+          }
+          .api-endpoint code {
+            font-size: 0.9rem;
+          }
+  
+          .api-endpoint code span {
+          font-size: 0.8rem;
+        }
+        }
+  
+        .flex-center {
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          gap: 0.75rem;
+        }
+        .flex-center svg {
+          width: 22px;
+          height: 22px;
+        }
+  
+        .range-results {
+          margin-top: 2rem;
+        }
+        .chart-container {
+          background: var(--bg-tertiary);
+          border-radius: var(--radius-md);
+          padding: 1.5rem;
+          margin-top: 1rem;
+        }
+        .ip-grid {
+          display: grid;
+          gap: 0.5rem;
+          max-height: 300px;
+          overflow-y: auto;
+          padding: 1rem;
+          background: var(--bg-tertiary);
+          border-radius: var(--radius-md);
+          border: 1px solid var(--border-color);
+        }
+        .ip-item {
+          display: flex;
+          justify-content: space-between;
+          align-items: center;
+          padding: 0.75rem;
+          background: var(--bg-secondary);
+          border-radius: var(--radius-sm);
+          border: 1px solid var(--border-light);
+          transition: all 0.2s ease;
+        }
+        .ip-item:hover {
+          background: rgba(255, 107, 53, 0.05);
+          border-color: var(--accent-orange);
+        }
+        .status-indicator {
+          width: 8px;
+          height: 8px;
+          border-radius: 50%;
+          margin-right: 0.5rem;
+        }
+        .status-indicator.success {
+          background: var(--success-color);
+          box-shadow: 0 0 8px var(--success-color);
+        }
+        .status-indicator.error {
+          background: var(--error-color);
+          box-shadow: 0 0 8px var(--error-color);
+        }
+        .status-indicator.warning {
+          background: var(--warning-color);
+          box-shadow: 0 0 8px var(--warning-color);
+        }
+      </style>
+    </head>
+    <body>
+      <div class="container">
+        <header class="header">
+          <div class="title-group">
+              <h1 class="main-title">ProxyIP Checker</h1>
+              <p class="subtitle">Advanced ProxyIP Verification & Risk Analysis</p>
+          </div>
+        </header>
+  
+        <div class="main-card">
+          <div class="form-section">
+            <div class="grid-2">
+              <div class="input-group">
+                <label for="proxyip" class="input-label">
+                  <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M15.042 21.672L13.684 16.6m0 0l-2.51 2.225.569-9.47 5.227 7.917-3.286-.672zm-7.518-.267A8.25 8.25 0 1120.25 10.5M8.288 14.212A5.25 5.25 0 1117.25 10.5" />
+                  </svg>
+                  Single IP / Domain
+                </label>
+                <div class="input-wrapper">
+                  <input
+                    type="text"
+                    id="proxyip"
+                    class="form-input"
+                    placeholder="127.0.0.1:443 or nima.nscl.ir"
+                    autocomplete="off"
+                  />
+                </div>
+              </div>
+  
+              <div class="input-group">
+                <label for="proxyipRange" class="input-label">
+                  <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M3.75 3v11.25A2.25 2.25 0 006 16.5h2.25M3.75 3h-1.5m1.5 0h16.5m0 0h1.5m-1.5 0v11.25A2.25 2.25 0 0118 16.5h-2.25m-7.5 0h7.5m-7.5 0l-1 1.5m1-1.5l1 1.5m0 0l.5 1.5m-2-3l2 3m4.5-3l-1.5 2.25m-1.5-2.25l1.5 2.25m3-3l-1.5 2.25m1.5-2.25l1.5 2.25M9 12l-1.5 2.25M15 12l1.5 2.25" />
+                  </svg>
+                  IP Range
+                </label>
+                <div class="input-wrapper">
+                  <input
+                    type="text"
+                    id="proxyipRange"
+                    class="form-input"
+                    placeholder="127.0.0.0/24"
+                    autocomplete="off"
+                  />
+                </div>
               </div>
             </div>
-
-            <div class="input-group">
-              <label for="proxyipRange" class="input-label">
-                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
-                  <path stroke-linecap="round" stroke-linejoin="round" d="M3.75 3v11.25A2.25 2.25 0 006 16.5h2.25M3.75 3h-1.5m1.5 0h16.5m0 0h1.5m-1.5 0v11.25A2.25 2.25 0 0118 16.5h-2.25m-7.5 0h7.5m-7.5 0l-1 1.5m1-1.5l1 1.5m0 0l.5 1.5m-2-3l2 3m4.5-3l-1.5 2.25m-1.5-2.25l1.5 2.25m3-3l-1.5 2.25m1.5-2.25l1.5 2.25M9 12l-1.5 2.25M15 12l1.5 2.25" />
-                </svg>
-                IP Range
-              </label>
-              <div class="input-wrapper">
-                <input
-                  type="text"
-                  id="proxyipRange"
-                  class="form-input"
-                  placeholder="127.0.0.0/24 OR 127.0.0.1-255"
-                  autocomplete="off"
-                />
-              </div>
+  
+            <button id="checkBtn" class="btn-primary" onclick="checkInputs()">
+              <span class="flex-center">
+                <span id="btn-icon" class="header-icon">&gt;_</span>
+                <span class="btn-text">Start Analysis</span>
+                <span class="loading-spinner"></span>
+              </span>
+            </button>
+          </div>
+  
+          <div id="result" class="results-section"></div>
+          <div id="rangeResult" class="range-results" style="display: none"></div>
+        </div>
+  
+        <div class="api-docs">
+          <div class="api-docs-header">
+            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6">
+              <path stroke-linecap="round" stroke-linejoin="round" d="M13.19 8.688a4.5 4.5 0 011.242 7.244l-4.5 4.5a4.5 4.5 0 01-6.364-6.364l1.757-1.757m13.35-.622l1.757-1.757a4.5 4.5 0 00-6.364-6.364l-4.5 4.5a4.5 4.5 0 001.242 7.244" />
+            </svg>
+            <h3>API Documentation</h3>
+          </div>
+          <div class="api-endpoints">
+            <div class="api-endpoint">
+              <span class="api-method">GET</span>
+              <code>/check?proxyip=<span>IP1,IP2,...</span></code>
+              <span class="api-description">Check multiple IPs</span>
+            </div>
+            <div class="api-endpoint">
+              <span class="api-method">GET</span>
+              <code>/check?iprange=<span>IP_RANGE</span></code>
+              <span class="api-description">Check an IP range</span>
+            </div>
+            <div class="api-endpoint">
+              <span class="api-method">GET</span>
+              <code>/resolve?domain=<span>YOUR_DOMAIN</span></code>
+              <span class="api-description">Resolve domain to IP</span>
+            </div>
+            <div class="api-endpoint">
+              <span class="api-method">GET</span>
+              <code>/ip-info?ip=<span>TARGET_IP</span></code>
+              <span class="api-description">Get IP information</span>
+            </div>
+            <div class="api-endpoint">
+              <span class="api-method">GET</span>
+              <code>/scamalytics-lookup?ip=<span>TARGET_IP</span></code>
+              <span class="api-description">Scamalytics score</span>
             </div>
           </div>
-
-          <button id="checkBtn" class="btn-primary" onclick="checkInputs()">
-            <span class="flex-center">
-              <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6">
-                <path stroke-linecap="round" stroke-linejoin="round" d="M9.813 15.904L9 18.75l-.813-2.846a4.5 4.5 0 00-3.09-3.09L2.25 12l2.846-.813a4.5 4.5 0 003.09-3.09L9 5.25l.813 2.846a4.5 4.5 0 003.09 3.09L15.75 12l-2.846.813a4.5 4.5 0 00-3.09 3.09zM18.259 8.715L18 9.75l-.259-1.035a3.375 3.375 0 00-2.455-2.456L14.25 6l1.036-.259a3.375 3.375 0 002.455-2.456L18 2.25l.259 1.035a3.375 3.375 0 002.456 2.456L21.75 6l-1.035.259a3.375 3.375 0 00-2.456 2.456zM16.898 20.562L16.25 22.5l-.648-1.938a2.25 2.25 0 01-1.423-1.423L12 18.75l1.938-.648a2.25 2.25 0 011.423-1.423L17.25 15l.648 1.938a2.25 2.25 0 011.423 1.423L21.25 18.75l-1.938.648a2.25 2.25 0 01-1.423 1.423z" />
-              </svg>
-              <span class="btn-text">Start Analysis</span>
-              <span class="loading-spinner"></span>
-            </span>
-          </button>
         </div>
-
-        <div id="result" class="results-section"></div>
-        <div id="rangeResult" class="range-results" style="display: none"></div>
+  
+        <footer class="footer">
+          <p>
+            <a href="https://github.com/Diana-Cl/vless/" target="_blank" rel="noopener noreferrer">
+              © ${new Date().getFullYear()} <strong>Diana</strong> – proxy ip checker
+            </a>
+          </p>
+        </footer>
       </div>
+  
+      <div id="toast" class="toast"></div>
 
-      <div class="api-docs">
-        <div class="api-docs-header">
-          <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6">
-            <path stroke-linecap="round" stroke-linejoin="round" d="M13.19 8.688a4.5 4.5 0 011.242 7.244l-4.5 4.5a4.5 4.5 0 01-6.364-6.364l1.757-1.757m13.35-.622l1.757-1.757a4.5 4.5 0 00-6.364-6.364l-4.5 4.5a4.5 4.5 0 001.242 7.244" />
-          </svg>
-          <h3>API Documentation</h3>
-        </div>
-        <div class="api-endpoints">
-          <div class="api-endpoint">
-            <span class="api-method">GET</span>
-            <code>/check?proxyip=<span>IP1,IP2,...</span></code>
-            <span class="api-description">Check multiple IPs</span>
-          </div>
-          <div class="api-endpoint">
-            <span class="api-method">GET</span>
-            <code>/check?iprange=<span>IP_RANGE</span></code>
-            <span class="api-description">Check an IP range</span>
-          </div>
-          <div class="api-endpoint">
-            <span class="api-method">GET</span>
-            <code>/resolve?domain=<span>YOUR_DOMAIN</span></code>
-            <span class="api-description">Resolve domain to IP</span>
-          </div>
-          <div class="api-endpoint">
-            <span class="api-method">GET</span>
-            <code>/ip-info?ip=<span>TARGET_IP</span></code>
-            <span class="api-description">Get IP information</span>
-          </div>
-          <div class="api-endpoint">
-            <span class="api-method">GET</span>
-            <code>/scamalytics-lookup?ip=<span>TARGET_IP</span></code>
-            <span class="api-description">Scamalytics score</span>
-          </div>
-        </div>
-      </div>
+      <script>
+        function checkInputs() {
+          const btn = document.getElementById("checkBtn");
+          const icon = document.getElementById("btn-icon");
+          const spinner = btn.querySelector(".loading-spinner");
+          const btnText = btn.querySelector(".btn-text");
 
-      <footer class="footer">
-        <p>
-          © ${new Date().getFullYear()} <strong>Diana</strong> — proxy ip
-          checker
-        </p>
-      </footer>
-    </div>
+          if (btn.disabled) {
+            return;
+          }
 
-    <div id="toast" class="toast"></div>
-  </body>
-</html>
-
+          btn.disabled = true;
+          icon.classList.add("spinning");
+          spinner.style.display = "inline-block";
+          btnText.textContent = "Analyzing...";
+          
+          setTimeout(() => {
+            btn.disabled = false;
+            icon.classList.remove("spinning");
+            spinner.style.display = "none";
+            btnText.textContent = "Start Analysis";
+          }, 3000);
+        }
+      </script>
+    </body>
+  </html>
   <script>
     let isChecking = false;
     const ipCheckResults = new Map();
