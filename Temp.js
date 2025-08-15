@@ -14,9 +14,9 @@ export default {
     permanentTOKEN = env.TOKEN || temporaryTOKEN;
 
     // Get Scamalytics credentials from environment variables
-    const scamalyticsUsername = 'nimasecure999';
-    const scamalyticsApiKey = 'ce75d58f98849753077a270e6013a036d6f4a6c562fd74c960960ae7a7087b40';
-    const scamalyticsApiBaseUrl = 'https://api12.scamalytics.com/v3/';
+    const scamalyticsUsername = env.SCAMALYTICS_USERNAME;
+    const scamalyticsApiKey = env.SCAMALYTICS_API_KEY;
+    const scamalyticsApiBaseUrl = env.SCAMALYTICS_API_BASE_URL;
 
     if (path.toLowerCase() === '/check') {
       if (!url.searchParams.has('proxyip'))
@@ -54,6 +54,10 @@ export default {
           'Content-Type': 'application/json',
           'Access-Control-Allow-Origin': '*',
         },
+      });
+    } else if (path.toLowerCase() === '/debug-env') {
+      return new Response(JSON.stringify(env, null, 2), {
+        headers: { 'Content-Type': 'application/json' },
       });
     } else if (path.toLowerCase() === '/scamalytics-lookup') {
       if (
@@ -111,7 +115,7 @@ export default {
       }
 
       const cleanIP = ipToLookup.replace(/[\[\]]/g, '');
-      const scamalyticsUrl = `${scamalyticsApiBaseUrl}${scamalyticsUsername}/?key=${scamalyticsApiKey}&ip=${cleanIP}`;
+      const scamalyticsUrl = `${scamalyticsApiBaseUrl}/${scamalyticsUsername}/?key=${scamalyticsApiKey}&ip=${cleanIP}`;
 
       console.log('Scamalytics URL:', scamalyticsUrl);
 
