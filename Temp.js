@@ -505,710 +505,731 @@ async function nginxWelcomePage() {
 async function generateHTMLPage(hostname, websiteIcon, token) {
   const html = `<!DOCTYPE html>
 <html lang="en" dir="ltr">
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>ProxyIP Checker- Advanced Risk Analysis</title>
-  <link rel="icon" href="${websiteIcon}" type="image/x-icon">
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
-  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-  <style>
-  
-  @font-face {
-      font-family: "Styrene B LC";
-      src: url("https://pub-7a3b428c76aa411181a0f4dd7fa9064b.r2.dev/StyreneBLC-Regular.woff2") format("woff2");
-      font-weight: 400; font-style: normal; font-display: swap;
-    }
-
-    @font-face {
-      font-family: "Styrene B LC";
-      src: url("https://pub-7a3b428c76aa411181a0f4dd7fa9064b.r2.dev/StyreneBLC-Medium.woff2") format("woff2");
-      font-weight: 500; font-style: normal; font-display: swap;
-    }
-    
-    :root {
-      --bg-primary: #0a0a0a;
-      --bg-secondary: #1a1a1a;
-      --bg-tertiary: #2a2a2a;
-      --text-primary: #ffffff;
-      --text-secondary: #b0b0b0;
-      --text-muted: #666666;
-      --accent-orange: #ff6b35;
-      --accent-orange-dark: #e55a2b;
-      --accent-orange-light: #ff8c5a;
-      --border-color: #333333;
-      --border-light: #444444;
-      --success-color: #10b981;
-      --success-bg: rgba(16, 185, 129, 0.1);
-      --success-border: rgba(16, 185, 129, 0.3);
-      --error-color: #ef4444;
-      --error-bg: rgba(239, 68, 68, 0.1);
-      --error-border: rgba(239, 68, 68, 0.3);
-      --warning-color: #f59e0b;
-      --warning-bg: rgba(245, 158, 11, 0.1);
-      --warning-border: rgba(245, 158, 11, 0.3);
-      --info-color: #3b82f6;
-      --info-bg: rgba(59, 130, 246, 0.1);
-      --info-border: rgba(59, 130, 246, 0.3);
-      --shadow-sm: 0 2px 4px rgba(0, 0, 0, 0.1);
-      --shadow-md: 0 4px 12px rgba(0, 0, 0, 0.15);
-      --shadow-lg: 0 8px 25px rgba(0, 0, 0, 0.25);
-      --shadow-xl: 0 20px 40px rgba(0, 0, 0, 0.4);
-      --radius-sm: 8px;
-      --radius-md: 12px;
-      --radius-lg: 16px;
-      --radius-xl: 20px;
-
-      --sans: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
-      --mono-sans: 'Styrene B LC';
-    }
-
-    * {
-      margin: 0;
-      padding: 0;
-      box-sizing: border-box;
-    }
-
-    body {
-      font-family: var(--sans);
-      background: linear-gradient(135deg, var(--bg-primary) 0%, #1a1a1a 100%);
-      color: var(--text-primary);
-      line-height: 1.6;
-      min-height: 100vh;
-      overflow-x: hidden;
-    }
-
-    .container {
-      max-width: 1200px;
-      margin: 0 auto;
-      padding: 2rem;
-    }
-
-    .header {
-      text-align: center;
-      margin-bottom: 3rem;
-      position: relative;
-    }
-
-    .header::before {
-      content: '';
-      position: absolute;
-      top: -50px;
-      left: 50%;
-      transform: translateX(-50%);
-      width: 200px;
-      height: 200px;
-      background: radial-gradient(circle, var(--accent-orange) 0%, transparent 70%);
-      opacity: 0.1;
-      border-radius: 50%;
-      z-index: -1;
-    }
-
-    .main-title {
-      font-size: clamp(2.5rem, 5vw, 3rem);
-      font-weight: 701;
-      background: linear-gradient(135deg, var(--accent-orange) 0%, var(--accent-orange-light) 100%);
-      -webkit-background-clip: text;
-      -webkit-text-fill-color: transparent;
-      background-clip: text;
-      margin-bottom: 0.5rem;
-      text-shadow: 0 0 30px rgba(255, 107, 53, 0.3);
-    }
-
-    .subtitle {
-      font-family: var(--mono-sans);
-      font-size: 1rem;
-      color: var(--text-secondary);
-      font-weight: 400;
-      margin-bottom: 0.5rem;
-    }
-
-    .main-card {
-      background: linear-gradient(145deg, var(--bg-secondary) 0%, #1f1f1f 100%);
-      border-radius: var(--radius-xl);
-      padding: 3rem;
-      box-shadow: var(--shadow-xl);
-      border: 1px solid var(--border-color);
-      backdrop-filter: blur(10px);
-      position: relative;
-      overflow: hidden;
-    }
-
-    .main-card::before {
-      content: '';
-      position: absolute;
-      top: 0;
-      left: 0;
-      right: 0;
-      height: 1px;
-      background: linear-gradient(90deg, transparent, var(--accent-orange), transparent);
-      opacity: 0.5;
-    }
-
-    .form-section {
-      display: grid;
-      gap: 2rem;
-      margin-bottom: 2rem;
-    }
-
-    .input-group {
-      position: relative;
-    }
-
-    .input-label {
-      display: block;
-      font-weight: 600;
-      color: var(--text-primary);
-      margin-bottom: 0.75rem;
-      font-size: 1.1rem;
-    }
-
-    .input-wrapper {
-      position: relative;
-    }
-
-    .form-input {
-      width: 100%;
-      padding: 1rem 1.25rem;
-      font-family: var(--mono-sans);
-      font-size: 1rem;
-      background: var(--bg-tertiary);
-      border: 2px solid var(--border-color);
-      border-radius: var(--radius-md);
-      color: var(--text-primary);
-      transition: all 0.3s ease;
-      outline: none;
-    }
-
-    .form-input:focus {
-      border-color: var(--accent-orange);
-      box-shadow: 0 0 0 3px rgba(255, 107, 53, 0.1);
-      transform: translateY(-1px);
-    }
-
-    .form-input::placeholder {
-      color: var(--text-muted);
-    }
-
-    .btn-primary {
-      background: linear-gradient(135deg, var(--accent-orange) 0%, var(--accent-orange-dark) 100%);
-      color: rgb(255, 255, 255);
-      border: none;
-      padding: 0.9rem 2rem;
-      border-radius: var(--radius-md);
-      font-size: 1.1rem;
-      font-weight: 600;
-      cursor: pointer;
-      transition: all 0.3s ease;
-      position: relative;
-      overflow: hidden;
-      text-transform: uppercase;
-      letter-spacing: 0.5px;
-      box-shadow: var(--shadow-md);
-    }
-
-    .btn-primary:hover {
-      transform: translateY(-2px);
-      box-shadow: var(--shadow-lg);
-    }
-
-    .btn-primary:active {
-      transform: translateY(0);
-    }
-
-    .btn-primary:disabled {
-      opacity: 0.6;
-      cursor: not-allowed;
-      transform: none;
-    }
-
-    .btn-primary::before {
-      content: '';
-      position: absolute;
-      top: 0;
-      left: -100%;
-      width: 100%;
-      height: 100%;
-      background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
-      transition: left 0.5s;
-    }
-
-    .btn-primary:hover::before {
-      left: 100%;
-    }
-    
-    .glassmorphism {
-      background: rgba(17, 25, 40, 0.75);
-      backdrop-filter: blur(12px);
-      border-radius: 12px;
-      border: 1px solid rgba(255, 255, 255, 0.125);
-    }
-
-    .shine {
-      position: relative;
-      overflow: hidden;
-    }
-
-    .loading-spinner {
-      width: 20px;
-      height: 20px;
-      border: 2px solid rgba(255, 255, 255, 0.3);
-      border-top: 2px solid white;
-      border-radius: 50%;
-      animation: spin 1s linear infinite;
-      margin-left: 0.5rem;
-      display: none;
-    }
-
-    @keyframes spin {
-      0% { transform: rotate(0deg); }
-      100% { transform: rotate(360deg); }
-    }
-
-    .results-section {
-      margin-top: 3rem;
-    }
-
-    .result-card {
-      font-family: var(--mono-sans);
-      background: var(--bg-secondary);
-      border-radius: var(--radius-lg);
-      padding: 2rem;
-      margin-bottom: 1.5rem;
-      border-left: 4px solid var(--border-color);
-      box-shadow: var(--shadow-md);
-      transition: all 0.3s ease;
-      position: relative;
-      overflow: hidden;
-    }
-
-    .result-card::before {
-      content: '';
-      position: absolute;
-      top: 0;
-      left: 0;
-      width: 4px;
-      height: 100%;
-      background: var(--border-color);
-      transition: all 0.3s ease;
-    }
-
-    .result-card.success {
-      border-left-color: var(--success-color);
-      background: linear-gradient(145deg, var(--success-bg), var(--bg-secondary));
-    }
-
-    .result-card.success::before {
-      background: var(--success-color);
-    }
-
-    .result-card.error {
-      border-left-color: var(--error-color);
-      background: linear-gradient(145deg, var(--error-bg), var(--bg-secondary));
-    }
-
-    .result-card.error::before {
-      background: var(--error-color);
-    }
-
-    .result-card.warning {
-      border-left-color: var(--warning-color);
-      background: linear-gradient(145deg, var(--warning-bg), var(--bg-secondary));
-    }
-
-    .result-card.warning::before {
-      background: var(--warning-color);
-    }
-
-    .result-header {
-      display: flex;
-      align-items: center;
-      margin-bottom: 1.5rem;
-      gap: 0.75rem;
-    }
-
-    .result-icon {
-      width: 2.5rem;
-      height: 2.5rem;
-      border-radius: 50%;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      font-size: 1.25rem;
-      font-weight: bold;
-    }
-
-    .result-icon.success {
-      background: var(--success-color);
-      color: white;
-    }
-
-    .result-icon.error {
-      background: var(--error-color);
-      color: white;
-    }
-
-    .result-icon.warning {
-      background: var(--warning-color);
-      color: white;
-    }
-
-    .result-title {
-      font-size: 1.5rem;
-      font-weight: 700;
-      color: var(--text-primary);
-    }
-
-    .result-content {
-      display: grid;
-      gap: 1rem;
-    }
-
-    .result-item {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      padding: 0.75rem;
-      background: rgba(255, 255, 255, 0.02);
-      border-radius: var(--radius-sm);
-      border: 1px solid var(--border-light);
-    }
-
-    .result-label {
-      font-weight: 600;
-      color: var(--text-secondary);
-    }
-
-    .result-value {
-      font-weight: 500;
-      color: var(--text-primary);
-      display: flex;
-      align-items: center;
-      gap: 0.5rem;
-    }
-
-    .badge {
-      display: inline-flex;
-      align-items: center;
-      padding: 0.25rem 0.75rem;
-      border-radius: 9999px;
-      font-size: 0.875rem;
-      font-weight: 500;
-      text-transform: uppercase;
-      letter-spacing: 0.025em;
-    }
-
-    .badge.success {
-      background: var(--success-bg);
-      color: var(--success-color);
-      border: 1px solid var(--success-border);
-    }
-
-    .badge.error {
-      background: var(--error-bg);
-      color: var(--error-color);
-      border: 1px solid var(--error-border);
-    }
-
-    .badge.warning {
-      background: var(--warning-bg);
-      color: var(--warning-color);
-      border: 1px solid var(--warning-border);
-    }
-
-    .badge.info {
-      background: var(--info-bg);
-      color: var(--info-color);
-      border: 1px solid var(--info-border);
-    }
-
-    .copy-btn {
-      background: var(--bg-tertiary);
-      border: 1px solid var(--border-color);
-      color: var(--text-secondary);
-      padding: 0.25rem 0.5rem;
-      border-radius: var(--radius-sm);
-      font-size: 0.75rem;
-      cursor: pointer;
-      transition: all 0.2s ease;
-    }
-
-    .copy-btn:hover {
-      background: var(--accent-orange);
-      color: white;
-      border-color: var(--accent-orange);
-    }
-
-    .toast {
-      position: fixed;
-      bottom: 2rem;
-      right: 2rem;
-      background: var(--bg-secondary);
-      color: var(--text-primary);
-      padding: 1rem 1.5rem;
-      border-radius: var(--radius-md);
-      box-shadow: var(--shadow-lg);
-      border: 1px solid var(--border-color);
-      z-index: 1000;
-      opacity: 0;
-      transform: translateY(100px);
-      transition: all 0.3s ease;
-    }
-
-    .toast.show {
-      opacity: 1;
-      transform: translateY(0);
-    }
-
-    .api-docs {
-      margin-top: 3rem;
-      background: var(--bg-secondary);
-      border-radius: var(--radius-lg);
-      padding: 2rem;
-      border: 1px solid var(--border-color);
-    }
-
-    .api-docs h3 {
-      color: var(--accent-orange);
-      margin-bottom: 1rem;
-      font-size: 1.5rem;
-    }
-
-    .api-docs code {
-      background: var(--bg-tertiary);
-      color: var(--accent-orange-light);
-      padding: 0.25rem 0.5rem;
-      border-radius: var(--radius-sm);
-      font-family: 'Monaco', 'Menlo', monospace;
-      font-size: 0.9rem;
-    }
-
-    .footer {
-      font-family: var(--mono-sans);
-      text-align: center;
-      margin-top: 3rem;
-      padding: 2rem;
-      color: var(--text-muted);
-      border-top: 1px solid var(--border-color);
-    }
-
-    .footer a {
-      color: var(--accent-orange);
-      text-decoration: none;
-    }
-
-    .footer a:hover {
-      text-decoration: underline;
-    }
-
-    @media (max-width: 768px) {
-      .container {
-        padding: 1rem;
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>ProxyIP Checker- Advanced Risk Analysis</title>
+    <link rel="icon" href="${websiteIcon}" type="image/x-icon" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap"
+      rel="stylesheet" />
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <style>
+      @font-face {
+        font-family: "Styrene B LC";
+        src: url("https://pub-7a3b428c76aa411181a0f4dd7fa9064b.r2.dev/StyreneBLC-Regular.woff2") format("woff2");
+        font-weight: 400;
+        font-style: normal;
+        font-display: swap;
       }
-      
-      .main-card {
+
+      @font-face {
+        font-family: "Styrene B LC";
+        src: url("https://pub-7a3b428c76aa411181a0f4dd7fa9064b.r2.dev/StyreneBLC-Medium.woff2") format("woff2");
+        font-weight: 500;
+        font-style: normal;
+        font-display: swap;
+      }
+
+      :root {
+        --bg-primary: #0a0a0a;
+        --bg-secondary: #1a1a1a;
+        --bg-tertiary: #2a2a2a;
+        --text-primary: #ffffff;
+        --text-secondary: #b0b0b0;
+        --text-muted: #666666;
+        --accent-orange: #ff6b35;
+        --accent-orange-dark: #e55a2b;
+        --accent-orange-light: #ff8c5a;
+        --border-color: #333333;
+        --border-light: #444444;
+        --success-color: #10b981;
+        --success-bg: rgba(16, 185, 129, 0.1);
+        --success-border: rgba(16, 185, 129, 0.3);
+        --error-color: #ef4444;
+        --error-bg: rgba(239, 68, 68, 0.1);
+        --error-border: rgba(239, 68, 68, 0.3);
+        --warning-color: #f59e0b;
+        --warning-bg: rgba(245, 158, 11, 0.1);
+        --warning-border: rgba(245, 158, 11, 0.3);
+        --info-color: #3b82f6;
+        --info-bg: rgba(59, 130, 246, 0.1);
+        --info-border: rgba(59, 130, 246, 0.3);
+        --shadow-sm: 0 2px 4px rgba(0, 0, 0, 0.1);
+        --shadow-md: 0 4px 12px rgba(0, 0, 0, 0.15);
+        --shadow-lg: 0 8px 25px rgba(0, 0, 0, 0.25);
+        --shadow-xl: 0 20px 40px rgba(0, 0, 0, 0.4);
+        --radius-sm: 8px;
+        --radius-md: 12px;
+        --radius-lg: 16px;
+        --radius-xl: 20px;
+
+        --sans: "Inter", -apple-system, BlinkMacSystemFont, sans-serif;
+        --mono-sans: "Styrene B LC";
+      }
+
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+      }
+
+      body {
+        font-family: var(--sans);
+        background: linear-gradient(135deg, var(--bg-primary) 0%, #1a1a1a 100%);
+        color: var(--text-primary);
+        line-height: 1.6;
+        min-height: 100vh;
+        overflow-x: hidden;
+      }
+
+      .container {
+        max-width: 1200px;
+        margin: 0 auto;
         padding: 2rem;
       }
-      
-      .main-title {
-        font-size: 2.5rem;
+
+      .header {
+        text-align: center;
+        margin-bottom: 3rem;
+        position: relative;
       }
-      
+
+      .header::before {
+        content: "";
+        position: absolute;
+        top: -50px;
+        left: 50%;
+        transform: translateX(-50%);
+        width: 200px;
+        height: 200px;
+        background: radial-gradient(circle, var(--accent-orange) 0%, transparent 70%);
+        opacity: 0.1;
+        border-radius: 50%;
+        z-index: -1;
+      }
+
+      .main-title {
+        font-size: clamp(2.5rem, 5vw, 3rem);
+        font-weight: 701;
+        background: linear-gradient(135deg, var(--accent-orange) 0%, var(--accent-orange-light) 100%);
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        background-clip: text;
+        margin-bottom: 0.5rem;
+        text-shadow: 0 0 30px rgba(255, 107, 53, 0.3);
+      }
+
+      .subtitle {
+        font-family: var(--mono-sans);
+        font-size: 1rem;
+        color: var(--text-secondary);
+        font-weight: 400;
+        margin-bottom: 0.5rem;
+      }
+
+      .main-card {
+        background: linear-gradient(145deg, var(--bg-secondary) 0%, #1f1f1f 100%);
+        border-radius: var(--radius-xl);
+        padding: 3rem;
+        box-shadow: var(--shadow-xl);
+        border: 1px solid var(--border-color);
+        backdrop-filter: blur(10px);
+        position: relative;
+        overflow: hidden;
+      }
+
+      .main-card::before {
+        content: "";
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        height: 1px;
+        background: linear-gradient(90deg, transparent, var(--accent-orange), transparent);
+        opacity: 0.5;
+      }
+
+      .form-section {
+        display: grid;
+        gap: 2rem;
+        margin-bottom: 2rem;
+      }
+
+      .input-group {
+        position: relative;
+      }
+
+      .input-label {
+        display: block;
+        font-weight: 600;
+        color: var(--text-primary);
+        margin-bottom: 0.75rem;
+        font-size: 1.1rem;
+      }
+
+      .input-wrapper {
+        position: relative;
+      }
+
+      .form-input {
+        width: 100%;
+        padding: 1rem 1.25rem;
+        font-family: var(--mono-sans);
+        font-size: 1rem;
+        background: var(--bg-tertiary);
+        border: 2px solid var(--border-color);
+        border-radius: var(--radius-md);
+        color: var(--text-primary);
+        transition: all 0.3s ease;
+        outline: none;
+      }
+
+      .form-input:focus {
+        border-color: var(--accent-orange);
+        box-shadow: 0 0 0 3px rgba(255, 107, 53, 0.1);
+        transform: translateY(-1px);
+      }
+
+      .form-input::placeholder {
+        color: var(--text-muted);
+      }
+
+      .btn-primary {
+        background: linear-gradient(135deg, var(--accent-orange) 0%, var(--accent-orange-dark) 100%);
+        color: rgb(255, 255, 255);
+        border: none;
+        padding: 0.9rem 2rem;
+        border-radius: var(--radius-md);
+        font-size: 1.1rem;
+        font-weight: 600;
+        cursor: pointer;
+        transition: all 0.3s ease;
+        position: relative;
+        overflow: hidden;
+        text-transform: uppercase;
+        letter-spacing: 0.5px;
+        box-shadow: var(--shadow-md);
+      }
+
+      .btn-primary:hover {
+        transform: translateY(-2px);
+        box-shadow: var(--shadow-lg);
+      }
+
+      .btn-primary:active {
+        transform: translateY(0);
+      }
+
+      .btn-primary:disabled {
+        opacity: 0.6;
+        cursor: not-allowed;
+        transform: none;
+      }
+
+      .btn-primary::before {
+        content: "";
+        position: absolute;
+        top: 0;
+        left: -100%;
+        width: 100%;
+        height: 100%;
+        background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+        transition: left 0.5s;
+      }
+
+      .btn-primary:hover::before {
+        left: 100%;
+      }
+
+      .glassmorphism {
+        background: rgba(17, 25, 40, 0.75);
+        backdrop-filter: blur(12px);
+        border-radius: 12px;
+        border: 1px solid rgba(255, 255, 255, 0.125);
+      }
+
+      .shine {
+        position: relative;
+        overflow: hidden;
+      }
+
+      .loading-spinner {
+        width: 20px;
+        height: 20px;
+        border: 2px solid rgba(255, 255, 255, 0.3);
+        border-top: 2px solid white;
+        border-radius: 50%;
+        animation: spin 1s linear infinite;
+        margin-left: 0.5rem;
+        display: none;
+      }
+
+      @keyframes spin {
+        0% {
+          transform: rotate(0deg);
+        }
+        100% {
+          transform: rotate(360deg);
+        }
+      }
+
+      .results-section {
+        margin-top: 3rem;
+      }
+
+      .result-card {
+        font-family: var(--mono-sans);
+        background: var(--bg-secondary);
+        border-radius: var(--radius-lg);
+        padding: 2rem;
+        margin-bottom: 1.5rem;
+        border-left: 4px solid var(--border-color);
+        box-shadow: var(--shadow-md);
+        transition: all 0.3s ease;
+        position: relative;
+        overflow: hidden;
+      }
+
+      .result-card::before {
+        content: "";
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 4px;
+        height: 100%;
+        background: var(--border-color);
+        transition: all 0.3s ease;
+      }
+
+      .result-card.success {
+        border-left-color: var(--success-color);
+        background: linear-gradient(145deg, var(--success-bg), var(--bg-secondary));
+      }
+
+      .result-card.success::before {
+        background: var(--success-color);
+      }
+
+      .result-card.error {
+        border-left-color: var(--error-color);
+        background: linear-gradient(145deg, var(--error-bg), var(--bg-secondary));
+      }
+
+      .result-card.error::before {
+        background: var(--error-color);
+      }
+
+      .result-card.warning {
+        border-left-color: var(--warning-color);
+        background: linear-gradient(145deg, var(--warning-bg), var(--bg-secondary));
+      }
+
+      .result-card.warning::before {
+        background: var(--warning-color);
+      }
+
+      .result-header {
+        display: flex;
+        align-items: center;
+        margin-bottom: 1.5rem;
+        gap: 0.75rem;
+      }
+
+      .result-icon {
+        width: 2.5rem;
+        height: 2.5rem;
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 1.25rem;
+        font-weight: bold;
+      }
+
+      .result-icon.success {
+        background: var(--success-color);
+        color: white;
+      }
+
+      .result-icon.error {
+        background: var(--error-color);
+        color: white;
+      }
+
+      .result-icon.warning {
+        background: var(--warning-color);
+        color: white;
+      }
+
+      .result-title {
+        font-size: 1.5rem;
+        font-weight: 700;
+        color: var(--text-primary);
+      }
+
+      .result-content {
+        display: grid;
+        gap: 1rem;
+      }
+
       .result-item {
-        flex-direction: column;
-        align-items: flex-start;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding: 0.75rem;
+        background: rgba(255, 255, 255, 0.02);
+        border-radius: var(--radius-sm);
+        border: 1px solid var(--border-light);
+      }
+
+      .result-label {
+        font-weight: 600;
+        color: var(--text-secondary);
+      }
+
+      .result-value {
+        font-weight: 500;
+        color: var(--text-primary);
+        display: flex;
+        align-items: center;
         gap: 0.5rem;
       }
-      
+
+      .badge {
+        display: inline-flex;
+        align-items: center;
+        padding: 0.25rem 0.75rem;
+        border-radius: 9999px;
+        font-size: 0.875rem;
+        font-weight: 500;
+        text-transform: uppercase;
+        letter-spacing: 0.025em;
+      }
+
+      .badge.success {
+        background: var(--success-bg);
+        color: var(--success-color);
+        border: 1px solid var(--success-border);
+      }
+
+      .badge.error {
+        background: var(--error-bg);
+        color: var(--error-color);
+        border: 1px solid var(--error-border);
+      }
+
+      .badge.warning {
+        background: var(--warning-bg);
+        color: var(--warning-color);
+        border: 1px solid var(--warning-border);
+      }
+
+      .badge.info {
+        background: var(--info-bg);
+        color: var(--info-color);
+        border: 1px solid var(--info-border);
+      }
+
+      .copy-btn {
+        background: var(--bg-tertiary);
+        border: 1px solid var(--border-color);
+        color: var(--text-secondary);
+        padding: 0.25rem 0.5rem;
+        border-radius: var(--radius-sm);
+        font-size: 0.75rem;
+        cursor: pointer;
+        transition: all 0.2s ease;
+      }
+
+      .copy-btn:hover {
+        background: var(--accent-orange);
+        color: white;
+        border-color: var(--accent-orange);
+      }
+
       .toast {
-        left: 1rem;
-        right: 1rem;
-        bottom: 1rem;
+        position: fixed;
+        bottom: 2rem;
+        right: 2rem;
+        background: var(--bg-secondary);
+        color: var(--text-primary);
+        padding: 1rem 1.5rem;
+        border-radius: var(--radius-md);
+        box-shadow: var(--shadow-lg);
+        border: 1px solid var(--border-color);
+        z-index: 1000;
+        opacity: 0;
+        transform: translateY(100px);
+        transition: all 0.3s ease;
       }
-    }
 
-    .grid-2 {
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 1rem;
-    }
+      .toast.show {
+        opacity: 1;
+        transform: translateY(0);
+      }
 
-    @media (max-width: 640px) {
+      .api-docs {
+        margin-top: 3rem;
+        background: var(--bg-secondary);
+        border-radius: var(--radius-lg);
+        padding: 2rem;
+        border: 1px solid var(--border-color);
+      }
+
+      .api-docs h3 {
+        color: var(--accent-orange);
+        margin-bottom: 1rem;
+        font-size: 1.5rem;
+      }
+
+      .api-docs code {
+        background: var(--bg-tertiary);
+        color: var(--accent-orange-light);
+        padding: 0.25rem 0.5rem;
+        border-radius: var(--radius-sm);
+        font-family: "Monaco", "Menlo", monospace;
+        font-size: 0.9rem;
+      }
+
+      .footer {
+        font-family: var(--mono-sans);
+        text-align: center;
+        margin-top: 3rem;
+        padding: 2rem;
+        color: var(--text-muted);
+        border-top: 1px solid var(--border-color);
+      }
+
+      .footer a {
+        color: var(--accent-orange);
+        text-decoration: none;
+      }
+
+      .footer a:hover {
+        text-decoration: underline;
+      }
+
+      @media (max-width: 768px) {
+        .container {
+          padding: 1rem;
+        }
+
+        .main-card {
+          padding: 2rem;
+        }
+
+        .main-title {
+          font-size: 2.5rem;
+        }
+
+        .result-item {
+          flex-direction: column;
+          align-items: flex-start;
+          gap: 0.5rem;
+        }
+
+        .toast {
+          left: 1rem;
+          right: 1rem;
+          bottom: 1rem;
+        }
+      }
+
       .grid-2 {
-        grid-template-columns: 1fr;
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 1rem;
       }
-    }
-    
-    @media (max-width: 480px) {
-      
-    .main-card {
-      padding: 1.5rem;
-    }
-      
-    .main-title {
-      font-size: 2.2rem;
-    }
-      
-    .subtitle {
-      font-size: 0.8rem;
-      font-weight: 400;
-    }
-      
-    .btn-primary {
-      font-size: 1rem;
-    }
-        
-    .api-docs {
-      margin-top: 2rem;
-      outline: none;
-      padding: 1rem;
-    }
 
-    .api-docs h3 {
-      margin-bottom: 1.5rem;
-      font-size: 1.5rem;
-    }
-      
-    .api-docs code {
-      font-size: 0.8rem;
-    }
-      
-    .input-label {
-      font-weight: 600;
-      margin-bottom: 0rem;
-      font-size: 1rem;
-    }
-      
-    .form-input {
-      width: 100%;
-      padding: 0.8rem 1rem;
+      @media (max-width: 640px) {
+        .grid-2 {
+          grid-template-columns: 1fr;
+        }
       }
-  }
 
-    .flex-center {
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      gap: 0.5rem;
-    }
+      @media (max-width: 480px) {
+        .main-card {
+          padding: 1.5rem;
+        }
 
-    .range-results {
-      margin-top: 2rem;
-    }
+        .main-title {
+          font-size: 2.2rem;
+        }
 
-    .chart-container {
-      background: var(--bg-tertiary);
-      border-radius: var(--radius-md);
-      padding: 1.5rem;
-      margin-top: 1rem;
-    }
+        .subtitle {
+          font-size: 0.8rem;
+          font-weight: 400;
+        }
 
-    .ip-grid {
-      display: grid;
-      gap: 0.5rem;
-      max-height: 300px;
-      overflow-y: auto;
-      padding: 1rem;
-      background: var(--bg-tertiary);
-      border-radius: var(--radius-md);
-      border: 1px solid var(--border-color);
-    }
+        .btn-primary {
+          font-size: 1rem;
+        }
 
-    .ip-item {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      padding: 0.75rem;
-      background: var(--bg-secondary);
-      border-radius: var(--radius-sm);
-      border: 1px solid var(--border-light);
-      transition: all 0.2s ease;
-    }
+        .api-docs {
+          margin-top: 2rem;
+          outline: none;
+          padding: 1rem;
+        }
 
-    .ip-item:hover {
-      background: rgba(255, 107, 53, 0.05);
-      border-color: var(--accent-orange);
-    }
+        .api-docs h3 {
+          margin-bottom: 1.5rem;
+          font-size: 1.5rem;
+        }
 
-    .status-indicator {
-      width: 8px;
-      height: 8px;
-      border-radius: 50%;
-      margin-right: 0.5rem;
-    }
+        .api-docs code {
+          font-size: 0.8rem;
+        }
 
-    .status-indicator.success {
-      background: var(--success-color);
-      box-shadow: 0 0 8px var(--success-color);
-    }
+        .input-label {
+          font-weight: 600;
+          margin-bottom: 0rem;
+          font-size: 1rem;
+        }
 
-    .status-indicator.error {
-      background: var(--error-color);
-      box-shadow: 0 0 8px var(--error-color);
-    }
+        .form-input {
+          width: 100%;
+          padding: 0.8rem 1rem;
+        }
+      }
 
-    .status-indicator.warning {
-      background: var(--warning-color);
-      box-shadow: 0 0 8px var(--warning-color);
-    }
-  </style>
-</head>
-<body>
-  <div class="container">
-    <header class="header">
-      <h1 class="main-title">ProxyIP Checker</h1>
-      <p class="subtitle">Advanced ProxyIP Verification & Risk Analysis</p>
-    </header>
+      .flex-center {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 0.5rem;
+      }
 
-    <div class="main-card">
-      <div class="form-section">
-        <div class="grid-2">
-          <div class="input-group">
-            <i class="fas fa-terminal text-purple-400 mr-2"></i>
-            <label for="proxyip" class="input-label">🎯 Single IP / Domain</label>
-            <div class="input-wrapper">
-              <input type="text" id="proxyip" class="form-input" placeholder="127.0.0.1:443 or nima.nscl.ir" autocomplete="off">
+      .range-results {
+        margin-top: 2rem;
+      }
+
+      .chart-container {
+        background: var(--bg-tertiary);
+        border-radius: var(--radius-md);
+        padding: 1.5rem;
+        margin-top: 1rem;
+      }
+
+      .ip-grid {
+        display: grid;
+        gap: 0.5rem;
+        max-height: 300px;
+        overflow-y: auto;
+        padding: 1rem;
+        background: var(--bg-tertiary);
+        border-radius: var(--radius-md);
+        border: 1px solid var(--border-color);
+      }
+
+      .ip-item {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding: 0.75rem;
+        background: var(--bg-secondary);
+        border-radius: var(--radius-sm);
+        border: 1px solid var(--border-light);
+        transition: all 0.2s ease;
+      }
+
+      .ip-item:hover {
+        background: rgba(255, 107, 53, 0.05);
+        border-color: var(--accent-orange);
+      }
+
+      .status-indicator {
+        width: 8px;
+        height: 8px;
+        border-radius: 50%;
+        margin-right: 0.5rem;
+      }
+
+      .status-indicator.success {
+        background: var(--success-color);
+        box-shadow: 0 0 8px var(--success-color);
+      }
+
+      .status-indicator.error {
+        background: var(--error-color);
+        box-shadow: 0 0 8px var(--error-color);
+      }
+
+      .status-indicator.warning {
+        background: var(--warning-color);
+        box-shadow: 0 0 8px var(--warning-color);
+      }
+    </style>
+  </head>
+  <body>
+    <div class="container">
+      <header class="header">
+        <h1 class="main-title">ProxyIP Checker</h1>
+        <p class="subtitle">Advanced ProxyIP Verification & Risk Analysis</p>
+      </header>
+
+      <div class="main-card">
+        <div class="form-section">
+          <div class="grid-2">
+            <div class="input-group">
+              <i class="fas fa-terminal text-purple-400 mr-2"></i>
+              <label for="proxyip" class="input-label">🎯 Single IP / Domain</label>
+              <div class="input-wrapper">
+                <input
+                  type="text"
+                  id="proxyip"
+                  class="form-input"
+                  placeholder="127.0.0.1:443 or nima.nscl.ir"
+                  autocomplete="off" />
+              </div>
+            </div>
+
+            <div class="input-group">
+              <label for="proxyipRange" class="input-label">📊 IP Range</label>
+              <div class="input-wrapper">
+                <input
+                  type="text"
+                  id="proxyipRange"
+                  class="form-input"
+                  placeholder="127.0.0.0/24 OR 127.0.0.1-255"
+                  autocomplete="off" />
+              </div>
             </div>
           </div>
-          
-          <div class="input-group">
-            <label for="proxyipRange" class="input-label">📊 IP Range</label>
-            <div class="input-wrapper">
-              <input type="text" id="proxyipRange" class="form-input" placeholder="127.0.0.0/24 OR 127.0.0.1-255" autocomplete="off">
-            </div>
-          </div>
+
+          <button id="checkBtn" class="btn-primary" onclick="checkInputs()">
+            <span class="flex-center">
+              <span class="btn-text">🕸️ Start Analysis</span>
+              <span class="loading-spinner"></span>
+            </span>
+          </button>
         </div>
 
-        <button id="checkBtn" class="btn-primary" onclick="checkInputs()">
-          <span class="flex-center">
-            <span class="btn-text">🕸️ Start Analysis</span>
-            <span class="loading-spinner"></span>
-          </span>
-        </button>
+        <div id="result" class="results-section"></div>
+        <div id="rangeResult" class="range-results" style="display: none"></div>
       </div>
-      
-      <div id="result" class="results-section"></div>
-      <div id="rangeResult" class="range-results" style="display:none;"></div>
-    </div>
-    
-    <div class="api-docs">
-       <h3 style="margin-bottom:15px; text-align:left;">🔗 API Documentation</h3>
-       <p><code>GET /check?proxyip=PROXY_IP1,PROXY_IP2,PROXY_IP3</code></p>
-       <p><code>GET /check?iprange=TARGET_IP_RANGES</code></p>
-       <p><code>GET /resolve?domain=YOUR_DOMAIN</code></p>
-       <p><code>GET /ip-info?ip=TARGET_IP</code></p>
-       <p><code>GET /scamalytics-lookup?ip=TARGET_IP</code></p>
-       <hr style="border:0; border-top: 1px solid var(--border-color); margin: 20px 0;"/>
-    </div>
-     
-    <footer class="footer">
-       <p>© ${new Date().getFullYear()} <strong>Diana</strong> — proxy ip checker</p>
-    </footer>
-   </div>
 
-   <div id="toast" class="toast"></div>
+      <div class="api-docs">
+        <h3 style="margin-bottom: 15px; text-align: left">🔗 API Documentation</h3>
+        <p><code>GET /check?proxyip=PROXY_IP1,PROXY_IP2,PROXY_IP3</code></p>
+        <p><code>GET /check?iprange=TARGET_IP_RANGES</code></p>
+        <p><code>GET /resolve?domain=YOUR_DOMAIN</code></p>
+        <p><code>GET /ip-info?ip=TARGET_IP</code></p>
+        <p><code>GET /scamalytics-lookup?ip=TARGET_IP</code></p>
+        <hr style="border: 0; border-top: 1px solid var(--border-color); margin: 20px 0" />
+      </div>
+
+      <footer class="footer">
+        <p>© ${new Date().getFullYear()} <strong>Diana</strong> — proxy ip checker</p>
+      </footer>
+    </div>
+
+    <div id="toast" class="toast"></div>
+  </body>
+</html>
+
 
   <script>
     let isChecking = false;
