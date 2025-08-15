@@ -503,7 +503,8 @@ async function nginxWelcomePage() {
 }
 
 async function generateHTMLPage(hostname, websiteIcon, token) {
-  const html = `<!DOCTYPE html>
+  const html = `
+<!DOCTYPE html>
 <html lang="en" dir="ltr">
   <head>
     <meta charset="UTF-8" />
@@ -514,12 +515,14 @@ async function generateHTMLPage(hostname, websiteIcon, token) {
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link
       href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap"
-      rel="stylesheet" />
+      rel="stylesheet"
+    />
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <style>
       @font-face {
         font-family: "Styrene B LC";
-        src: url("https://pub-7a3b428c76aa411181a0f4dd7fa9064b.r2.dev/StyreneBLC-Regular.woff2") format("woff2");
+        src: url("https://pub-7a3b428c76aa411181a0f4dd7fa9064b.r2.dev/StyreneBLC-Regular.woff2")
+          format("woff2");
         font-weight: 400;
         font-style: normal;
         font-display: swap;
@@ -527,7 +530,8 @@ async function generateHTMLPage(hostname, websiteIcon, token) {
 
       @font-face {
         font-family: "Styrene B LC";
-        src: url("https://pub-7a3b428c76aa411181a0f4dd7fa9064b.r2.dev/StyreneBLC-Medium.woff2") format("woff2");
+        src: url("https://pub-7a3b428c76aa411181a0f4dd7fa9064b.r2.dev/StyreneBLC-Medium.woff2")
+          format("woff2");
         font-weight: 500;
         font-style: normal;
         font-display: swap;
@@ -567,7 +571,7 @@ async function generateHTMLPage(hostname, websiteIcon, token) {
         --radius-xl: 20px;
 
         --sans: "Inter", -apple-system, BlinkMacSystemFont, sans-serif;
-        --mono-sans: "Styrene B LC";
+        --mono-sans: "Styrene B LC", monospace;
       }
 
       * {
@@ -595,6 +599,23 @@ async function generateHTMLPage(hostname, websiteIcon, token) {
         text-align: center;
         margin-bottom: 3rem;
         position: relative;
+        display: flex; /* MODIFIED */
+        justify-content: center; /* MODIFIED */
+        align-items: center; /* MODIFIED */
+        gap: 0.75rem; /* MODIFIED */
+      }
+
+      /* NEW: Terminal Icon Style */
+      .header-icon {
+        font-family: var(--mono-sans);
+        font-size: clamp(2rem, 4vw, 2.5rem);
+        font-weight: 700;
+        color: var(--accent-orange-light);
+        background: var(--bg-tertiary);
+        padding: 0.25rem 0.75rem;
+        border-radius: var(--radius-sm);
+        border: 1px solid var(--border-color);
+        line-height: 1;
       }
 
       .header::before {
@@ -605,7 +626,11 @@ async function generateHTMLPage(hostname, websiteIcon, token) {
         transform: translateX(-50%);
         width: 200px;
         height: 200px;
-        background: radial-gradient(circle, var(--accent-orange) 0%, transparent 70%);
+        background: radial-gradient(
+          circle,
+          var(--accent-orange) 0%,
+          transparent 70%
+        );
         opacity: 0.1;
         border-radius: 50%;
         z-index: -1;
@@ -614,11 +639,15 @@ async function generateHTMLPage(hostname, websiteIcon, token) {
       .main-title {
         font-size: clamp(2.5rem, 5vw, 3rem);
         font-weight: 701;
-        background: linear-gradient(135deg, var(--accent-orange) 0%, var(--accent-orange-light) 100%);
+        background: linear-gradient(
+          135deg,
+          var(--accent-orange) 0%,
+          var(--accent-orange-light) 100%
+        );
         -webkit-background-clip: text;
         -webkit-text-fill-color: transparent;
         background-clip: text;
-        margin-bottom: 0.5rem;
+        margin-bottom: 0; /* MODIFIED */
         text-shadow: 0 0 30px rgba(255, 107, 53, 0.3);
       }
 
@@ -627,8 +656,18 @@ async function generateHTMLPage(hostname, websiteIcon, token) {
         font-size: 1rem;
         color: var(--text-secondary);
         font-weight: 400;
-        margin-bottom: 0.5rem;
+        /* margin-bottom: 0.5rem; */ /* MODIFIED: Handled by header gap */
+        text-align: center;
+        width: 100%; /* To make it span full width below title */
       }
+      
+      /* MODIFIED: Wrapper for title and subtitle */
+      .title-group {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+      }
+
 
       .main-card {
         background: linear-gradient(145deg, var(--bg-secondary) 0%, #1f1f1f 100%);
@@ -648,7 +687,12 @@ async function generateHTMLPage(hostname, websiteIcon, token) {
         left: 0;
         right: 0;
         height: 1px;
-        background: linear-gradient(90deg, transparent, var(--accent-orange), transparent);
+        background: linear-gradient(
+          90deg,
+          transparent,
+          var(--accent-orange),
+          transparent
+        );
         opacity: 0.5;
       }
 
@@ -663,11 +707,20 @@ async function generateHTMLPage(hostname, websiteIcon, token) {
       }
 
       .input-label {
-        display: block;
+        display: flex; /* MODIFIED */
+        align-items: center; /* MODIFIED */
+        gap: 0.5rem; /* MODIFIED */
         font-weight: 600;
         color: var(--text-primary);
         margin-bottom: 0.75rem;
         font-size: 1.1rem;
+      }
+
+      /* NEW: Style for SVG icons */
+      .input-label svg {
+        width: 20px;
+        height: 20px;
+        color: var(--accent-orange-light);
       }
 
       .input-wrapper {
@@ -698,7 +751,11 @@ async function generateHTMLPage(hostname, websiteIcon, token) {
       }
 
       .btn-primary {
-        background: linear-gradient(135deg, var(--accent-orange) 0%, var(--accent-orange-dark) 100%);
+        background: linear-gradient(
+          135deg,
+          var(--accent-orange) 0%,
+          var(--accent-orange-dark) 100%
+        );
         color: rgb(255, 255, 255);
         border: none;
         padding: 0.9rem 2rem;
@@ -736,24 +793,17 @@ async function generateHTMLPage(hostname, websiteIcon, token) {
         left: -100%;
         width: 100%;
         height: 100%;
-        background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+        background: linear-gradient(
+          90deg,
+          transparent,
+          rgba(255, 255, 255, 0.2),
+          transparent
+        );
         transition: left 0.5s;
       }
 
       .btn-primary:hover::before {
         left: 100%;
-      }
-
-      .glassmorphism {
-        background: rgba(17, 25, 40, 0.75);
-        backdrop-filter: blur(12px);
-        border-radius: 12px;
-        border: 1px solid rgba(255, 255, 255, 0.125);
-      }
-
-      .shine {
-        position: relative;
-        overflow: hidden;
       }
 
       .loading-spinner {
@@ -806,27 +856,34 @@ async function generateHTMLPage(hostname, websiteIcon, token) {
 
       .result-card.success {
         border-left-color: var(--success-color);
-        background: linear-gradient(145deg, var(--success-bg), var(--bg-secondary));
+        background: linear-gradient(
+          145deg,
+          var(--success-bg),
+          var(--bg-secondary)
+        );
       }
-
       .result-card.success::before {
         background: var(--success-color);
       }
-
       .result-card.error {
         border-left-color: var(--error-color);
-        background: linear-gradient(145deg, var(--error-bg), var(--bg-secondary));
+        background: linear-gradient(
+          145deg,
+          var(--error-bg),
+          var(--bg-secondary)
+        );
       }
-
       .result-card.error::before {
         background: var(--error-color);
       }
-
       .result-card.warning {
         border-left-color: var(--warning-color);
-        background: linear-gradient(145deg, var(--warning-bg), var(--bg-secondary));
+        background: linear-gradient(
+          145deg,
+          var(--warning-bg),
+          var(--bg-secondary)
+        );
       }
-
       .result-card.warning::before {
         background: var(--warning-color);
       }
@@ -836,32 +893,6 @@ async function generateHTMLPage(hostname, websiteIcon, token) {
         align-items: center;
         margin-bottom: 1.5rem;
         gap: 0.75rem;
-      }
-
-      .result-icon {
-        width: 2.5rem;
-        height: 2.5rem;
-        border-radius: 50%;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        font-size: 1.25rem;
-        font-weight: bold;
-      }
-
-      .result-icon.success {
-        background: var(--success-color);
-        color: white;
-      }
-
-      .result-icon.error {
-        background: var(--error-color);
-        color: white;
-      }
-
-      .result-icon.warning {
-        background: var(--warning-color);
-        color: white;
       }
 
       .result-title {
@@ -875,28 +906,33 @@ async function generateHTMLPage(hostname, websiteIcon, token) {
         gap: 1rem;
       }
 
+      /* MODIFIED: Improved result item styling */
       .result-item {
         display: flex;
         justify-content: space-between;
         align-items: center;
-        padding: 0.75rem;
+        padding: 1rem;
         background: rgba(255, 255, 255, 0.02);
-        border-radius: var(--radius-sm);
+        border-radius: var(--radius-md);
         border: 1px solid var(--border-light);
+        transition: background 0.2s;
       }
-
+      .result-item:hover {
+        background: rgba(255, 255, 255, 0.05);
+      }
       .result-label {
-        font-weight: 600;
+        font-weight: 500;
         color: var(--text-secondary);
       }
-
       .result-value {
-        font-weight: 500;
+        font-weight: 600;
         color: var(--text-primary);
         display: flex;
         align-items: center;
         gap: 0.5rem;
       }
+      /* END MODIFICATION */
+
 
       .badge {
         display: inline-flex;
@@ -908,25 +944,21 @@ async function generateHTMLPage(hostname, websiteIcon, token) {
         text-transform: uppercase;
         letter-spacing: 0.025em;
       }
-
       .badge.success {
         background: var(--success-bg);
         color: var(--success-color);
         border: 1px solid var(--success-border);
       }
-
       .badge.error {
         background: var(--error-bg);
         color: var(--error-color);
         border: 1px solid var(--error-border);
       }
-
       .badge.warning {
         background: var(--warning-bg);
         color: var(--warning-color);
         border: 1px solid var(--warning-border);
       }
-
       .badge.info {
         background: var(--info-bg);
         color: var(--info-color);
@@ -943,7 +975,6 @@ async function generateHTMLPage(hostname, websiteIcon, token) {
         cursor: pointer;
         transition: all 0.2s ease;
       }
-
       .copy-btn:hover {
         background: var(--accent-orange);
         color: white;
@@ -965,34 +996,89 @@ async function generateHTMLPage(hostname, websiteIcon, token) {
         transform: translateY(100px);
         transition: all 0.3s ease;
       }
-
       .toast.show {
         opacity: 1;
         transform: translateY(0);
       }
-
+      
+      /* MODIFIED: API Docs section completely restyled */
       .api-docs {
         margin-top: 3rem;
         background: var(--bg-secondary);
         border-radius: var(--radius-lg);
-        padding: 2rem;
+        padding: 2.5rem;
         border: 1px solid var(--border-color);
       }
 
-      .api-docs h3 {
+      .api-docs-header {
+        display: flex;
+        align-items: center;
+        gap: 0.75rem;
+        margin-bottom: 2rem;
+      }
+      
+      .api-docs-header h3 {
+        color: var(--text-primary);
+        font-size: 1.75rem;
+        font-weight: 700;
+      }
+      
+      .api-docs-header svg {
+        width: 28px;
+        height: 28px;
         color: var(--accent-orange);
-        margin-bottom: 1rem;
-        font-size: 1.5rem;
       }
 
-      .api-docs code {
-        background: var(--bg-tertiary);
-        color: var(--accent-orange-light);
-        padding: 0.25rem 0.5rem;
-        border-radius: var(--radius-sm);
-        font-family: "Monaco", "Menlo", monospace;
-        font-size: 0.9rem;
+      .api-endpoints {
+        display: grid;
+        gap: 1rem;
       }
+
+      .api-endpoint {
+        display: flex;
+        align-items: center;
+        gap: 1rem;
+        background-color: var(--bg-tertiary);
+        padding: 1rem 1.5rem;
+        border-radius: var(--radius-md);
+        border: 1px solid var(--border-light);
+        transition: all 0.2s ease;
+      }
+      .api-endpoint:hover {
+        border-color: var(--accent-orange);
+        transform: translateY(-2px);
+      }
+
+      .api-method {
+        font-family: var(--mono-sans);
+        font-weight: 700;
+        padding: 0.25rem 0.75rem;
+        border-radius: var(--radius-sm);
+        font-size: 0.9rem;
+        background-color: var(--success-bg);
+        color: var(--success-color);
+        border: 1px solid var(--success-border);
+      }
+
+      .api-endpoint code {
+        font-family: var(--mono-sans);
+        font-size: 1rem;
+        color: var(--text-secondary);
+        flex-grow: 1;
+      }
+
+      .api-endpoint code span {
+        color: var(--accent-orange-light);
+      }
+
+      .api-description {
+        font-size: 0.9rem;
+        color: var(--text-muted);
+        margin-left: auto;
+        white-space: nowrap;
+      }
+      /* END MODIFICATION */
+
 
       .footer {
         font-family: var(--mono-sans);
@@ -1002,12 +1088,10 @@ async function generateHTMLPage(hostname, websiteIcon, token) {
         color: var(--text-muted);
         border-top: 1px solid var(--border-color);
       }
-
       .footer a {
         color: var(--accent-orange);
         text-decoration: none;
       }
-
       .footer a:hover {
         text-decoration: underline;
       }
@@ -1016,21 +1100,27 @@ async function generateHTMLPage(hostname, websiteIcon, token) {
         .container {
           padding: 1rem;
         }
-
         .main-card {
           padding: 2rem;
         }
-
-        .main-title {
-          font-size: 2.5rem;
+        .header {
+          flex-direction: column; /* Stack icon and title on small screens */
+          gap: 1rem;
         }
-
         .result-item {
           flex-direction: column;
           align-items: flex-start;
           gap: 0.5rem;
         }
-
+        .api-endpoint {
+          flex-direction: column;
+          align-items: flex-start;
+          gap: 0.75rem;
+        }
+        .api-description {
+            margin-left: 0;
+            margin-top: 0.5rem;
+        }
         .toast {
           left: 1rem;
           right: 1rem;
@@ -1041,7 +1131,7 @@ async function generateHTMLPage(hostname, websiteIcon, token) {
       .grid-2 {
         display: grid;
         grid-template-columns: 1fr 1fr;
-        gap: 1rem;
+        gap: 1.5rem; /* Increased gap */
       }
 
       @media (max-width: 640px) {
@@ -1054,43 +1144,28 @@ async function generateHTMLPage(hostname, websiteIcon, token) {
         .main-card {
           padding: 1.5rem;
         }
-
         .main-title {
           font-size: 2.2rem;
         }
-
         .subtitle {
-          font-size: 0.8rem;
-          font-weight: 400;
+          font-size: 0.9rem;
         }
-
         .btn-primary {
           font-size: 1rem;
         }
-
         .api-docs {
-          margin-top: 2rem;
-          outline: none;
-          padding: 1rem;
+          padding: 1.5rem;
         }
-
-        .api-docs h3 {
-          margin-bottom: 1.5rem;
+        .api-docs-header h3 {
           font-size: 1.5rem;
         }
-
-        .api-docs code {
-          font-size: 0.8rem;
+        .api-endpoint code {
+          font-size: 0.9rem;
         }
-
         .input-label {
-          font-weight: 600;
-          margin-bottom: 0rem;
           font-size: 1rem;
         }
-
         .form-input {
-          width: 100%;
           padding: 0.8rem 1rem;
         }
       }
@@ -1099,20 +1174,22 @@ async function generateHTMLPage(hostname, websiteIcon, token) {
         display: flex;
         align-items: center;
         justify-content: center;
-        gap: 0.5rem;
+        gap: 0.75rem; /* Increased gap */
+      }
+      .flex-center svg {
+        width: 22px; /* Set icon size in button */
+        height: 22px;
       }
 
       .range-results {
         margin-top: 2rem;
       }
-
       .chart-container {
         background: var(--bg-tertiary);
         border-radius: var(--radius-md);
         padding: 1.5rem;
         margin-top: 1rem;
       }
-
       .ip-grid {
         display: grid;
         gap: 0.5rem;
@@ -1123,7 +1200,6 @@ async function generateHTMLPage(hostname, websiteIcon, token) {
         border-radius: var(--radius-md);
         border: 1px solid var(--border-color);
       }
-
       .ip-item {
         display: flex;
         justify-content: space-between;
@@ -1134,29 +1210,24 @@ async function generateHTMLPage(hostname, websiteIcon, token) {
         border: 1px solid var(--border-light);
         transition: all 0.2s ease;
       }
-
       .ip-item:hover {
         background: rgba(255, 107, 53, 0.05);
         border-color: var(--accent-orange);
       }
-
       .status-indicator {
         width: 8px;
         height: 8px;
         border-radius: 50%;
         margin-right: 0.5rem;
       }
-
       .status-indicator.success {
         background: var(--success-color);
         box-shadow: 0 0 8px var(--success-color);
       }
-
       .status-indicator.error {
         background: var(--error-color);
         box-shadow: 0 0 8px var(--error-color);
       }
-
       .status-indicator.warning {
         background: var(--warning-color);
         box-shadow: 0 0 8px var(--warning-color);
@@ -1166,42 +1237,59 @@ async function generateHTMLPage(hostname, websiteIcon, token) {
   <body>
     <div class="container">
       <header class="header">
-        <h1 class="main-title">ProxyIP Checker</h1>
-        <p class="subtitle">Advanced ProxyIP Verification & Risk Analysis</p>
+        <span class="header-icon">&gt;_</span>
+        <div class="title-group">
+            <h1 class="main-title">ProxyIP Checker</h1>
+            <p class="subtitle">Advanced ProxyIP Verification & Risk Analysis</p>
+        </div>
       </header>
 
       <div class="main-card">
         <div class="form-section">
           <div class="grid-2">
             <div class="input-group">
-              <i class="fas fa-terminal text-purple-400 mr-2"></i>
-              <label for="proxyip" class="input-label">🎯 Single IP / Domain</label>
+              <label for="proxyip" class="input-label">
+                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
+                  <path stroke-linecap="round" stroke-linejoin="round" d="M15.042 21.672L13.684 16.6m0 0l-2.51 2.225.569-9.47 5.227 7.917-3.286-.672zm-7.518-.267A8.25 8.25 0 1120.25 10.5M8.288 14.212A5.25 5.25 0 1117.25 10.5" />
+                </svg>
+                Single IP / Domain
+              </label>
               <div class="input-wrapper">
                 <input
                   type="text"
                   id="proxyip"
                   class="form-input"
                   placeholder="127.0.0.1:443 or nima.nscl.ir"
-                  autocomplete="off" />
+                  autocomplete="off"
+                />
               </div>
             </div>
 
             <div class="input-group">
-              <label for="proxyipRange" class="input-label">📊 IP Range</label>
+              <label for="proxyipRange" class="input-label">
+                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
+                  <path stroke-linecap="round" stroke-linejoin="round" d="M3.75 3v11.25A2.25 2.25 0 006 16.5h2.25M3.75 3h-1.5m1.5 0h16.5m0 0h1.5m-1.5 0v11.25A2.25 2.25 0 0118 16.5h-2.25m-7.5 0h7.5m-7.5 0l-1 1.5m1-1.5l1 1.5m0 0l.5 1.5m-2-3l2 3m4.5-3l-1.5 2.25m-1.5-2.25l1.5 2.25m3-3l-1.5 2.25m1.5-2.25l1.5 2.25M9 12l-1.5 2.25M15 12l1.5 2.25" />
+                </svg>
+                IP Range
+              </label>
               <div class="input-wrapper">
                 <input
                   type="text"
                   id="proxyipRange"
                   class="form-input"
                   placeholder="127.0.0.0/24 OR 127.0.0.1-255"
-                  autocomplete="off" />
+                  autocomplete="off"
+                />
               </div>
             </div>
           </div>
 
           <button id="checkBtn" class="btn-primary" onclick="checkInputs()">
             <span class="flex-center">
-              <span class="btn-text">🕸️ Start Analysis</span>
+              <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M9.813 15.904L9 18.75l-.813-2.846a4.5 4.5 0 00-3.09-3.09L2.25 12l2.846-.813a4.5 4.5 0 003.09-3.09L9 5.25l.813 2.846a4.5 4.5 0 003.09 3.09L15.75 12l-2.846.813a4.5 4.5 0 00-3.09 3.09zM18.259 8.715L18 9.75l-.259-1.035a3.375 3.375 0 00-2.455-2.456L14.25 6l1.036-.259a3.375 3.375 0 002.455-2.456L18 2.25l.259 1.035a3.375 3.375 0 002.456 2.456L21.75 6l-1.035.259a3.375 3.375 0 00-2.456 2.456zM16.898 20.562L16.25 22.5l-.648-1.938a2.25 2.25 0 01-1.423-1.423L12 18.75l1.938-.648a2.25 2.25 0 011.423-1.423L17.25 15l.648 1.938a2.25 2.25 0 011.423 1.423L21.25 18.75l-1.938.648a2.25 2.25 0 01-1.423 1.423z" />
+              </svg>
+              <span class="btn-text">Start Analysis</span>
               <span class="loading-spinner"></span>
             </span>
           </button>
@@ -1212,24 +1300,52 @@ async function generateHTMLPage(hostname, websiteIcon, token) {
       </div>
 
       <div class="api-docs">
-        <h3 style="margin-bottom: 15px; text-align: left">🔗 API Documentation</h3>
-        <p><code>GET /check?proxyip=PROXY_IP1,PROXY_IP2,PROXY_IP3</code></p>
-        <p><code>GET /check?iprange=TARGET_IP_RANGES</code></p>
-        <p><code>GET /resolve?domain=YOUR_DOMAIN</code></p>
-        <p><code>GET /ip-info?ip=TARGET_IP</code></p>
-        <p><code>GET /scamalytics-lookup?ip=TARGET_IP</code></p>
-        <hr style="border: 0; border-top: 1px solid var(--border-color); margin: 20px 0" />
+        <div class="api-docs-header">
+          <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M13.19 8.688a4.5 4.5 0 011.242 7.244l-4.5 4.5a4.5 4.5 0 01-6.364-6.364l1.757-1.757m13.35-.622l1.757-1.757a4.5 4.5 0 00-6.364-6.364l-4.5 4.5a4.5 4.5 0 001.242 7.244" />
+          </svg>
+          <h3>API Documentation</h3>
+        </div>
+        <div class="api-endpoints">
+          <div class="api-endpoint">
+            <span class="api-method">GET</span>
+            <code>/check?proxyip=<span>IP1,IP2,...</span></code>
+            <span class="api-description">Check multiple IPs</span>
+          </div>
+          <div class="api-endpoint">
+            <span class="api-method">GET</span>
+            <code>/check?iprange=<span>IP_RANGE</span></code>
+            <span class="api-description">Check an IP range</span>
+          </div>
+          <div class="api-endpoint">
+            <span class="api-method">GET</span>
+            <code>/resolve?domain=<span>YOUR_DOMAIN</span></code>
+            <span class="api-description">Resolve domain to IP</span>
+          </div>
+          <div class="api-endpoint">
+            <span class="api-method">GET</span>
+            <code>/ip-info?ip=<span>TARGET_IP</span></code>
+            <span class="api-description">Get IP information</span>
+          </div>
+          <div class="api-endpoint">
+            <span class="api-method">GET</span>
+            <code>/scamalytics-lookup?ip=<span>TARGET_IP</span></code>
+            <span class="api-description">Scamalytics score</span>
+          </div>
+        </div>
       </div>
 
       <footer class="footer">
-        <p>© ${new Date().getFullYear()} <strong>Diana</strong> — proxy ip checker</p>
+        <p>
+          © ${new Date().getFullYear()} <strong>Diana</strong> — proxy ip
+          checker
+        </p>
       </footer>
     </div>
 
     <div id="toast" class="toast"></div>
   </body>
 </html>
-
 
   <script>
     let isChecking = false;
