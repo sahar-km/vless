@@ -6,11 +6,11 @@
 >
 > <br/>
 >
-> **Last updated:** Sat, 16 Aug 2025 01:54:13 GMT
+> **Last updated:** Sun, 17 Aug 2025 02:05:33 GMT
 >
 > <br/>
 >
-> **Next update:** Mon, 18 Aug 2025 01:54:13 GMT
+> **Next update:** Tue, 19 Aug 2025 02:05:33 GMT
 >
 > <br/>
 >
@@ -38,14 +38,13 @@
 
 <br/>
 
-### 🇳🇱 The Netherlands (20 proxies)
+### 🇳🇱 The Netherlands (19 proxies)
 
 | Proxy IP | City | ISP / Organization | Method |
 |----------|------|--------------------|--------|
 | `103.137.249.117` | Amsterdam | AS216154 CLODO CLOUD SERVICE CO. L.L.C | TCP |
 | `109.234.39.40` | Amsterdam | AS216071 SERVERS TECH FZCO | TCP |
 | `178.208.76.84` | Amsterdam | AS216139 Iron Hosting Centre LTD | TCP |
-| `185.223.93.86` | Amsterdam | AS14576 Hosting Solution Ltd. | TCP |
 | `193.3.168.163` | Oude Meer | AS211381 Podaon SIA | TCP |
 | `194.26.232.203` | Oude Meer | AS211381 Podaon SIA | TCP |
 | `194.87.186.123` | Amsterdam | AS215346 Big Data Host LLC | TCP |
@@ -78,7 +77,7 @@
 | `77.105.147.253` | Frankfurt am Main | AS211522 Hypercore Ltd | TCP |
 | `87.251.87.36` | Frankfurt am Main | AS216127 INTERNATIONAL HOSTING COMPANY LIMITED | TCP |
 
-### 🇸🇪 Sweden (4 proxies)
+### 🇸🇪 Sweden (5 proxies)
 
 | Proxy IP | City | ISP / Organization | Method |
 |----------|------|--------------------|--------|
@@ -86,6 +85,7 @@
 | `147.45.76.69` | Stockholm | AS210644 AEZA INTERNATIONAL LTD | TCP |
 | `147.45.77.214` | Stockholm | AS210644 AEZA INTERNATIONAL LTD | TCP |
 | `46.226.161.71` | Stockholm | AS210644 AEZA INTERNATIONAL LTD | TCP |
+| `89.22.226.118` | Stockholm | AS210644 AEZA INTERNATIONAL LTD | TCP |
 
 ### 🇫🇮 Finland (2 proxies)
 
@@ -108,12 +108,6 @@
 | `213.165.88.177` | Eaton Bray | AS8560 IONOS SE | TCP |
 | `95.164.37.32` | Coventry | AS44477 PQ HOSTING PLUS S.R.L. | TCP |
 
-### 🇦🇹 Austria (1 proxies)
-
-| Proxy IP | City | ISP / Organization | Method |
-|----------|------|--------------------|--------|
-| `94.177.8.10` | Wien | AS40994 Hohl IT e.U. | TCP |
-
 ### 🌍 Latvia (1 proxies)
 
 | Proxy IP | City | ISP / Organization | Method |
@@ -132,6 +126,12 @@
 |----------|------|--------------------|--------|
 | `38.180.51.120` | Gdansk | AS200088 Artnet Sp. z o.o. | TCP |
 
+### 🇷🇺 Russia (1 proxies)
+
+| Proxy IP | City | ISP / Organization | Method |
+|----------|------|--------------------|--------|
+| `217.151.229.52` | Novosibirsk | AS210976 Timeweb, LLP | TCP |
+
 ### 🇺🇸 United States (1 proxies)
 
 | Proxy IP | City | ISP / Organization | Method |
@@ -146,7 +146,6 @@
 <summary>Click to expand RAW data</summary>
 
 ```
-94.177.8.10
 185.125.228.214
 185.231.206.22
 185.103.100.101
@@ -162,16 +161,17 @@
 185.135.86.207
 45.133.118.153
 38.180.51.120
+217.151.229.52
 147.45.73.239
 147.45.76.69
 147.45.77.214
 46.226.161.71
+89.22.226.118
 45.85.93.21
 91.245.225.69
 103.137.249.117
 109.234.39.40
 178.208.76.84
-185.223.93.86
 193.3.168.163
 194.26.232.203
 194.87.186.123
@@ -204,15 +204,6 @@
 
 ```json
 [
-  {
-    "ip": "94.177.8.10",
-    "port": "443",
-    "method": "TCP",
-    "country": "Austria",
-    "city": "Wien",
-    "as": "AS40994 Hohl IT e.U.",
-    "proxy": "unknown"
-  },
   {
     "ip": "185.125.228.214",
     "port": "443",
@@ -349,6 +340,15 @@
     "proxy": "unknown"
   },
   {
+    "ip": "217.151.229.52",
+    "port": "443",
+    "method": "TCP",
+    "country": "Russia",
+    "city": "Novosibirsk",
+    "as": "AS210976 Timeweb, LLP",
+    "proxy": "unknown"
+  },
+  {
     "ip": "147.45.73.239",
     "port": "443",
     "method": "TCP",
@@ -377,6 +377,15 @@
   },
   {
     "ip": "46.226.161.71",
+    "port": "443",
+    "method": "TCP",
+    "country": "Sweden",
+    "city": "Stockholm",
+    "as": "AS210644 AEZA INTERNATIONAL LTD",
+    "proxy": true
+  },
+  {
+    "ip": "89.22.226.118",
     "port": "443",
     "method": "TCP",
     "country": "Sweden",
@@ -428,15 +437,6 @@
     "city": "Amsterdam",
     "as": "AS216139 Iron Hosting Centre LTD",
     "proxy": "unknown"
-  },
-  {
-    "ip": "185.223.93.86",
-    "port": "443",
-    "method": "TCP",
-    "country": "The Netherlands",
-    "city": "Amsterdam",
-    "as": "AS14576 Hosting Solution Ltd.",
-    "proxy": true
   },
   {
     "ip": "193.3.168.163",
