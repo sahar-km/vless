@@ -6,11 +6,11 @@
 >
 > <br/>
 >
-> **Last updated:** Wed, 20 Aug 2025 01:51:37 GMT
+> **Last updated:** Thu, 21 Aug 2025 01:50:33 GMT
 >
 > <br/>
 >
-> **Next update:** Fri, 22 Aug 2025 01:51:37 GMT
+> **Next update:** Sat, 23 Aug 2025 01:50:33 GMT
 >
 > <br/>
 >
@@ -19,10 +19,10 @@
 
 ## 📊 Summary
 
-**🔹 Total working proxies:** 61  
+**🔹 Total working proxies:** 60  
 **🔹 Countries covered:** 14  
 **🔹 Different ports:** 1  
-**🔹 Success methods:** TCP (61)
+**🔹 Success methods:** TCP (60)
 
 <br/>
 
@@ -30,7 +30,7 @@
 
 | Port | Count | Percentage |
 |------|-------|------------|
-| 443  | 61     | 100.0%     |
+| 443  | 60     | 100.0%     |
 
 <br/>
 
@@ -38,12 +38,11 @@
 
 <br/>
 
-### 🇳🇱 The Netherlands (26 proxies)
+### 🇳🇱 The Netherlands (25 proxies)
 
 | Proxy IP | City | ISP / Organization | Method |
 |----------|------|--------------------|--------|
 | `103.102.228.113` | Assen | AS50053 Individual Entrepreneur Anton Levin | TCP |
-| `103.106.1.2` | Meppel | AS44477 PQ HOSTING PLUS S.R.L. | TCP |
 | `109.237.98.214` | Amsterdam | AS210644 AEZA INTERNATIONAL LTD | TCP |
 | `147.45.167.197` | Amsterdam | AS210976 Timeweb, LLP | TCP |
 | `147.45.43.232` | Amsterdam | AS210644 AEZA INTERNATIONAL LTD | TCP |
@@ -210,7 +209,6 @@
 179.43.176.163
 45.85.93.121
 103.102.228.113
-103.106.1.2
 109.237.98.214
 147.45.167.197
 147.45.43.232
@@ -546,15 +544,6 @@
     "country": "The Netherlands",
     "city": "Assen",
     "as": "AS50053 Individual Entrepreneur Anton Levin",
-    "proxy": "unknown"
-  },
-  {
-    "ip": "103.106.1.2",
-    "port": "443",
-    "method": "TCP",
-    "country": "The Netherlands",
-    "city": "Meppel",
-    "as": "AS44477 PQ HOSTING PLUS S.R.L.",
     "proxy": "unknown"
   },
   {
