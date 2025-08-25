@@ -6,11 +6,11 @@
 >
 > <br/>
 >
-> **Last updated:** Sun, 24 Aug 2025 02:01:03 GMT
+> **Last updated:** Mon, 25 Aug 2025 01:55:37 GMT
 >
 > <br/>
 >
-> **Next update:** Tue, 26 Aug 2025 02:01:03 GMT
+> **Next update:** Wed, 27 Aug 2025 01:55:37 GMT
 >
 > <br/>
 >
@@ -19,10 +19,10 @@
 
 ## 📊 Summary
 
-**🔹 Total working proxies:** 60  
-**🔹 Countries covered:** 16  
+**🔹 Total working proxies:** 45  
+**🔹 Countries covered:** 14  
 **🔹 Different ports:** 1  
-**🔹 Success methods:** TCP (58), HTTP_CONNECT (2)
+**🔹 Success methods:** TCP (43), HTTP_CONNECT (2)
 
 <br/>
 
@@ -30,7 +30,7 @@
 
 | Port | Count | Percentage |
 |------|-------|------------|
-| 443  | 60     | 100.0%     |
+| 443  | 45     | 100.0%     |
 
 <br/>
 
@@ -38,31 +38,11 @@
 
 <br/>
 
-### 🇸🇪 Sweden (13 proxies)
-
-| Proxy IP | City | ISP / Organization | Method |
-|----------|------|--------------------|--------|
-| `147.45.72.18` | Stockholm | AS210644 AEZA INTERNATIONAL LTD | TCP |
-| `193.188.21.181` | Stockholm | AS210644 AEZA INTERNATIONAL LTD | TCP |
-| `212.113.100.65` | Stockholm | AS210644 AEZA INTERNATIONAL LTD | TCP |
-| `46.226.160.150` | Stockholm | AS210644 AEZA INTERNATIONAL LTD | TCP |
-| `46.226.164.47` | Stockholm | AS210644 AEZA INTERNATIONAL LTD | TCP |
-| `46.226.165.169` | Stockholm | AS210644 AEZA INTERNATIONAL LTD | TCP |
-| `77.221.140.128` | Stockholm | AS210644 AEZA INTERNATIONAL LTD | TCP |
-| `77.221.140.20` | Stockholm | AS210644 AEZA INTERNATIONAL LTD | TCP |
-| `89.22.224.125` | Stockholm | AS210644 AEZA INTERNATIONAL LTD | TCP |
-| `89.22.227.239` | Stockholm | AS210644 AEZA INTERNATIONAL LTD | TCP |
-| `89.22.232.119` | Stockholm | AS210644 AEZA INTERNATIONAL LTD | TCP |
-| `89.22.232.43` | Stockholm | AS210644 AEZA INTERNATIONAL LTD | TCP |
-| `92.246.137.72` | Stockholm | AS210644 AEZA INTERNATIONAL LTD | TCP |
-
-### 🇫🇮 Finland (11 proxies)
+### 🇫🇮 Finland (8 proxies)
 
 | Proxy IP | City | ISP / Organization | Method |
 |----------|------|--------------------|--------|
 | `135.181.195.12` | Helsinki | AS24940 Hetzner Online GmbH | TCP |
-| `176.124.220.179` | Helsinki | AS210644 AEZA INTERNATIONAL LTD | TCP |
-| `178.236.244.16` | Helsinki | AS210644 AEZA INTERNATIONAL LTD | TCP |
 | `185.102.136.128` | Helsinki | AS200740 FIRST SERVER LIMITED | TCP |
 | `35.228.168.221` | Lappeenranta | AS396982 Google LLC | TCP |
 | `45.138.73.182` | Helsinki | AS200740 FIRST SERVER LIMITED | TCP |
@@ -70,40 +50,40 @@
 | `91.108.241.188` | Helsinki | AS210644 AEZA INTERNATIONAL LTD | TCP |
 | `91.217.76.64` | Helsinki | AS200740 FIRST SERVER LIMITED | TCP |
 | `92.246.142.132` | Helsinki | AS215590 DpkgSoft International Limited | TCP |
-| `95.216.140.177` | Helsinki | AS24940 Hetzner Online GmbH | TCP |
 
-### 🇺🇸 United States (9 proxies)
+### 🇸🇪 Sweden (8 proxies)
+
+| Proxy IP | City | ISP / Organization | Method |
+|----------|------|--------------------|--------|
+| `193.188.21.181` | Stockholm | AS210644 AEZA INTERNATIONAL LTD | TCP |
+| `46.226.160.150` | Stockholm | AS210644 AEZA INTERNATIONAL LTD | TCP |
+| `77.221.140.128` | Stockholm | AS210644 AEZA INTERNATIONAL LTD | TCP |
+| `77.221.140.20` | Stockholm | AS210644 AEZA INTERNATIONAL LTD | TCP |
+| `89.22.224.125` | Stockholm | AS210644 AEZA INTERNATIONAL LTD | TCP |
+| `89.22.232.119` | Stockholm | AS210644 AEZA INTERNATIONAL LTD | TCP |
+| `89.22.232.43` | Stockholm | AS210644 AEZA INTERNATIONAL LTD | TCP |
+| `92.246.137.72` | Stockholm | AS210644 AEZA INTERNATIONAL LTD | TCP |
+
+### 🇺🇸 United States (7 proxies)
 
 | Proxy IP | City | ISP / Organization | Method |
 |----------|------|--------------------|--------|
 | `142.171.233.183` | Los Angeles | AS35916 MULTACOM CORPORATION | TCP |
 | `149.248.7.208` | Los Angeles | AS20473 The Constant Company, LLC | TCP |
-| `154.29.155.249` | Los Angeles | AS174 Cogent Communications | TCP |
 | `67.226.221.102` | San Francisco | AS16509 Amazon.com, Inc. | HTTP_CONNECT |
 | `67.226.221.104` | San Francisco | AS16509 Amazon.com, Inc. | HTTP_CONNECT |
-| `72.13.122.137` | Ashburn | AS53334 Total Uptime Technologies, LLC | TCP |
 | `91.149.239.122` | Los Angeles | AS26383 Baxet Group Inc. | TCP |
 | `91.149.239.198` | Los Angeles | AS26383 Baxet Group Inc. | TCP |
 | `91.149.239.62` | Los Angeles | AS26383 Baxet Group Inc. | TCP |
 
-### 🇵🇱 Poland (5 proxies)
+### 🇵🇱 Poland (4 proxies)
 
 | Proxy IP | City | ISP / Organization | Method |
 |----------|------|--------------------|--------|
 | `176.105.253.66` | Warsaw | AS210779 BREEZLE LLC | TCP |
 | `37.252.10.91` | Gdansk | AS200088 Artnet Sp. z o.o. | TCP |
 | `91.239.148.100` | Gdansk | AS199058 SERVA ONE LTD | TCP |
-| `91.239.148.133` | Gdansk | AS199058 SERVA ONE LTD | TCP |
 | `91.239.148.53` | Gdansk | AS199058 SERVA ONE LTD | TCP |
-
-### 🌍 Latvia (4 proxies)
-
-| Proxy IP | City | ISP / Organization | Method |
-|----------|------|--------------------|--------|
-| `185.8.60.108` | Riga | AS58269 CloudHosting SIA | TCP |
-| `31.128.33.253` | Riga | AS9002 RETN Limited | TCP |
-| `77.73.71.196` | Riga | AS42532 SIA VEESP | TCP |
-| `91.197.3.252` | Riga | AS42532 SIA VEESP | TCP |
 
 ### 🇷🇺 Russia (4 proxies)
 
@@ -114,14 +94,21 @@
 | `87.228.3.217` | St Petersburg | AS49505 JSC Selectel | TCP |
 | `95.142.45.147` | Moscow | AS48282 Hosting technology LTD | TCP |
 
-### 🇹🇷 Türkiye (4 proxies)
+### 🌍 Latvia (3 proxies)
+
+| Proxy IP | City | ISP / Organization | Method |
+|----------|------|--------------------|--------|
+| `185.8.60.108` | Riga | AS58269 CloudHosting SIA | TCP |
+| `77.73.71.196` | Riga | AS42532 SIA VEESP | TCP |
+| `91.197.3.252` | Riga | AS42532 SIA VEESP | TCP |
+
+### 🇹🇷 Türkiye (3 proxies)
 
 | Proxy IP | City | ISP / Organization | Method |
 |----------|------|--------------------|--------|
 | `185.234.66.91` | Izmir | AS44477 PQ HOSTING PLUS S.R.L. | TCP |
 | `185.8.129.187` | Izmir | AS3188 Alastyr Telekomunikasyon A.S. | TCP |
 | `38.180.105.201` | Istanbul | AS58061 Scalaxy B.V. | TCP |
-| `94.131.123.44` | Istanbul | AS44477 PQ HOSTING PLUS S.R.L. | TCP |
 
 ### 🇨🇭 Switzerland (2 proxies)
 
@@ -160,23 +147,11 @@
 |----------|------|--------------------|--------|
 | `46.183.186.57` | Budapest | AS5483 Magyar Telekom Plc. | TCP |
 
-### 🌍 Moldova (1 proxies)
-
-| Proxy IP | City | ISP / Organization | Method |
-|----------|------|--------------------|--------|
-| `45.86.86.53` | Chisinau | AS200019 ALEXHOST SRL | TCP |
-
 ### 🇪🇸 Spain (1 proxies)
 
 | Proxy IP | City | ISP / Organization | Method |
 |----------|------|--------------------|--------|
 | `45.86.229.28` | Madrid | AS62005 BlueVPS OU | TCP |
-
-### 🇬🇧 United Kingdom (1 proxies)
-
-| Proxy IP | City | ISP / Organization | Method |
-|----------|------|--------------------|--------|
-| `147.75.236.96` | London | AS11179 Aryaka Networks, Inc. | TCP |
 
 <br/>
 
@@ -190,8 +165,6 @@
 45.136.70.204
 38.180.10.162
 135.181.195.12
-176.124.220.179
-178.236.244.16
 185.102.136.128
 35.228.168.221
 45.138.73.182
@@ -199,34 +172,25 @@
 91.108.241.188
 91.217.76.64
 92.246.142.132
-95.216.140.177
 217.110.20.141
 46.183.186.57
 185.8.60.108
-31.128.33.253
 77.73.71.196
 91.197.3.252
-45.86.86.53
 176.105.253.66
 37.252.10.91
 91.239.148.100
-91.239.148.133
 91.239.148.53
 147.45.245.15
 185.103.109.139
 87.228.3.217
 95.142.45.147
 45.86.229.28
-147.45.72.18
 193.188.21.181
-212.113.100.65
 46.226.160.150
-46.226.164.47
-46.226.165.169
 77.221.140.128
 77.221.140.20
 89.22.224.125
-89.22.227.239
 89.22.232.119
 89.22.232.43
 92.246.137.72
@@ -235,14 +199,10 @@
 185.234.66.91
 185.8.129.187
 38.180.105.201
-94.131.123.44
-147.75.236.96
 142.171.233.183
 149.248.7.208
-154.29.155.249
 67.226.221.102
 67.226.221.104
-72.13.122.137
 91.149.239.122
 91.149.239.198
 91.149.239.62
@@ -294,24 +254,6 @@
     "city": "Helsinki",
     "as": "AS24940 Hetzner Online GmbH",
     "proxy": "unknown"
-  },
-  {
-    "ip": "176.124.220.179",
-    "port": "443",
-    "method": "TCP",
-    "country": "Finland",
-    "city": "Helsinki",
-    "as": "AS210644 AEZA INTERNATIONAL LTD",
-    "proxy": true
-  },
-  {
-    "ip": "178.236.244.16",
-    "port": "443",
-    "method": "TCP",
-    "country": "Finland",
-    "city": "Helsinki",
-    "as": "AS210644 AEZA INTERNATIONAL LTD",
-    "proxy": true
   },
   {
     "ip": "185.102.136.128",
@@ -377,15 +319,6 @@
     "proxy": "unknown"
   },
   {
-    "ip": "95.216.140.177",
-    "port": "443",
-    "method": "TCP",
-    "country": "Finland",
-    "city": "Helsinki",
-    "as": "AS24940 Hetzner Online GmbH",
-    "proxy": "unknown"
-  },
-  {
     "ip": "217.110.20.141",
     "port": "443",
     "method": "TCP",
@@ -413,15 +346,6 @@
     "proxy": "unknown"
   },
   {
-    "ip": "31.128.33.253",
-    "port": "443",
-    "method": "TCP",
-    "country": "Latvia",
-    "city": "Riga",
-    "as": "AS9002 RETN Limited",
-    "proxy": "unknown"
-  },
-  {
     "ip": "77.73.71.196",
     "port": "443",
     "method": "TCP",
@@ -437,15 +361,6 @@
     "country": "Latvia",
     "city": "Riga",
     "as": "AS42532 SIA VEESP",
-    "proxy": "unknown"
-  },
-  {
-    "ip": "45.86.86.53",
-    "port": "443",
-    "method": "TCP",
-    "country": "Moldova",
-    "city": "Chisinau",
-    "as": "AS200019 ALEXHOST SRL",
     "proxy": "unknown"
   },
   {
@@ -474,15 +389,6 @@
     "city": "Gdansk",
     "as": "AS199058 SERVA ONE LTD",
     "proxy": "unknown"
-  },
-  {
-    "ip": "91.239.148.133",
-    "port": "443",
-    "method": "TCP",
-    "country": "Poland",
-    "city": "Gdansk",
-    "as": "AS199058 SERVA ONE LTD",
-    "proxy": true
   },
   {
     "ip": "91.239.148.53",
@@ -539,15 +445,6 @@
     "proxy": true
   },
   {
-    "ip": "147.45.72.18",
-    "port": "443",
-    "method": "TCP",
-    "country": "Sweden",
-    "city": "Stockholm",
-    "as": "AS210644 AEZA INTERNATIONAL LTD",
-    "proxy": true
-  },
-  {
     "ip": "193.188.21.181",
     "port": "443",
     "method": "TCP",
@@ -557,34 +454,7 @@
     "proxy": true
   },
   {
-    "ip": "212.113.100.65",
-    "port": "443",
-    "method": "TCP",
-    "country": "Sweden",
-    "city": "Stockholm",
-    "as": "AS210644 AEZA INTERNATIONAL LTD",
-    "proxy": true
-  },
-  {
     "ip": "46.226.160.150",
-    "port": "443",
-    "method": "TCP",
-    "country": "Sweden",
-    "city": "Stockholm",
-    "as": "AS210644 AEZA INTERNATIONAL LTD",
-    "proxy": true
-  },
-  {
-    "ip": "46.226.164.47",
-    "port": "443",
-    "method": "TCP",
-    "country": "Sweden",
-    "city": "Stockholm",
-    "as": "AS210644 AEZA INTERNATIONAL LTD",
-    "proxy": true
-  },
-  {
-    "ip": "46.226.165.169",
     "port": "443",
     "method": "TCP",
     "country": "Sweden",
@@ -612,15 +482,6 @@
   },
   {
     "ip": "89.22.224.125",
-    "port": "443",
-    "method": "TCP",
-    "country": "Sweden",
-    "city": "Stockholm",
-    "as": "AS210644 AEZA INTERNATIONAL LTD",
-    "proxy": true
-  },
-  {
-    "ip": "89.22.227.239",
     "port": "443",
     "method": "TCP",
     "country": "Sweden",
@@ -701,24 +562,6 @@
     "proxy": "unknown"
   },
   {
-    "ip": "94.131.123.44",
-    "port": "443",
-    "method": "TCP",
-    "country": "Türkiye",
-    "city": "Istanbul",
-    "as": "AS44477 PQ HOSTING PLUS S.R.L.",
-    "proxy": "unknown"
-  },
-  {
-    "ip": "147.75.236.96",
-    "port": "443",
-    "method": "TCP",
-    "country": "United Kingdom",
-    "city": "London",
-    "as": "AS11179 Aryaka Networks, Inc.",
-    "proxy": "unknown"
-  },
-  {
     "ip": "142.171.233.183",
     "port": "443",
     "method": "TCP",
@@ -737,15 +580,6 @@
     "proxy": "unknown"
   },
   {
-    "ip": "154.29.155.249",
-    "port": "443",
-    "method": "TCP",
-    "country": "United States",
-    "city": "Los Angeles",
-    "as": "AS174 Cogent Communications",
-    "proxy": "unknown"
-  },
-  {
     "ip": "67.226.221.102",
     "port": "443",
     "method": "HTTP_CONNECT",
@@ -761,15 +595,6 @@
     "country": "United States",
     "city": "San Francisco",
     "as": "AS16509 Amazon.com, Inc.",
-    "proxy": "unknown"
-  },
-  {
-    "ip": "72.13.122.137",
-    "port": "443",
-    "method": "TCP",
-    "country": "United States",
-    "city": "Ashburn",
-    "as": "AS53334 Total Uptime Technologies, LLC",
     "proxy": "unknown"
   },
   {
