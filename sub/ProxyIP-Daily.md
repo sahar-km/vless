@@ -17,8 +17,7 @@
 >
 > **Summary**
 >
-> **Total Active Proxies:** 646 <br/> > **Countries Covered:** 37 <br/>
-> **Average Ping:** 95 ms
+> **Total Active Proxies:** 646 <br/> > **Countries Covered:** 37 <br/> > **Average Ping:** 95 ms
 >
 > <br/>
 
