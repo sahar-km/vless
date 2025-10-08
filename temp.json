@@ -1,0 +1,475 @@
+{
+    "log": {
+        "level": "warn",
+        "timestamp": true
+    },
+    "dns": {
+        "servers": [
+            {
+                "type": "udp",
+                "server": "1.1.1.1",
+                "detour": "✅ Selector",
+                "tag": "dns-remote"
+            },
+            {
+                "type": "udp",
+                "server": "8.8.8.8",
+                "server_port": 53,
+                "tag": "dns-direct"
+            }
+        ],
+        "rules": [
+            {
+                "domain": [
+                    "raw.githubusercontent.com"
+                ],
+                "server": "dns-direct"
+            },
+            {
+                "clash_mode": "Direct",
+                "server": "dns-direct"
+            },
+            {
+                "clash_mode": "Global",
+                "server": "dns-remote"
+            },
+            {
+                "type": "logical",
+                "mode": "and",
+                "rules": [
+                    {
+                        "rule_set": "geosite-ir"
+                    },
+                    {
+                        "rule_set": "geoip-ir"
+                    }
+                ],
+                "action": "route",
+                "server": "dns-direct"
+            },
+            {
+                "rule_set": [
+                    "geosite-malware",
+                    "geosite-phishing",
+                    "geosite-cryptominers",
+                    "geosite-category-ads-all"
+                ],
+                "action": "reject"
+            }
+        ],
+        "strategy": "ipv4_only",
+        "independent_cache": true
+    },
+    "inbounds": [
+        {
+            "type": "tun",
+            "tag": "tun-in",
+            "address": [
+                "172.18.0.1/30",
+                "fdfe:dcba:9876::1/126"
+            ],
+            "mtu": 9000,
+            "auto_route": true,
+            "strict_route": true,
+            "endpoint_independent_nat": true,
+            "stack": "mixed"
+        },
+        {
+            "type": "mixed",
+            "tag": "mixed-in",
+            "listen": "0.0.0.0",
+            "listen_port": 2080
+        }
+    ],
+    "outbounds": [
+        {
+            "type": "selector",
+            "tag": "✅ Selector",
+            "outbounds": [
+                "💦 Warp - Best Ping 🚀",
+                "💦 WoW - Best Ping 🚀",
+                "💦 1 - Warp 🇮🇷",
+                "💦 2 - Warp 🇮🇷",
+                "💦 3 - Warp 🇮🇷",
+                "💦 1 - WoW 🌍",
+                "💦 2 - WoW 🌍",
+                "💦 3 - WoW 🌍"
+            ],
+            "interrupt_exist_connections": false
+        },
+        {
+            "type": "direct",
+            "tag": "direct"
+        },
+        {
+            "type": "urltest",
+            "tag": "💦 Warp - Best Ping 🚀",
+            "outbounds": [
+                "💦 1 - Warp 🇮🇷",
+                "💦 2 - Warp 🇮🇷",
+                "💦 3 - Warp 🇮🇷"
+            ],
+            "url": "https://www.gstatic.com/generate_204",
+            "interrupt_exist_connections": false,
+            "interval": "30s"
+        },
+        {
+            "type": "urltest",
+            "tag": "💦 WoW - Best Ping 🚀",
+            "outbounds": [
+                "💦 1 - WoW 🌍",
+                "💦 2 - WoW 🌍",
+                "💦 3 - WoW 🌍"
+            ],
+            "url": "https://www.gstatic.com/generate_204",
+            "interrupt_exist_connections": false,
+            "interval": "30s"
+        }
+    ],
+    "route": {
+        "rules": [
+            {
+                "ip_cidr": "172.18.0.2",
+                "action": "hijack-dns"
+            },
+            {
+                "clash_mode": "Direct",
+                "outbound": "direct"
+            },
+            {
+                "clash_mode": "Global",
+                "outbound": "✅ Selector"
+            },
+            {
+                "action": "sniff"
+            },
+            {
+                "protocol": "dns",
+                "action": "hijack-dns"
+            },
+            {
+                "ip_is_private": true,
+                "outbound": "direct"
+            },
+            {
+                "network": "udp",
+                "protocol": "quic",
+                "port": 443,
+                "action": "reject"
+            },
+            {
+                "rule_set": [
+                    "geosite-malware",
+                    "geosite-phishing",
+                    "geosite-cryptominers",
+                    "geosite-category-ads-all"
+                ],
+                "action": "reject"
+            },
+            {
+                "rule_set": [
+                    "geoip-malware",
+                    "geoip-phishing"
+                ],
+                "action": "reject"
+            },
+            {
+                "rule_set": [
+                    "geosite-ir"
+                ],
+                "action": "route",
+                "outbound": "direct"
+            },
+            {
+                "rule_set": [
+                    "geoip-ir"
+                ],
+                "action": "route",
+                "outbound": "direct"
+            }
+        ],
+        "rule_set": [
+            {
+                "type": "remote",
+                "tag": "geosite-malware",
+                "format": "binary",
+                "url": "https://raw.githubusercontent.com/Chocolate4U/Iran-sing-box-rules/rule-set/geosite-malware.srs",
+                "download_detour": "direct"
+            },
+            {
+                "type": "remote",
+                "tag": "geoip-malware",
+                "format": "binary",
+                "url": "https://raw.githubusercontent.com/Chocolate4U/Iran-sing-box-rules/rule-set/geoip-malware.srs",
+                "download_detour": "direct"
+            },
+            {
+                "type": "remote",
+                "tag": "geosite-phishing",
+                "format": "binary",
+                "url": "https://raw.githubusercontent.com/Chocolate4U/Iran-sing-box-rules/rule-set/geosite-phishing.srs",
+                "download_detour": "direct"
+            },
+            {
+                "type": "remote",
+                "tag": "geoip-phishing",
+                "format": "binary",
+                "url": "https://raw.githubusercontent.com/Chocolate4U/Iran-sing-box-rules/rule-set/geoip-phishing.srs",
+                "download_detour": "direct"
+            },
+            {
+                "type": "remote",
+                "tag": "geosite-cryptominers",
+                "format": "binary",
+                "url": "https://raw.githubusercontent.com/Chocolate4U/Iran-sing-box-rules/rule-set/geosite-cryptominers.srs",
+                "download_detour": "direct"
+            },
+            {
+                "type": "remote",
+                "tag": "geosite-category-ads-all",
+                "format": "binary",
+                "url": "https://raw.githubusercontent.com/Chocolate4U/Iran-sing-box-rules/rule-set/geosite-category-ads-all.srs",
+                "download_detour": "direct"
+            },
+            {
+                "type": "remote",
+                "tag": "geosite-ir",
+                "format": "binary",
+                "url": "https://raw.githubusercontent.com/Chocolate4U/Iran-sing-box-rules/rule-set/geosite-ir.srs",
+                "download_detour": "direct"
+            },
+            {
+                "type": "remote",
+                "tag": "geoip-ir",
+                "format": "binary",
+                "url": "https://raw.githubusercontent.com/Chocolate4U/Iran-sing-box-rules/rule-set/geoip-ir.srs",
+                "download_detour": "direct"
+            }
+        ],
+        "auto_detect_interface": true,
+        "default_domain_resolver": {
+            "server": "dns-direct",
+            "strategy": "prefer_ipv4",
+            "rewrite_ttl": 60
+        },
+        "final": "✅ Selector"
+    },
+    "ntp": {
+        "enabled": true,
+        "server": "time.cloudflare.com",
+        "server_port": 123,
+        "domain_resolver": "dns-direct",
+        "interval": "30m",
+        "write_to_system": false
+    },
+    "experimental": {
+        "cache_file": {
+            "enabled": true,
+            "store_fakeip": true
+        },
+        "clash_api": {
+            "external_controller": "127.0.0.1:9090",
+            "external_ui": "ui",
+            "external_ui_download_url": "https://github.com/MetaCubeX/metacubexd/archive/refs/heads/gh-pages.zip",
+            "external_ui_download_detour": "direct",
+            "default_mode": "Rule"
+        }
+    },
+    "endpoints": [
+        {
+            "tag": "💦 1 - WoW 🌍",
+            "type": "wireguard",
+            "address": [
+                "172.16.0.2/32",
+                "2606:4700:110:8851:c589:74cb:64c3:ab7d/128"
+            ],
+            "mtu": 1280,
+            "peers": [
+                {
+                    "address": "162.159.192.1",
+                    "port": 2408,
+                    "public_key": "bmXOC+F1FxEMF9dyiK2H5/1SUtzH0JuVo51h2wPfgyo=",
+                    "reserved": [
+                        210,
+                        214,
+                        174
+                    ],
+                    "allowed_ips": [
+                        "0.0.0.0/0",
+                        "::/0"
+                    ],
+                    "persistent_keepalive_interval": 5
+                }
+            ],
+            "private_key": "D+xA0JcsyrV1rZ6wYrxgLH3Co0ppJwaHydvr2dveb6U=",
+            "domain_resolver": {
+                "server": "dns-remote",
+                "strategy": "prefer_ipv4",
+                "rewrite_ttl": 60
+            },
+            "detour": "💦 1 - Warp 🇮🇷"
+        },
+        {
+            "tag": "💦 2 - WoW 🌍",
+            "type": "wireguard",
+            "address": [
+                "172.16.0.2/32",
+                "2606:4700:110:8851:c589:74cb:64c3:ab7d/128"
+            ],
+            "mtu": 1280,
+            "peers": [
+                {
+                    "address": "162.159.192.1",
+                    "port": 2408,
+                    "public_key": "bmXOC+F1FxEMF9dyiK2H5/1SUtzH0JuVo51h2wPfgyo=",
+                    "reserved": [
+                        210,
+                        214,
+                        174
+                    ],
+                    "allowed_ips": [
+                        "0.0.0.0/0",
+                        "::/0"
+                    ],
+                    "persistent_keepalive_interval": 5
+                }
+            ],
+            "private_key": "D+xA0JcsyrV1rZ6wYrxgLH3Co0ppJwaHydvr2dveb6U=",
+            "domain_resolver": {
+                "server": "dns-remote",
+                "strategy": "prefer_ipv4",
+                "rewrite_ttl": 60
+            },
+            "detour": "💦 2 - Warp 🇮🇷"
+        },
+        {
+            "tag": "💦 3 - WoW 🌍",
+            "type": "wireguard",
+            "address": [
+                "172.16.0.2/32",
+                "2606:4700:110:8851:c589:74cb:64c3:ab7d/128"
+            ],
+            "mtu": 1280,
+            "peers": [
+                {
+                    "address": "162.159.192.1",
+                    "port": 2408,
+                    "public_key": "bmXOC+F1FxEMF9dyiK2H5/1SUtzH0JuVo51h2wPfgyo=",
+                    "reserved": [
+                        210,
+                        214,
+                        174
+                    ],
+                    "allowed_ips": [
+                        "0.0.0.0/0",
+                        "::/0"
+                    ],
+                    "persistent_keepalive_interval": 5
+                }
+            ],
+            "private_key": "D+xA0JcsyrV1rZ6wYrxgLH3Co0ppJwaHydvr2dveb6U=",
+            "domain_resolver": {
+                "server": "dns-remote",
+                "strategy": "prefer_ipv4",
+                "rewrite_ttl": 60
+            },
+            "detour": "💦 3 - Warp 🇮🇷"
+        },
+        {
+            "tag": "💦 1 - Warp 🇮🇷",
+            "type": "wireguard",
+            "address": [
+                "172.16.0.2/32",
+                "2606:4700:110:8f66:91cc:f16d:2f12:4b4c/128"
+            ],
+            "mtu": 1280,
+            "peers": [
+                {
+                    "address": "162.159.195.3",
+                    "port": 955,
+                    "public_key": "bmXOC+F1FxEMF9dyiK2H5/1SUtzH0JuVo51h2wPfgyo=",
+                    "reserved": [
+                        27,
+                        123,
+                        33
+                    ],
+                    "allowed_ips": [
+                        "0.0.0.0/0",
+                        "::/0"
+                    ],
+                    "persistent_keepalive_interval": 5
+                }
+            ],
+            "private_key": "z/tgni0t57/xn6d9eL2nHJAB1P0dAQSOqtAwDV9GqLM=",
+            "domain_resolver": {
+                "server": "dns-direct",
+                "strategy": "prefer_ipv4",
+                "rewrite_ttl": 60
+            }
+        },
+        {
+            "tag": "💦 2 - Warp 🇮🇷",
+            "type": "wireguard",
+            "address": [
+                "172.16.0.2/32",
+                "2606:4700:110:8f66:91cc:f16d:2f12:4b4c/128"
+            ],
+            "mtu": 1280,
+            "peers": [
+                {
+                    "address": "2606:4700:d0::a29f:c001",
+                    "port": 879,
+                    "public_key": "bmXOC+F1FxEMF9dyiK2H5/1SUtzH0JuVo51h2wPfgyo=",
+                    "reserved": [
+                        27,
+                        123,
+                        33
+                    ],
+                    "allowed_ips": [
+                        "0.0.0.0/0",
+                        "::/0"
+                    ],
+                    "persistent_keepalive_interval": 5
+                }
+            ],
+            "private_key": "z/tgni0t57/xn6d9eL2nHJAB1P0dAQSOqtAwDV9GqLM=",
+            "domain_resolver": {
+                "server": "dns-direct",
+                "strategy": "prefer_ipv4",
+                "rewrite_ttl": 60
+            }
+        },
+        {
+            "tag": "💦 3 - Warp 🇮🇷",
+            "type": "wireguard",
+            "address": [
+                "172.16.0.2/32",
+                "2606:4700:110:8f66:91cc:f16d:2f12:4b4c/128"
+            ],
+            "mtu": 1280,
+            "peers": [
+                {
+                    "address": "wire.nscl.ir",
+                    "port": 2408,
+                    "public_key": "bmXOC+F1FxEMF9dyiK2H5/1SUtzH0JuVo51h2wPfgyo=",
+                    "reserved": [
+                        27,
+                        123,
+                        33
+                    ],
+                    "allowed_ips": [
+                        "0.0.0.0/0",
+                        "::/0"
+                    ],
+                    "persistent_keepalive_interval": 5
+                }
+            ],
+            "private_key": "z/tgni0t57/xn6d9eL2nHJAB1P0dAQSOqtAwDV9GqLM=",
+            "domain_resolver": {
+                "server": "dns-direct",
+                "strategy": "prefer_ipv4",
+                "rewrite_ttl": 60
+            }
+        }
+    ]
+}
