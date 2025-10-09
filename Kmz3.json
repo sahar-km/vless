@@ -1,5 +1,7 @@
 {
   "dns": {
+    "final": "proxy-dns",
+    "independent_cache": true,
     "rules": [
       {
         "domain": ["raw.githubusercontent.com"],
@@ -56,13 +58,12 @@
         "type": "udp"
       }
     ],
-    "final": "proxy-dns",
-    "strategy": "ipv4_only",
-    "independent_cache": true
+    "strategy": "ipv4_only"
   },
   "endpoints": [
     {
       "address": ["172.16.0.2/32", "2606:4700:110:8836:f1c9:4393:9b37:3814/128"],
+      "detour": "direct",
       "mtu": 1280,
       "peers": [
         {
@@ -76,12 +77,12 @@
       ],
       "private_key": "SDeDZQJ5nmPBFR/284ske2JyVcPKNtsiUe0IOdkl8Ek=",
       "tag": "✖️Tehran",
-      "detour": "direct",
       "type": "wireguard",
       "workers": 4
     },
     {
       "address": ["172.16.0.3/32", "2606:4700:110:8867:3f4a:906:1933:43c5/128"],
+      "detour": "✖️Tehran",
       "mtu": 1280,
       "peers": [
         {
@@ -95,12 +96,12 @@
       ],
       "private_key": "6CqbaD9XuTO1hQG4kpXWPVkBsHfpkYCOHOAGvgz+SXk=",
       "tag": "✖️Somewhere",
-      "detour": "✖️Tehran",
       "type": "wireguard",
       "workers": 4
     },
     {
       "address": ["172.16.0.2/32", "2606:4700:110:8a48:e31e:e376:9546:6d08/128"],
+      "detour": "direct",
       "mtu": 1280,
       "peers": [
         {
@@ -114,12 +115,12 @@
       ],
       "private_key": "CDc8E591boEWrtdFhfT/kqS7yvyu47DcMnXPQ/IIQGs=",
       "tag": "➗Tehran",
-      "detour": "direct",
       "type": "wireguard",
       "workers": 4
     },
     {
       "address": ["172.16.0.3/32", "2606:4700:110:8daa:2ea:9c8c:9fd4:9796/128"],
+      "detour": "➗Tehran",
       "mtu": 1280,
       "peers": [
         {
@@ -133,12 +134,12 @@
       ],
       "private_key": "sMCdMT701A/Q2hi4wW+Gx2FQiblkHN1AGZN3oZr0oX0=",
       "tag": "➗Somewhere",
-      "detour": "➗Tehran",
       "type": "wireguard",
       "workers": 4
     },
     {
       "address": ["172.16.0.2/32", "2606:4700:110:8836:f1c9:4393:9b37:3814/128"],
+      "detour": "direct",
       "mtu": 1280,
       "peers": [
         {
@@ -152,12 +153,12 @@
       ],
       "private_key": "2MFM4WUDeNrQp9E51a5oxHKcGjSNFSvKM+1HI/UqbUw=",
       "tag": "➕Tehran",
-      "detour": "direct",
       "type": "wireguard",
       "workers": 4
     },
     {
       "address": ["172.16.0.3/32", "2606:4700:110:8ce1:d97b:1aca:860a:9f5a/128"],
+      "detour": "➕Tehran",
       "mtu": 1280,
       "peers": [
         {
@@ -171,18 +172,18 @@
       ],
       "private_key": "kGOfjzZdiWvnorc8KD23NNu2ReMAuyhtCZIkE++64Fc=",
       "tag": "➕Somewhere",
-      "detour": "➕Tehran",
       "type": "wireguard",
       "workers": 4
     },
     {
       "address": ["172.16.0.2/32", "2606:4700:110:8851:c589:74cb:64c3:ab7d/128"],
-      "mtu": 1280,
+      "detour": "direct",
       "domain_resolver": {
         "rewrite_ttl": 60,
         "server": "bootstrap-dns",
         "strategy": "prefer_ipv4"
       },
+      "mtu": 1280,
       "peers": [
         {
           "address": "162.159.192.6",
@@ -195,12 +196,12 @@
       ],
       "private_key": "D+xA0JcsyrV1rZ6wYrxgLH3Co0ppJwaHydvr2dveb6U=",
       "tag": "➖Tehran",
-      "detour": "direct",
       "type": "wireguard",
       "workers": 4
     },
     {
       "address": ["172.16.0.3/32", "2606:4700:110:8f66:91cc:f16d:2f12:4b4c/128"],
+      "detour": "➖Tehran",
       "mtu": 1280,
       "peers": [
         {
@@ -212,14 +213,14 @@
           "reserved": [27, 123, 33]
         }
       ],
-        "private_key": "z/tgni0t57/xn6d9eL2nHJAB1P0dAQSOqtAwDV9GqLM=",
-        "tag": "➖Somewhere",
-        "detour": "➖Tehran",
-        "type": "wireguard",
-        "workers": 4
-      },
-      {
+      "private_key": "z/tgni0t57/xn6d9eL2nHJAB1P0dAQSOqtAwDV9GqLM=",
+      "tag": "➖Somewhere",
+      "type": "wireguard",
+      "workers": 4
+    },
+    {
       "address": ["172.16.0.2/32", "2606:4700:110:8cd0:d7b0:e0d6:59b6:a280/128"],
+      "detour": "direct",
       "mtu": 1280,
       "peers": [
         {
@@ -233,18 +234,18 @@
       ],
       "private_key": "4CRAuHlthrVbPtKFRQUh14xDUMlWEOjCOlw3Lrac5k4=",
       "tag": "🟰Tehran",
-      "detour": "direct",
       "type": "wireguard",
       "workers": 4
     },
     {
       "address": ["172.16.0.3/32", "2606:4700:110:89af:9e68:a8f7:e065:d669/128"],
-      "mtu": 1280,
+      "detour": "🟰Tehran",
       "domain_resolver": {
         "rewrite_ttl": 60,
         "server": "bootstrap-dns",
         "strategy": "prefer_ipv4"
       },
+      "mtu": 1280,
       "peers": [
         {
           "address": "2606:4700:d0::a29f:c006",
@@ -257,7 +258,6 @@
       ],
       "private_key": "EE2T2cRiSwMw5FIAkp4oTl9yMOAmawFAqpYmkRXE23s=",
       "tag": "🟰Somewhere",
-      "detour": "🟰Tehran",
       "type": "wireguard",
       "workers": 4
     }
@@ -306,9 +306,8 @@
   },
   "outbounds": [
     {
-      "tag": "proxy",
-      "type": "selector",
       "default": "auto",
+      "interrupt_exist_connections": false,
       "outbounds": [
         "auto",
         "✖️Tehran",
@@ -322,7 +321,8 @@
         "🟰Tehran",
         "🟰Somewhere"
       ],
-      "interrupt_exist_connections": false
+      "tag": "proxy",
+      "type": "selector"
     },
     {
       "domain_resolver": "direct-dns",
@@ -330,6 +330,8 @@
       "type": "direct"
     },
     {
+      "interrupt_exist_connections": false,
+      "interval": "5m0s",
       "outbounds": [
         "✖️Tehran",
         "✖️Somewhere",
@@ -343,21 +345,19 @@
         "🟰Somewhere"
       ],
       "tag": "auto",
-      "interval": "5m0s",
       "type": "urltest",
-      "url": "https://www.gstatic.com/generate_204",
-      "interrupt_exist_connections": false
+      "url": "https://www.gstatic.com/generate_204"
     }
   ],
   "route": {
-    "final": "proxy",
-    "override_android_vpn": true,
     "auto_detect_interface": true,
     "default_domain_resolver": {
       "rewrite_ttl": 60,
       "server": "direct-dns",
       "strategy": "prefer_ipv4"
     },
+    "final": "proxy",
+    "override_android_vpn": true,
     "rule_set": [
       {
         "download_detour": "direct",
